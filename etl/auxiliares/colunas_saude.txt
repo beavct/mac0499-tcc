@@ -1,0 +1,55 @@
+# Colunas da tabela microdados_saude_2025_atendimentos para importar no grafo.
+# Uma coluna por linha. Linhas começando com # são ignoradas.
+#
+# Excluídas:
+# - Colunas internas do PG: _id, _data_ingestion_id, _created_at, _updated_at, _geom, _geog
+# - co_unidade (usado como id_aparelho, tratado separadamente no script)
+
+# === Atendimento tipo 01 (Internação) ===
+at_01_conv_01
+at_01_conv_02
+at_01_conv_05
+at_01_conv_06
+at_01_conv_07
+
+# === Atendimento tipo 02 (Ambulatorial) ===
+at_02_conv_01
+at_02_conv_02
+at_02_conv_05
+at_02_conv_06
+at_02_conv_07
+
+# === Atendimento tipo 03 (Urgência) ===
+at_03_conv_01
+at_03_conv_02
+at_03_conv_05
+at_03_conv_06
+at_03_conv_07
+
+# === Atendimento tipo 04 (Ambulatorial Especializado) ===
+at_04_conv_01
+at_04_conv_02
+at_04_conv_05
+at_04_conv_06
+at_04_conv_07
+
+# === Atendimento tipo 05 (Outros) ===
+at_05_conv_01
+at_05_conv_02
+at_05_conv_05
+at_05_conv_06
+at_05_conv_07
+
+# === Atendimento tipo 06 (Vigilância em Saúde) ===
+at_06_conv_01
+at_06_conv_02
+at_06_conv_05
+at_06_conv_06
+at_06_conv_07
+
+# === Atendimento tipo 07 (Apoio Diagnose e Terapia) ===
+at_07_conv_01
+at_07_conv_02
+at_07_conv_05
+at_07_conv_06
+at_07_conv_07

@@ -1,0 +1,18 @@
+# Configuração dos perfis censitários a importar.
+# Formato: label_no_neo4j | nome_da_tabela_no_pg
+# Uma entrada por linha. Linhas começando com # são ignoradas.
+#
+# Colunas ignoradas automaticamente (internas do PG):
+# _id, _data_ingestion_id, _created_at, _updated_at, _geom, _geog, cd_setor
+#
+# Todas as demais colunas (v*) são importadas como propriedades numéricas do nó de perfil.
+
+
+PerfilAlfabetizacao | culturaeduca.datasets.agregado_setores_censitarios_2022_alfabetizacao
+PerfilDemografia | culturaeduca.datasets.agregado_setores_censitarios_2022_demografia
+PerfilParentesco | culturaeduca.datasets.agregado_setores_censitarios_2022_parentesco
+PerfilRacaCor | culturaeduca.datasets.agregado_setores_censitarios_2022_raca_cor
+PerfilDomiciliosParte1 | culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1
+PerfilDomiciliosParte2 | culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2
+PerfilDomiciliosParte3 | culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte3
+PerfilEntornoDomicilios | culturaeduca.datasets.agregado_setores_censitarios_2022_entorno_domicilios
