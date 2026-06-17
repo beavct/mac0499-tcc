@@ -1,0 +1,1 @@
+Quais distritos têm mais de 10 escolas mas menos de 3 unidades de saúde ambulatorial pelo SUS?

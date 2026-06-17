@@ -1,0 +1,1 @@
+Quais distritos com mais de 50.000 habitantes possuem menos de 3 ambulatórios pelo SUS?
