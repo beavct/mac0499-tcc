@@ -12,90 +12,30 @@ Cada script conecta no Postgres, faz a query, e manda pro Neo4j via driver Pytho
 
 <a name="tc"></a>
 1. [Pré-requisitos](#pre_requisitos)
-2. [Instalando as dependências do sistema](#dependencias)
-3. [Instalando as libs Python](#libs_python)
-4. [Configuração](#config)
-5. [Como rodar](#como_rodar)
-6. [O que cada script faz](#scripts)
-7. [CSVs intermediários](#csv)
-8. [Estrutura dos arquivos](#estr_arqs)
-9. [Pasta `auxiliares/`](#auxiliares)
-10. [Troubleshooting](#trouble)
-11. [Referências](#refs)
-12. [](#)
-13. [](#)
-14. [](#)
-15. [](#)
-16. [](#)
+2. [Configuração](#config)
+3. [Como rodar](#como_rodar)
+4. [O que cada script faz](#scripts)
+5. [CSVs intermediários](#csv)
+6. [Estrutura dos arquivos](#estr_arqs)
+7. [Pasta `auxiliares/`](#auxiliares)
+8. [Troubleshooting](#trouble)
+9. [Referências](#refs)
 
 <a name="pre_requisitos"></a>
 ## Pré-requisitos
 
-Você precisa ter instalado:
+O setup geral (venv, pip install, credenciais) está documentado no [README da raiz](../README.md). Resumindo:
 
-- **Python 3.10+**
+- **Python 3.10+** com as dependências instaladas (`pip install -r ../compartilhado/requirements.txt`)
 - **Neo4j 5.x** rodando localmente (Community ou Desktop)
-- Acesso ao PostgreSQL remoto da CulturaEduca (host, user, senha)
-
-<a name="dependencias"></a>
-### Instalando as dependências do sistema
-
-O `psycopg2` precisa da lib `libpq` do Postgres pra compilar. Se você usar a versão `psycopg2-binary` (que é o que tá no requirements.txt), não precisa disso — já vem pré-compilado. Mas se der erro na instalação, instale a lib nativa:
-
-**macOS (Homebrew):**
-
-```bash
-brew install postgresql libpq
-```
-
-**Debian/Ubuntu:**
-
-```bash
-sudo apt install python3-pip python3-venv libpq-dev
-```
-
-**Arch Linux:**
-
-```bash
-sudo pacman -S python python-pip postgresql-libs
-```
-
-<a name="libs_python"></a>
-### Instalando as libs Python
-
-```bash
-cd mac0499-tcc/etl
-
-# (Opcional mas recomendado) criar um ambiente virtual
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Instalar dependências
-pip install -r requirements.txt
-```
-
-As libs usadas são:
-
-| Lib | Pra quê |
-|-----|---------|
-| `psycopg2-binary` | Conectar no PostgreSQL e rodar as queries |
-| `neo4j` | Driver oficial do Neo4j pra Python — envia Cypher direto |
-| `python-dotenv` | Lê o arquivo `.env` com as credenciais |
-
----
+- **Credenciais** preenchidas em `../compartilhado/.env`
 
 <a name="config"></a>
 ## Configuração
 
-Copie o arquivo de exemplo e preencha as senhas:
-
-```bash
-cp .env.example .env
-```
-
-Edite o `.env` com as credenciais reais. O arquivo já vem com host, porta, database e user preenchidos — só falta a senha do PG e a senha do seu Neo4j local.
-
 O Neo4j precisa estar rodando antes de executar os scripts. Se estiver usando o Neo4j Desktop, é só abrir o projeto e dar Start no banco.
+
+A variável `SALVAR_CSV` em `../compartilhado/.env` controla se os scripts geram CSVs intermediários para conferência.
 
 <a name="como_rodar"></a>
 ## Como rodar
@@ -125,10 +65,10 @@ python 04_perfis.py      # Carrega os 8 perfis censitários
 Cria a espinha dorsal do grafo — a hierarquia territorial:
 
 ```
-UF → Município → Distrito → [Bairro] → SetorCensitário
+UF → Município → Distrito → Subdistrito → [Bairro] → SetorCensitário
 ```
 
-O bairro é condicional (São Paulo não tem bairro mapeado, mas São Bernardo do Campo tem). As 7 variáveis básicas do Censo (v0001 a v0007) ficam como propriedades do nó de setor censitário, junto com o polígono em WKT.
+O subdistrito está presente nas 3 cidades. O bairro é condicional (São Paulo não tem bairro mapeado, mas São Bernardo do Campo tem). As 7 variáveis básicas do Censo (v0001 a v0007) ficam como propriedades do nó de setor censitário, junto com o polígono em WKT.
 
 ### `02_educacao.py`
 
@@ -142,7 +82,7 @@ Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cad
 
 ### `04_perfis.py`
 
-Carrega as 8 tabelas de agregados censitários como nós de perfil, cada um conectado ao seu setor via `[:TEM_PERFIL]`:
+Carrega as tabelas de agregados censitários como nós de perfil, cada um conectado ao seu setor via `[:TEM_PERFIL]`:
 
 - PerfilAlfabetizacao
 - PerfilDemografia
@@ -153,21 +93,18 @@ Carrega as 8 tabelas de agregados censitários como nós de perfil, cada um cone
 - PerfilDomiciliosParte3
 - PerfilEntornoDomicilios
 
-Cada perfil tem centenas de colunas `v*` que são carregadas dinamicamente (o script detecta as colunas e seta todas como propriedades numéricas).
+A lista de perfis é lida do arquivo `auxiliares/config_perfis.txt`. Cada perfil tem centenas de colunas `v*` que são carregadas dinamicamente.
 
 <a name="csv"></a>
 ## CSVs intermediários
 
 Cada etapa pode salvar um CSV na pasta `output/` antes de mandar pro Neo4j. Isso é pra conferir visualmente se os dados estão saindo certos do Postgres.
 
-O comportamento é controlado pela variável `SALVAR_CSV` no `.env`:
+Controlado pela variável `SALVAR_CSV` em `../compartilhado/.env`:
 
 ```bash
-# Gera CSVs para conferência
-SALVAR_CSV=true
-
-# Desativa geração de CSVs (quando já estiver tudo validado)
-SALVAR_CSV=false
+SALVAR_CSV=true   # gera CSVs para conferência
+SALVAR_CSV=false  # desativa (quando já validado)
 ```
 
 A pasta `output/` está no `.gitignore`, então não vai pro repositório.
@@ -177,20 +114,15 @@ A pasta `output/` está no `.gitignore`, então não vai pro repositório.
 
 ```
 etl/
-├── .env.example              ← template de credenciais (copiar pra .env)
-├── .gitignore
-├── requirements.txt
-├── config.py                 ← carrega .env e define as 3 cidades-alvo
-├── db.py                     ← funções utilitárias (conexão PG, conexão Neo4j, save_csv)
 ├── 01_geografia.py           ← hierarquia territorial
 ├── 02_educacao.py            ← escolas de educação básica
 ├── 03_saude.py               ← equipamentos de saúde
-├── 04_perfis.py              ← perfis censitários (7 tabelas)
+├── 04_perfis.py              ← perfis censitários
 ├── run_all.py                ← executa tudo em sequência
 └── auxiliares/
-    ├── colunas_educacao.txt  ← lista de colunas a importar da tabela de educação
-    ├── colunas_saude.txt     ← lista de colunas a importar da tabela de saúde
-    └── config_perfis.txt     ← lista de perfis censitários (label | tabela)
+    ├── colunas_educacao.txt  ← colunas a importar (educação)
+    ├── colunas_saude.txt     ← colunas a importar (saúde)
+    └── config_perfis.txt     ← perfis censitários (label | tabela)
 ```
 
 <a name="auxiliares"></a>
@@ -205,11 +137,11 @@ Para os perfis censitários, o `config_perfis.txt` lista quais tabelas importar 
 
 **"Connection refused" no Neo4j:** o banco não está rodando. Abre o Neo4j Desktop e dá Start, ou roda `neo4j start` no terminal.
 
-**"Authentication failed" no Neo4j:** confere a senha no `.env`. A senha padrão do Neo4j na primeira vez é `neo4j`, mas ele pede pra trocar no primeiro acesso.
+**"Authentication failed" no Neo4j:** conferir a senha em `../compartilhado/.env`. A senha padrão do Neo4j na primeira vez é `neo4j`, mas ele pede pra trocar no primeiro acesso.
 
-**Timeout no PostgreSQL:** o host remoto pode estar fora do ar ou sua rede pode estar bloqueando a porta 5432. Testa com `pg_isready -h 200.144.245.101 -p 5432`.
+**Timeout no PostgreSQL:** o host remoto pode estar fora do ar ou a rede pode estar bloqueando a porta 5432.
 
-**"relation does not exist" no PostgreSQL:** confere se o schema é `culturaeduca.datasets` e se as tabelas existem com esses nomes exatos. Os nomes podem mudar entre ambientes.
+**"relation does not exist" no PostgreSQL:** conferir se o schema é `culturaeduca.datasets` e se as tabelas existem com esses nomes exatos.
 
 <a name="refs"></a>
 ## Referências
