@@ -1,7 +1,10 @@
 """
 Etapa 1: Cria a espinha dorsal do grafo (hierarquia territorial).
-UF -> Municipio -> Distrito -> [Bairro] -> SetorCensitario
+UF -> Municipio -> Distrito -> Subdistrito -> [Bairro] -> SetorCensitario
 """
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
+
 from config import MUNICIPIOS
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 
@@ -17,6 +20,8 @@ SELECT DISTINCT
     nm_mun,
     cd_dist,
     nm_dist,
+    cd_subdist,
+    nm_subdist,
     NULLIF(TRIM(cd_bairro), '.') AS cd_bairro,
     NULLIF(TRIM(nm_bairro), '.') AS nm_bairro,
     cd_setor,
@@ -41,6 +46,7 @@ CYPHER_CONSTRAINTS = [
     "CREATE CONSTRAINT IF NOT EXISTS FOR (u:UF) REQUIRE u.sg_uf IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (m:Municipio) REQUIRE m.cd_mun IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (d:Distrito) REQUIRE d.cd_dist IS UNIQUE",
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (sd:Subdistrito) REQUIRE sd.cd_subdist IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (b:Bairro) REQUIRE b.cd_bairro IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (s:SetorCensitario) REQUIRE s.cd_setor IS UNIQUE",
 ]
@@ -57,6 +63,9 @@ ON CREATE SET mun.nm_mun = row.nm_mun
 MERGE (dist:Distrito {cd_dist: row.cd_dist})
 ON CREATE SET dist.nm_dist = row.nm_dist
 
+MERGE (subdist:Subdistrito {cd_subdist: row.cd_subdist})
+ON CREATE SET subdist.nm_subdist = row.nm_subdist
+
 MERGE (setor:SetorCensitario {cd_setor: row.cd_setor})
 ON CREATE SET
     setor.situacao = row.situacao,
@@ -69,20 +78,22 @@ ON CREATE SET
     setor.v0007 = toInteger(row.v0007),
     setor.geometry = row.geom_wkt
 
+// Hierarquia fixa: Municipio -> UF, Distrito -> Municipio, Subdistrito -> Distrito
 MERGE (mun)-[:PARTE_DE]->(uf)
 MERGE (dist)-[:PARTE_DE]->(mun)
+MERGE (subdist)-[:PARTE_DE]->(dist)
 
-// Condicional: se tem bairro, cria o nó intermediário
+// Condicional: se tem bairro, cria o nó intermediário entre subdistrito e setor
 FOREACH (_ IN CASE WHEN row.cd_bairro IS NOT NULL THEN [1] ELSE [] END |
     MERGE (b:Bairro {cd_bairro: row.cd_bairro})
     ON CREATE SET b.nm_bairro = row.nm_bairro
     MERGE (setor)-[:PARTE_DE]->(b)
-    MERGE (b)-[:PARTE_DE]->(dist)
+    MERGE (b)-[:PARTE_DE]->(subdist)
 )
 
-// Cenário sem bairro: setor liga direto no distrito
+// Cenário sem bairro: setor liga direto no subdistrito
 FOREACH (_ IN CASE WHEN row.cd_bairro IS NULL THEN [1] ELSE [] END |
-    MERGE (setor)-[:PARTE_DE]->(dist)
+    MERGE (setor)-[:PARTE_DE]->(subdist)
 )
 """
 

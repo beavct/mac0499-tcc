@@ -8,7 +8,9 @@ ao SetorCensitario via [:TEM_PERFIL].
 Todas as colunas da tabela (exceto as internas do PG e cd_setor) são
 importadas dinamicamente como propriedades numéricas.
 """
-import os
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
+
 from config import MUNICIPIOS
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 

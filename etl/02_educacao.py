@@ -3,7 +3,9 @@ Etapa 2: Carrega escolas de educação básica e conecta aos setores censitário
 
 As colunas importadas são lidas do arquivo colunas_educacao.txt.
 """
-import os
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
+
 from config import MUNICIPIOS
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 

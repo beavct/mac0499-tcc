@@ -144,14 +144,14 @@ Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cad
 
 Carrega as 8 tabelas de agregados censitários como nós de perfil, cada um conectado ao seu setor via `[:TEM_PERFIL]`:
 
-- PerfilBasico
-- PerfilCaracteristicas
 - PerfilAlfabetizacao
 - PerfilDemografia
 - PerfilParentesco
 - PerfilRacaCor
 - PerfilDomiciliosParte1
 - PerfilDomiciliosParte2
+- PerfilDomiciliosParte3
+- PerfilEntornoDomicilios
 
 Cada perfil tem centenas de colunas `v*` que são carregadas dinamicamente (o script detecta as colunas e seta todas como propriedades numéricas).
 
