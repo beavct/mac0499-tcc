@@ -5,14 +5,16 @@ UF -> Municipio -> Distrito -> Subdistrito -> [Bairro] -> SetorCensitario
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
 
-from config import MUNICIPIOS
+from config import ESCOPO, filtro_territorial
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 
 # ---------------------------------------------------------------------------
 # EXTRAÇÃO DO POSTGRESQL
 # ---------------------------------------------------------------------------
 
-QUERY_GEOGRAFIA = """
+def build_query_geografia():
+    clausula, _ = filtro_territorial()
+    return f"""
 SELECT DISTINCT
     cd_uf,
     nm_uf,
@@ -35,7 +37,7 @@ SELECT DISTINCT
     v0007,
     ST_AsText(_geom) AS geom_wkt
 FROM culturaeduca.datasets.dtb_setores_censitarios_2022
-WHERE cd_mun IN %s;
+WHERE {clausula};
 """
 
 # ---------------------------------------------------------------------------
@@ -104,8 +106,9 @@ def main():
     print("=" * 60)
 
     # Extração
-    print(f"\n[PG] Extraindo setores para municípios: {MUNICIPIOS}")
-    data = pg_fetch_all(QUERY_GEOGRAFIA, (tuple(MUNICIPIOS),))
+    _, params = filtro_territorial()
+    print(f"\n[PG] Extraindo setores (escopo: {ESCOPO})")
+    data = pg_fetch_all(build_query_geografia(), params)
     print(f"[PG] {len(data)} registros extraídos")
 
     save_csv(data, "01_geografia.csv")

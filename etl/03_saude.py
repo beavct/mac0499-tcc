@@ -6,7 +6,7 @@ As colunas de atendimento são lidas do arquivo colunas_saude.txt.
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
 
-from config import MUNICIPIOS
+from config import ESCOPO, filtro_territorial
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 
 # ---------------------------------------------------------------------------
@@ -35,6 +35,7 @@ def load_colunas():
 def build_query(colunas):
     """Monta a query SELECT com colunas de atendimento + identificação + localização."""
     cols_sql = ",\n    ".join(f"a.{col}" for col in colunas)
+    clausula, _ = filtro_territorial("s.")
     return f"""
 SELECT DISTINCT
     eq.co_unidade AS id_aparelho,
@@ -49,7 +50,7 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON eq.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
-WHERE s.cd_mun IN %s;
+WHERE {clausula};
 """
 
 
@@ -119,8 +120,9 @@ def main():
 
     # Extração
     query = build_query(colunas)
-    print(f"[PG] Extraindo equipamentos de saúde para municípios: {MUNICIPIOS}")
-    data = pg_fetch_all(query, (tuple(MUNICIPIOS),))
+    _, params = filtro_territorial("s.")
+    print(f"[PG] Extraindo equipamentos de saúde (escopo: {ESCOPO})")
+    data = pg_fetch_all(query, params)
     print(f"[PG] {len(data)} registros extraídos")
 
     save_csv(data, "03_saude.csv")

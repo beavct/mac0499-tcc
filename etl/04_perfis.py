@@ -11,7 +11,7 @@ importadas dinamicamente como propriedades numéricas.
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "compartilhado"))
 
-from config import MUNICIPIOS
+from config import ESCOPO, filtro_territorial
 from db import get_neo4j_driver, pg_fetch_all, neo4j_write, save_csv
 
 # ---------------------------------------------------------------------------
@@ -43,12 +43,13 @@ def load_perfis_config():
 
 def query_perfil(tabela):
     """Monta query que pega todas as colunas de uma tabela de agregados."""
+    clausula, _ = filtro_territorial("s.")
     return f"""
         SELECT a.*
         FROM {tabela} a
         JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
           ON a.cd_setor = s.cd_setor
-        WHERE s.cd_mun IN %s;
+        WHERE {clausula};
     """
 
 
@@ -89,7 +90,9 @@ def main():
 
     perfis_config = load_perfis_config()
     print(f"\n[Config] {len(perfis_config)} perfis carregados de {CONFIG_FILE}")
+    print(f"[Config] Escopo: {ESCOPO}")
 
+    _, params = filtro_territorial("s.")
     driver = get_neo4j_driver()
 
     for perfil in perfis_config:
@@ -99,7 +102,7 @@ def main():
         print(f"\n--- {label} ---")
         print(f"[PG] Extraindo de {tabela}...")
 
-        data = pg_fetch_all(query_perfil(tabela), (tuple(MUNICIPIOS),))
+        data = pg_fetch_all(query_perfil(tabela), params)
         print(f"[PG] {len(data)} registros extraídos")
 
         if not data:
@@ -110,9 +113,15 @@ def main():
 
         batch = prepare_batch(data)
 
-        print(f"[Neo4j] Carregando {label}...")
+        # Batch adaptativo ao nº de colunas do perfil, para não estourar o
+        # heap do Neo4j (ver explicação no README). Piso 200, teto 5000.
+        VALORES_POR_TRANSACAO = 200_000
+        num_colunas = len(batch[0]["props"]) if batch and batch[0].get("props") else 1
+        batch_size = max(200, min(5000, VALORES_POR_TRANSACAO // max(num_colunas, 1)))
+
+        print(f"[Neo4j] Carregando {label} ({num_colunas} colunas, batch={batch_size})...")
         cypher = cypher_perfil(label)
-        neo4j_write(driver, cypher, batch)
+        neo4j_write(driver, cypher, batch, batch_size=batch_size)
 
     driver.close()
     print("\n[OK] Etapa 4 concluída!")
