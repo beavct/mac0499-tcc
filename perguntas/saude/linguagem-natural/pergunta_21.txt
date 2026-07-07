@@ -1,1 +1,1 @@
-Qual a distribuição de postos de Vigilância em Saúde por plano público em cada distrito, confrontando com a população analfabeta adulta de 15 anos ou mais?
+Qual a distribuição de postos de Vigilância em Saúde por plano público em cada município, confrontando com a população analfabeta adulta de 15 anos ou mais?

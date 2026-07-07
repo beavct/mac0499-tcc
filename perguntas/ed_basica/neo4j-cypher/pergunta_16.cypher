@@ -1,5 +1,4 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilDemografia)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
 WITH m, d, sum(coalesce(p.v01012, 0) + coalesce(p.v01025, 0)) AS total_jovens_15_19
 
 OPTIONAL MATCH (d)<-[:PARTE_DE*1..3]-(s2:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)

@@ -1,7 +1,6 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilDemografia)
 MATCH (s)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
-  AND saude.at_06_conv_01 = true
+WHERE saude.at_06_conv_01 = true
   AND (coalesce(p.v01019, 0) + coalesce(p.v01032, 0)) > 0
 RETURN m.nm_mun AS municipio, 
        d.nm_dist AS distrito, 

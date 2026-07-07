@@ -11,8 +11,7 @@ JOIN culturaeduca.datasets.eq_saude_2025 saude
   ON ST_Contains(s._geom, saude._geom)
 JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND a.at_05_conv_01 = '1'
+WHERE a.at_05_conv_01 = '1'
   AND COALESCE(carac.v00087, 0) > 0
 GROUP BY s.nm_mun, s.nm_dist, s.cd_setor, carac.v00087
 ORDER BY moradores_cortico DESC;

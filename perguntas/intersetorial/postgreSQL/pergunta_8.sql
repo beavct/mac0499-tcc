@@ -16,7 +16,6 @@ JOIN (
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1 carac ON s2.cd_setor = carac.cd_setor
     GROUP BY s2.nm_mun, s2.nm_dist
 ) dist_crianca ON s.nm_mun = dist_crianca.nm_mun AND s.nm_dist = dist_crianca.nm_dist
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND dist_crianca.total_dom_criancas > 5000
+WHERE dist_crianca.total_dom_criancas > 5000
 GROUP BY s.nm_mun, s.nm_dist, dist_crianca.total_dom_criancas
 ORDER BY total_dom_criancas DESC;

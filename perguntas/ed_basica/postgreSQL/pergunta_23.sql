@@ -10,6 +10,5 @@ JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 dom2 
   ON s.cd_setor = dom2.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND COALESCE(dom2.v00486, 0) = 0
+WHERE COALESCE(dom2.v00486, 0) = 0
 GROUP BY s.nm_mun, s.nm_dist, s.cd_setor;

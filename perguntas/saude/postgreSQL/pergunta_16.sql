@@ -11,8 +11,7 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1 carac 
   ON s.cd_setor = carac.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND a.at_06_conv_06 = '1'
+WHERE a.at_06_conv_06 = '1'
   AND s.nm_bairro IS NOT NULL AND s.nm_bairro <> '.'
 GROUP BY s.nm_mun, s.nm_bairro, saude.co_unidade, saude.no_fantasia
 ORDER BY moradores_casa_vila DESC;

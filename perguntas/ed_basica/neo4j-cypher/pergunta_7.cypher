@@ -1,7 +1,6 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilDomiciliosParte2)
 MATCH (s)<-[:LOCALIZADA_EM]-(e:Escola)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
-  AND e.tp_dependencia IN [1, 2, 3]
+WHERE e.tp_dependencia IN [1, 2, 3]
   AND e.qt_tur_med > 0
   AND e.qt_tur_bas_d > 0
   AND p.v00094 > 0

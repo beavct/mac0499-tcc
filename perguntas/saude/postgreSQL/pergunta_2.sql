@@ -12,7 +12,6 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_alfabetizacao alf 
   ON s.cd_setor = alf.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND a.at_02_conv_01 = '1'
+WHERE a.at_02_conv_01 = '1'
   AND (COALESCE(alf.v00644, 0) - (COALESCE(alf.v00657, 0) + COALESCE(alf.v00658, 0) + COALESCE(alf.v00659, 0) + COALESCE(alf.v00660, 0) + COALESCE(alf.v00661, 0))) > 0
 ORDER BY jovens_15_19_analfabetos DESC;

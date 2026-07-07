@@ -1,6 +1,5 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilAlfabetizacao)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
-  AND coalesce(p.v00901, 0) > 0
+WHERE coalesce(p.v00901, 0) > 0
   AND NOT EXISTS { MATCH (s)<-[:LOCALIZADA_EM]-(:Escola) }
 
 RETURN m.nm_mun AS municipio,

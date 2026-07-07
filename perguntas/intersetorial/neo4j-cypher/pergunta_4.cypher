@@ -1,6 +1,5 @@
 MATCH (m:Municipio)<-[:PARTE_DE*1..3]-(b:Bairro)<-[:PARTE_DE*1..3]-(s:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
-  AND e.qt_tur_inf_cre > 0
+WHERE e.qt_tur_inf_cre > 0
 
 WITH m, b, collect(DISTINCT s) AS setores_com_creche
 

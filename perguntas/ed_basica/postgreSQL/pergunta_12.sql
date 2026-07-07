@@ -12,8 +12,7 @@ JOIN (
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1 ascdp ON s2.cd_setor = ascdp.cd_setor
     GROUP BY s2.nm_mun, s2.nm_dist
 ) dist_crianca ON s.nm_mun = dist_crianca.nm_mun AND s.nm_dist = dist_crianca.nm_dist
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
 GROUP BY s.nm_mun, s.nm_dist, dist_crianca.total_domicilios_com_criancas
-HAVING dist_crianca.total_domicilios_com_criancas > 800 
+HAVING dist_crianca.total_domicilios_com_criancas > 5000 
    AND COUNT(DISTINCT CASE WHEN m.qt_tur_inf_cre > 0 THEN m.co_entidade END) < 5
 ORDER BY total_domicilios_com_criancas DESC;

@@ -14,7 +14,6 @@ JOIN (
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_basico b ON s2.cd_setor = b.cd_setor
     GROUP BY s2.nm_mun, s2.nm_dist
 ) dist_pop ON s.nm_mun = dist_pop.nm_mun AND s.nm_dist = dist_pop.nm_dist
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
 GROUP BY s.nm_mun, s.nm_dist, dist_pop.total_habitantes
 HAVING dist_pop.total_habitantes > 50000 AND COUNT(DISTINCT saude.co_unidade) < 3
 ORDER BY dist_pop.total_habitantes DESC;

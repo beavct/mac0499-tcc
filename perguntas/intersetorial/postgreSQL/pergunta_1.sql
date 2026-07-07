@@ -8,8 +8,7 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
   ON m.co_entidade = eq.co_entidade AND m.nu_ano_censo = eq.nu_ano_censo
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND m.tp_dependencia IN ('1', '2', '3')
+WHERE m.tp_dependencia IN ('1', '2', '3')
   AND NOT EXISTS (
     SELECT 1 FROM culturaeduca.datasets.eq_saude_2025 saude
     JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a

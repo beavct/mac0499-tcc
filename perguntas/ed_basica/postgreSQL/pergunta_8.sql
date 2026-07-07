@@ -18,7 +18,6 @@ JOIN (
 ) dist_par 
   ON s.nm_mun = dist_par.nm_mun 
  AND s.nm_dist = dist_par.nm_dist
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND m.qt_tur_inf_int > 0
+WHERE m.qt_tur_inf_int > 0
 GROUP BY s.nm_mun, s.nm_dist, dist_par.total_familias_estendidas
 ORDER BY dist_par.total_familias_estendidas DESC;

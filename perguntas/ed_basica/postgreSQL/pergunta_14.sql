@@ -11,8 +11,7 @@ JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_demografia demo 
   ON s.cd_setor = demo.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND m.tp_dependencia = '4'
+WHERE m.tp_dependencia = '4'
   AND m.qt_tur_inf > 0
 GROUP BY s.nm_mun, s.nm_dist, m.co_entidade, m.no_entidade
 ORDER BY populacao_infantil_distrito DESC;

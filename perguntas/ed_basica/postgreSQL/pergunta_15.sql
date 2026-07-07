@@ -8,7 +8,6 @@ WITH Setores AS (
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_parentesco par 
       ON s.cd_setor = par.cd_setor
-    WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
 ),
 Escolas AS (
     SELECT 

@@ -11,6 +11,5 @@ LEFT JOIN culturaeduca.datasets.eq_saude_2025 saude
   ON ST_Contains(s._geom, saude._geom)
 JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade AND a.at_03_conv_05 = '1'
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
 GROUP BY s.nm_mun, s.nm_dist, s.cd_setor
 ORDER BY populacao_parda DESC;

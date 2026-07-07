@@ -1,5 +1,4 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(c:PerfilDomiciliosParte1)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
 WITH m, d, sum(coalesce(c.v00001, 0)) AS domicilios_permanentes_ocupados
 
 MATCH (d)<-[:PARTE_DE*1..3]-(s2:SetorCensitario)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)

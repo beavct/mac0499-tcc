@@ -1,6 +1,5 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)
-WHERE m.cd_mun IN ['3550308', '3509502', '3548708']
-  AND s.v0001 > 1000
+WHERE s.v0001 > 1000
 
 OPTIONAL MATCH (s)<-[:LOCALIZADA_EM]-(e:Escola)
 OPTIONAL MATCH (s)<-[:LOCALIZADA_EM]-(es:EquipamentoSaude)

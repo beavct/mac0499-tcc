@@ -9,8 +9,7 @@ JOIN culturaeduca.datasets.eq_saude_2025 saude
   ON ST_Contains(s._geom, saude._geom)
 JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND s.situacao = 'Urbano'
+WHERE s.situacao = 'Urbano'
   AND a.at_02_conv_07 = '1'
 GROUP BY s.nm_mun, s.nm_dist
 ORDER BY populacao_urbana_gratuidade DESC;

@@ -11,7 +11,6 @@ LEFT JOIN culturaeduca.datasets.eq_saude_2025 saude
   ON ST_Contains(s._geom, saude._geom)
 LEFT JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade AND a.at_02_conv_01 = '1'
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
 GROUP BY s.nm_mun, s.nm_dist
 HAVING COUNT(DISTINCT eq.co_entidade) > 10 AND COUNT(DISTINCT a.co_unidade) < 3
 ORDER BY razao_escola_saude DESC;

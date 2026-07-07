@@ -12,7 +12,6 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_demografia demo 
   ON s.cd_setor = demo.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND a.at_03_conv_01 = '1'
+WHERE a.at_03_conv_01 = '1'
   AND COALESCE(demo.v01032, 0) > 0
 ORDER BY idosos_80_mais DESC;

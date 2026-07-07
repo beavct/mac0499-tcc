@@ -11,7 +11,6 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 dom2
   ON s.cd_setor = dom2.cd_setor
-WHERE s.cd_mun IN ('3550308', '3509502', '3548708')
-  AND a.at_03_conv_07 = '1'
+WHERE a.at_03_conv_07 = '1'
 GROUP BY s.nm_mun, s.nm_dist, s.cd_setor
 ORDER BY domicilios_fossa_rudimentar DESC;
