@@ -10,6 +10,7 @@ ETAPAS = [
     "02_educacao.py",
     "03_saude.py",
     "04_perfis.py",
+    "05_indices.py",
 ]
 
 
