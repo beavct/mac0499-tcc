@@ -160,7 +160,8 @@ mac0499-tcc/
 │   └── intersetorial/       ← 10 consultas cruzando educação + saúde
 │
 ├── ferramentas/              ← utilitários de administração
-│   └── neo4j_admin.py        ← inspeciona e limpa o grafo (contar, reset, etc.)
+│   ├── neo4j_admin.py        ← inspeciona e limpa o grafo (contar, reset, etc.)
+│   └── limpar_pg_sp.py       ← reduz o PostgreSQL ao recorte de São Paulo
 │
 ├── testes/
 │   ├── validacao/            ← script que roda SQL e Cypher e compara resultados
@@ -217,6 +218,23 @@ python ferramentas/neo4j_admin.py reset       # apaga tudo (nós + constraints)
 
 Use o `reset` antes de trocar o `ESCOPO` (cidades ↔ estado), senão os dois recortes se misturam no mesmo grafo.
 
+### 4. Reduzir o PostgreSQL ao recorte de São Paulo
+
+A cópia local do banco vem com o Brasil inteiro. Como o TCC opera só sobre o estado de São Paulo, o `limpar_pg_sp.py` apaga as linhas de outras UFs nas tabelas usadas pelo ETL/consultas e remove (DROP) as tabelas de níveis e domínios que o projeto não usa (agregados de bairro/distrito/município/subdistrito/UF, CRAS, CREAS, IES, bibliotecas, centros POP).
+
+```bash
+python ferramentas/limpar_pg_sp.py             # simulação (dry-run): só mostra o que faria
+python ferramentas/limpar_pg_sp.py --executar  # aplica de fato
+```
+
+É uma operação **destrutiva e irreversível** — faça um dump antes de rodar com `--executar`:
+
+```bash
+pg_dump -h localhost -U <usuario> -d culturaeduca -Fc -f backup_brasil.dump
+```
+
+Os `DELETE` não liberam espaço em disco automaticamente; rode `VACUUM FULL` depois, se quiser recuperar.
+
 ---
 
 <a name="fontes"></a>
@@ -230,7 +248,10 @@ Use o `reset` antes de trocar o `ESCOPO` (cidades ↔ estado), senão os dois re
 
 <a name="recorte"></a>
 ## Recorte territorial
+Estados:
+- São Paulo (cd_uf: 35)
 
+Cidades:
 - São Paulo (cd_mun: 3550308)
 - Campinas (cd_mun: 3548708)
 - São Bernardo do Campo (cd_mun: 3509502)
