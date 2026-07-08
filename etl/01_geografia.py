@@ -49,7 +49,9 @@ CYPHER_CONSTRAINTS = [
     "CREATE CONSTRAINT IF NOT EXISTS FOR (m:Municipio) REQUIRE m.cd_mun IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (d:Distrito) REQUIRE d.cd_dist IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (sd:Subdistrito) REQUIRE sd.cd_subdist IS UNIQUE",
-    "CREATE CONSTRAINT IF NOT EXISTS FOR (b:Bairro) REQUIRE b.cd_bairro IS UNIQUE",
+    # cd_bairro não é único no IBGE (reaparece em subdistritos distintos);
+    # a chave precisa ser composta para não criar caminhos múltiplos.
+    "CREATE CONSTRAINT IF NOT EXISTS FOR (b:Bairro) REQUIRE (b.cd_bairro, b.cd_subdist) IS UNIQUE",
     "CREATE CONSTRAINT IF NOT EXISTS FOR (s:SetorCensitario) REQUIRE s.cd_setor IS UNIQUE",
 ]
 
@@ -87,7 +89,7 @@ MERGE (subdist)-[:PARTE_DE]->(dist)
 
 // Condicional: se tem bairro, cria o nó intermediário entre subdistrito e setor
 FOREACH (_ IN CASE WHEN row.cd_bairro IS NOT NULL THEN [1] ELSE [] END |
-    MERGE (b:Bairro {cd_bairro: row.cd_bairro})
+    MERGE (b:Bairro {cd_bairro: row.cd_bairro, cd_subdist: row.cd_subdist})
     ON CREATE SET b.nm_bairro = row.nm_bairro
     MERGE (setor)-[:PARTE_DE]->(b)
     MERGE (b)-[:PARTE_DE]->(subdist)

@@ -1,5 +1,5 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilDomiciliosParte2)
-WHERE p.v00485 = 0
+WHERE coalesce(p.v00485, 0) = 0
 
 OPTIONAL MATCH (s)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
 WHERE saude.at_04_conv_05 = true

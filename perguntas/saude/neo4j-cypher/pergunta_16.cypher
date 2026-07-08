@@ -1,4 +1,4 @@
-MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE]-(b:Bairro)<-[:PARTE_DE]-(s:SetorCensitario)-[:TEM_PERFIL]->(c:PerfilDomiciliosParte1)
+MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE]-(sd:Subdistrito)<-[:PARTE_DE]-(b:Bairro)<-[:PARTE_DE]-(s:SetorCensitario)-[:TEM_PERFIL]->(c:PerfilDomiciliosParte1)
 MATCH (s)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
 WHERE saude.at_06_conv_06 = true
 RETURN m.nm_mun AS municipio, 
