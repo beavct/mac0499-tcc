@@ -1,1 +1,1 @@
-Quais unidades de Diagnose e Terapia privada estão em setores com alto índice de habitações precárias improvisadas?
+Para cada unidade de internação pelo SUS, quantas unidades de atendimento ambulatorial pelo SUS existem no mesmo distrito?

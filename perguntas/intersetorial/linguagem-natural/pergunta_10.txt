@@ -1,1 +1,1 @@
-Quais distritos possuem escolas públicas de Ensino Fundamental e unidades de saúde pelo SUS em setores com presença de famílias indígenas?
+Em cada distrito do estado, qual a presença de responsáveis indígenas por domicílio, de escolas públicas de Ensino Fundamental e de unidades de saúde ambulatorial pelo SUS?

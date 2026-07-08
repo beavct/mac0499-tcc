@@ -1,11 +1,13 @@
-MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(c:PerfilDomiciliosParte1)
-MATCH (s)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
-WHERE saude.at_07_conv_06 = true
-  AND c.v00006 > 0
-RETURN m.nm_mun AS municipio, 
-       d.nm_dist AS distrito, 
-       s.cd_setor AS codigo_setor, 
-       saude.id_aparelho AS id_unidade, 
-       saude.nm_aparelho AS nome_unidade, 
-       c.v00006 AS moradores_improvisados
-ORDER BY moradores_improvisados DESC;
+MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(amb:EquipamentoSaude)
+WHERE amb.at_02_conv_01 = true
+WITH m, d, count(DISTINCT amb) AS ambulatorios_sus_no_distrito
+
+MATCH (d)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(internacao:EquipamentoSaude)
+WHERE internacao.at_01_conv_01 = true
+
+RETURN m.nm_mun AS municipio,
+       d.nm_dist AS distrito,
+       internacao.id_aparelho AS id_unidade_internacao,
+       internacao.nm_aparelho AS nome_unidade_internacao,
+       ambulatorios_sus_no_distrito
+ORDER BY ambulatorios_sus_no_distrito DESC, municipio, distrito;

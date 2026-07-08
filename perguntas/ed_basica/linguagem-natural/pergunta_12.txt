@@ -1,1 +1,1 @@
-Quais distritos têm mais de 5.000 domicílios com crianças de 0 a 9 anos mas menos de 3 escolas com turmas de creche?
+Qual a razão entre turmas de creche e a população de crianças de 0 a 4 anos em cada distrito do estado?

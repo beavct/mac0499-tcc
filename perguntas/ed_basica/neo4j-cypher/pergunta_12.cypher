@@ -1,14 +1,13 @@
-MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(c:PerfilDomiciliosParte1)
-WITH m, d, sum(coalesce(c.v00008, 0)) AS total_domicilios_com_criancas
-WHERE total_domicilios_com_criancas > 5000
+MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(demo:PerfilDemografia)
+WITH m, d, sum(coalesce(demo.v01009, 0) + coalesce(demo.v01020, 0)) AS criancas_0_4
 
-OPTIONAL MATCH (d)<-[:PARTE_DE*1..3]-(s2:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
+OPTIONAL MATCH (d)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
 WHERE e.qt_tur_inf_cre > 0
-WITH m, d, total_domicilios_com_criancas, count(DISTINCT e) AS qtd_escolas_creche
-WHERE qtd_escolas_creche < 5
+WITH m, d, criancas_0_4, sum(coalesce(e.qt_tur_inf_cre, 0)) AS turmas_creche
 
-RETURN m.nm_mun AS municipio, 
-       d.nm_dist AS distrito, 
-       total_domicilios_com_criancas, 
-       qtd_escolas_creche
-ORDER BY total_domicilios_com_criancas DESC;
+RETURN m.nm_mun AS municipio,
+       d.nm_dist AS distrito,
+       criancas_0_4,
+       turmas_creche,
+       round(100.0 * turmas_creche / criancas_0_4, 2) AS turmas_por_100_criancas
+ORDER BY turmas_por_100_criancas ASC, criancas_0_4 DESC;

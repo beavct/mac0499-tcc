@@ -13,11 +13,12 @@ As consultas foram propositalmente distribuídas entre diferentes níveis de agr
 
 | Nível | O que a consulta retorna | Nº de consultas |
 |-------|--------------------------|-----------------|
-| **Município** | resultado agregado por município (visão macro estadual) | 9 |
-| **Distrito** | agregado por distrito (análise intra-municipal) | 14 |
+| **Município** | resultado agregado por município (visão macro estadual) | 8 |
+| **Distrito** | agregado por distrito (análise intra-municipal) | 16 |
 | **Subdistrito** | agregado por subdistrito | 2 |
 | **Bairro** | agregado por bairro | 4 |
-| **Setor / lista** | por setor censitário ou listagem de equipamentos individuais | 31 |
+| **Setor** | agregado por setor censitário | 14 |
+| **Lista** | listagem de equipamentos individuais ou pares (ex.: escola × distrito) | 16 |
 
 Toda consulta que retorna um nível abaixo do município também retorna o município correspondente, para tornar o resultado autoexplicativo.
 
@@ -43,11 +44,10 @@ Cruzamento entre variáveis de oferta escolar (turmas por etapa, dependência ad
 |---|-------|----------|
 | Q06 | Setor | Quais setores possuem as maiores populações de adultos não alfabetizados e não contam com nenhuma escola? |
 | Q09 | Lista | Quais escolas de Ensino Fundamental estão em setores onde mais de 50 moradores residem em domicílios improvisados? |
-| Q12 | Distrito | Quais distritos têm mais de 5.000 domicílios com crianças de 0 a 9 anos mas menos de 3 escolas com creche? |
+| Q12 | Distrito | Qual a razão entre turmas de creche e a população de crianças de 0 a 4 anos em cada distrito do estado? |
 | Q13 | Lista | Quantos domicílios com mais de 5 moradores estão próximos de escolas que ofertam ensino EAD? |
 | Q17 | Setor | Quantas escolas de Ensino Médio estão em setores onde predominam moradores em casas de vila ou condomínio? |
 | Q23 | Setor | Quantas escolas da rede pública estão em setores onde os domicílios não possuem banheiro de uso exclusivo? |
-| Q24 | Município | Quantas pessoas residem em setores urbanos que contam com escolas oferecendo Ensino Fundamental integral? |
 
 ### 1.3 Primeira Infância e Arranjos Familiares
 
@@ -71,7 +71,6 @@ Cruzamento entre variáveis de oferta escolar (turmas por etapa, dependência ad
 | # | Nível | Pergunta |
 |---|-------|----------|
 | Q07 | Lista | Quais escolas públicas de Ensino Médio diurno estão em setores com famílias indígenas responsáveis por domicílios? |
-| Q10 | Setor | Quantas turmas de Educação Especial Exclusiva existem em setores com moradores em cortiços? |
 | Q16 | Distrito | Quais distritos têm os maiores vazios de Educação Especial Inclusiva frente ao volume de jovens de 15 a 19 anos? |
 | Q20 | Distrito | Qual a proporção de escolas com Educação Especial Inclusiva em cada distrito? |
 | Q22 | Distrito | Como se comporta a oferta de turmas de Ensino Fundamental diurno em distritos com alta concentração de população parda? |
@@ -80,6 +79,8 @@ Cruzamento entre variáveis de oferta escolar (turmas por etapa, dependência ad
 
 | # | Nível | Pergunta |
 |---|-------|----------|
+| Q10 | Lista | Para cada escola que oferta Ensino Médio, quantas escolas de Ensino Fundamental existem no mesmo distrito? |
+| Q24 | Lista | Quais escolas sem laboratório de ciências estão em distritos onde pelo menos 5 outras escolas possuem laboratório de ciências? |
 | Q25 | Distrito | Quais escolas sem quadra de esportes estão em distritos onde pelo menos 5 outras escolas possuem quadra? |
 
 ---
@@ -104,6 +105,7 @@ Cruzamento entre variáveis de oferta assistencial (internação, ambulatório, 
 | # | Nível | Pergunta |
 |---|-------|----------|
 | Q04 | Lista | Quais unidades com plano privado estão em setores com alta população infantil feminina de 0 a 4 anos? |
+| Q06 | Setor | Quais setores com alta população de idosos de 80 anos ou mais não possuem nenhuma unidade de Urgência pelo SUS? |
 | Q09 | Lista | Quais unidades de Vigilância em Saúde SUS estão em territórios com idosos de 70 anos ou mais? |
 | Q11 | Lista | Quais unidades de Urgência SUS estão em setores com alta densidade de idosos de 80 anos ou mais? |
 
@@ -115,14 +117,12 @@ Cruzamento entre variáveis de oferta assistencial (internação, ambulatório, 
 | Q05 | Setor | Quantas unidades "Outros — SUS" cobrem setores com moradores em cortiços? |
 | Q12 | Distrito | Quantos centros de Diagnose e Terapia SUS existem em distritos com alta população preta? |
 | Q17 | Setor | Quantas unidades de Urgência por plano público cobrem setores com população parda expressiva? |
-| Q20 | Lista | Quais unidades de Diagnose e Terapia privada estão em setores com habitações improvisadas? |
 | Q23 | Distrito | Como se comporta a oferta de leitos com gratuidade em distritos com população de raça amarela? |
 
 ### 2.4 Convênios, Leitos e Perfil Socioeconômico
 
 | # | Nível | Pergunta |
 |---|-------|----------|
-| Q06 | Distrito | Quantas pessoas em setores urbanos dependem de atendimento ambulatorial por gratuidade? |
 | Q07 | Distrito | Qual o total de domicílios permanentes em distritos com mais de 5 unidades de internação SUS? |
 | Q08 | Bairro | Quais bairros de Campinas possuem internação por gratuidade em territórios com chefia feminina? |
 | Q13 | Lista | Quais unidades de internação por plano privado estão em setores com adensamento vertical? |
@@ -134,7 +134,8 @@ Cruzamento entre variáveis de oferta assistencial (internação, ambulatório, 
 | # | Nível | Pergunta |
 |---|-------|----------|
 | Q02 | Lista | Quais unidades ambulatoriais SUS estão em setores com jovens analfabetos de 15 a 19 anos? |
-| Q16 | Bairro | Quais unidades de Vigilância por plano privado estão em bairros com casas de vila/condomínio? |
+| Q16 | Distrito | Qual a proporção de domicílios em esgotamento sanitário precário por fossa rudimentar frente à população de cada distrito do estado? |
+| Q20 | Lista | Para cada unidade de internação pelo SUS, quantas unidades de atendimento ambulatorial pelo SUS existem no mesmo distrito? |
 | Q21 | Município | Qual a distribuição de Vigilância em Saúde por plano público em cada município vs. analfabetismo adulto? |
 | Q22 | Subdistrito | Quais subdistritos registram a maior disparidade na oferta de leitos de internação SUS? |
 
@@ -152,10 +153,10 @@ Cruzamento simultâneo entre equipamentos de educação e saúde no mesmo territ
 | Q04 | Bairro | Quais bairros possuem creches mas nenhuma unidade de saúde ambulatorial SUS? |
 | Q05 | Município | Qual a razão entre escolas e unidades de saúde ambulatorial SUS por município? |
 | Q06 | Setor | Quais setores com idosos possuem EJA mas não possuem Urgência SUS? |
-| Q07 | Setor | Quais setores concentram escolas sem esgoto e unidades de Vigilância Sanitária SUS? |
+| Q07 | Setor | Quais setores com escola pública e moradores em domicílios improvisados não possuem nenhuma unidade de saúde ambulatorial pelo SUS? |
 | Q08 | Distrito | Quais distritos com crianças em domicílios improvisados possuem creches e internação SUS? |
 | Q09 | Setor | Qual o total de equipamentos públicos por setor nos territórios mais populosos e desassistidos? |
-| Q10 | Distrito | Quais distritos possuem escolas públicas e saúde SUS em setores com famílias indígenas? |
+| Q10 | Distrito | Em cada distrito do estado, qual a presença de responsáveis indígenas por domicílio, de escolas públicas de Ensino Fundamental e de unidades de saúde ambulatorial pelo SUS? |
 
 ---
 
