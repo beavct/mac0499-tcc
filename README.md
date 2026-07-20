@@ -161,6 +161,7 @@ mac0499-tcc/
 │
 ├── ferramentas/              ← utilitários de administração
 │   ├── neo4j_admin.py        ← inspeciona e limpa o grafo (contar, reset, etc.)
+│   ├── pg_admin.py           ← inspeciona o PostgreSQL (tabelas, recorte, bairros)
 │   └── limpar_pg_sp.py       ← reduz o PostgreSQL ao recorte de São Paulo
 │
 ├── testes/
@@ -218,7 +219,20 @@ python ferramentas/neo4j_admin.py reset       # apaga tudo (nós + constraints)
 
 Use o `reset` antes de trocar o `ESCOPO` (cidades ↔ estado), senão os dois recortes se misturam no mesmo grafo.
 
-### 4. Reduzir o PostgreSQL ao recorte de São Paulo
+### 4. Inspecionar o PostgreSQL
+
+O `pg_admin.py` reúne comandos de leitura para conferir o estado da base de origem:
+
+```bash
+python ferramentas/pg_admin.py tabelas          # lista as tabelas e conta as linhas
+python ferramentas/pg_admin.py contar eq_saude_2025   # conta linhas de uma tabela
+python ferramentas/pg_admin.py ufs               # confere se a base está restrita a SP
+python ferramentas/pg_admin.py bairros           # bairros que cruzam >1 subdistrito/distrito
+```
+
+São todos read-only. Para a limpeza destrutiva (reduzir a base a São Paulo), use o script separado descrito abaixo.
+
+### 5. Reduzir o PostgreSQL ao recorte de São Paulo
 
 A cópia local do banco vem com o Brasil inteiro. Como o TCC opera só sobre o estado de São Paulo, o `limpar_pg_sp.py` apaga as linhas de outras UFs nas tabelas usadas pelo ETL/consultas e remove (DROP) as tabelas de níveis e domínios que o projeto não usa (agregados de bairro/distrito/município/subdistrito/UF, CRAS, CREAS, IES, bibliotecas, centros POP).
 
