@@ -72,9 +72,10 @@ python 01_geografia.py   # Monta a hierarquia territorial
 python 02_educacao.py    # Carrega escolas
 python 03_saude.py       # Carrega equipamentos de saúde
 python 04_perfis.py      # Carrega os 8 perfis censitários
+python 05_indices.py     # Cria os índices (espaciais e, opcionalmente, de nome)
 ```
 
-**A ordem importa!** A etapa 1 cria os nós de SetorCensitario que as etapas 2, 3 e 4 referenciam. Se rodar fora de ordem, o `MATCH` no Cypher não vai encontrar o setor e os dados ficam soltos.
+**A ordem importa!** A etapa 1 cria os nós de SetorCensitario que as etapas 2, 3 e 4 referenciam. Se rodar fora de ordem, o `MATCH` no Cypher não vai encontrar o setor e os dados ficam soltos. A etapa 5 (índices) roda por último, sobre os nós já carregados.
 
 <a name="scripts"></a>
 ## O que cada script faz
@@ -113,6 +114,15 @@ Carrega as tabelas de agregados censitários como nós de perfil, cada um conect
 - PerfilEntornoDomicilios
 
 A lista de perfis é lida do arquivo `auxiliares/config_perfis.txt`. Cada perfil tem centenas de colunas `v*` que são carregadas dinamicamente.
+
+### `05_indices.py`
+
+Cria os índices do grafo, sobre os nós já carregados pelas etapas anteriores. São dois grupos:
+
+- **Índices `POINT` (sempre criados):** sobre a propriedade `location` dos nós `Escola` e `EquipamentoSaude`. O Neo4j não indexa coordenadas automaticamente, e sem esse índice as consultas de proximidade (`point.distance` dentro de um raio) fazem varredura de força bruta.
+- **Índices de nome (opcionais, desativados por padrão):** `TEXT` ou `FULLTEXT` sobre os nomes de escolas, equipamentos e territórios. As consultas do experimento não filtram por nome, então ficam fora do escopo; são úteis para o uso real da ferramenta (busca por nome pelo usuário). Ativáveis pela lista `ABORDAGENS_ATIVAS` no início do script.
+
+Lembrando que os índices `RANGE` sobre os códigos identificadores (`cd_mun`, `cd_setor`, etc.) e os `LOOKUP` de rótulo/tipo já são criados automaticamente pelo Neo4j — as constraints de unicidade da etapa 1 cuidam dos primeiros.
 
 <a name="csv"></a>
 ## CSVs intermediários
@@ -168,6 +178,7 @@ etl/
 ├── 02_educacao.py            ← escolas de educação básica
 ├── 03_saude.py               ← equipamentos de saúde
 ├── 04_perfis.py              ← perfis censitários
+├── 05_indices.py             ← índices (espaciais e, opcionalmente, de nome)
 ├── run_all.py                ← executa tudo em sequência
 └── auxiliares/
     ├── colunas_educacao.txt  ← colunas a importar (educação)

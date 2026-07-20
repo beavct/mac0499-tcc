@@ -1,7 +1,13 @@
 """
-Etapa 5: Cria índices sobre as propriedades de nome dos nós.
+Etapa 5: Cria os índices do grafo.
 
-As consultas em linguagem natural frequentemente buscam entidades pelo nome
+Índices POINT (sempre criados): indexam a localização dos equipamentos. O Neo4j
+não indexa coordenadas automaticamente; sem esse índice, as consultas de
+proximidade (point.distance dentro de um raio) fazem varredura de força bruta e
+ficam ordens de magnitude mais lentas.
+
+Índices de NOME (opcionais, desativados por padrão — ver ABORDAGENS_ATIVAS):
+as consultas em linguagem natural frequentemente buscam entidades pelo nome
 (ex: "escolas com 'Professor' no nome", "unidades de saúde no bairro da Sé"),
 então indexar os nomes acelera essas buscas e evita varredura completa dos nós.
 
@@ -40,6 +46,27 @@ CAMPOS_NOME = [
     ("Bairro", "nm_bairro"),
     ("UF", "nm_uf"),
 ]
+
+# (label, propriedade de localização) para os índices espaciais POINT
+CAMPOS_LOCALIZACAO = [
+    ("Escola", "location"),
+    ("EquipamentoSaude", "location"),
+]
+
+
+# ---------------------------------------------------------------------------
+# ÍNDICES POINT (espaciais) — sempre criados
+# ---------------------------------------------------------------------------
+
+def criar_indices_point(session):
+    print("\n[POINT] Criando índices espaciais...")
+    for label, prop in CAMPOS_LOCALIZACAO:
+        nome = f"idx_point_{label.lower()}_{prop}"
+        session.run(
+            f"CREATE POINT INDEX {nome} IF NOT EXISTS "
+            f"FOR (n:{label}) ON (n.{prop})"
+        )
+        print(f"  [OK] {nome}  ->  (:{label}).{prop}")
 
 
 # ---------------------------------------------------------------------------
@@ -84,8 +111,12 @@ def main():
     driver = get_neo4j_driver()
 
     with driver.session() as session:
+        # Índices espaciais: sempre criados (essenciais às consultas de proximidade)
+        criar_indices_point(session)
+
+        # Índices de nome: opcionais, conforme ABORDAGENS_ATIVAS
         if len(ABORDAGENS_ATIVAS) == 0:
-            print(f"Nenhuma abordagem de criação de índice está ativa.")
+            print("\nNenhuma abordagem de índice de nome ativa.")
         if "texto" in ABORDAGENS_ATIVAS:
             criar_indices_texto(session)
         if "fulltext" in ABORDAGENS_ATIVAS:
