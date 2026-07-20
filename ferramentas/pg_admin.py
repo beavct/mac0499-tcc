@@ -7,6 +7,7 @@ bairros que cruzam subdistritos/distritos.
 
 Uso:
   python pg_admin.py tabelas               # lista as tabelas do schema e conta as linhas
+  python pg_admin.py colunas <tabela>      # lista as colunas de uma tabela com suas descrições
   python pg_admin.py contar <tabela>       # conta as linhas de uma tabela
   python pg_admin.py ufs                    # verifica se há dados fora de São Paulo (UF 35)
   python pg_admin.py bairros                # bairros que cruzam >1 subdistrito/distrito
@@ -48,6 +49,28 @@ def tabelas(arg=None):
         t = r["table_name"]
         n = pg_fetch_all(f"SELECT count(*) AS n FROM {SCHEMA}.{t}")[0]["n"]
         print(f"{t:<52} | {n}")
+
+
+def colunas(tabela=None):
+    """Lista as colunas de uma tabela com a descrição de cada uma (col_description)."""
+    if not tabela:
+        print("Informe o nome da tabela. Ex: python pg_admin.py colunas agregado_setores_censitarios_2022_demografia")
+        return
+    cols = pg_fetch_all("""
+        SELECT c.column_name, pgd.description
+        FROM information_schema.columns c
+        JOIN pg_catalog.pg_statio_all_tables st
+          ON st.schemaname = c.table_schema AND st.relname = c.table_name
+        LEFT JOIN pg_catalog.pg_description pgd
+          ON pgd.objoid = st.relid AND pgd.objsubid = c.ordinal_position
+        WHERE c.table_schema = 'datasets' AND c.table_name = %s
+        ORDER BY c.ordinal_position
+    """, (tabela,))
+    if not cols:
+        print(f"Tabela '{tabela}' não encontrada no schema datasets.")
+        return
+    for r in cols:
+        print(f"  {r['column_name']:<16} | {r['description'] or ''}")
 
 
 def contar(tabela=None):
@@ -133,6 +156,7 @@ def bairros(arg=None):
 
 COMANDOS = {
     "tabelas": tabelas,
+    "colunas": colunas,
     "contar": contar,
     "ufs": ufs,
     "bairros": bairros,
