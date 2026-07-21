@@ -2,7 +2,7 @@
 Valida as queries SQL (PostgreSQL) e Cypher (Neo4j) executando-as e comparando:
   1. Se ambas rodam sem erro
   2. Se o número de linhas retornadas é igual
-  3. Se colunas numéricas agregadas (counts/sums) batem entre as duas
+  3. Se os valores batem linha a linha
 
 Uso:
   python validar_queries.py                    # roda todas
@@ -99,66 +99,141 @@ def run_cypher(driver, cypher_path):
         return [], [], elapsed, str(e)
 
 
-def extract_numeric_totals(columns, rows):
-    """Extrai somas das colunas numéricas para comparação."""
-    totals = {}
-    if not rows:
-        return totals
+# Tolerância para comparar floats (arredondamento entre PG e Neo4j, distâncias).
+TOL_FLOAT = 0.01
 
-    for i, col in enumerate(columns):
-        values = []
-        for row in rows:
-            val = row[i]
-            if isinstance(val, (int, float)) and val is not None:
-                values.append(val)
-        if values:
-            totals[col] = sum(values)
 
-    return totals
+def normalizar_valor(val):
+    """Normaliza um valor de célula para comparação entre PG e Neo4j.
+
+    - Números viram float arredondado.
+    - Strings são trimadas.
+    - None permanece None.
+    """
+    if val is None:
+        return None
+    if isinstance(val, bool):
+        return val
+    if isinstance(val, (int, float)):
+        return round(float(val), 2)
+    # Decimal do psycopg, ou outros numéricos
+    try:
+        return round(float(val), 2)
+    except (ValueError, TypeError):
+        return str(val).strip()
+
+
+def normalizar_linha(row):
+    return tuple(normalizar_valor(v) for v in row)
+
+
+def floats_proximos(x, y):
+    """True se dois floats são iguais dentro de tolerância absoluta OU relativa.
+
+    A tolerância relativa (0,5%) acomoda diferenças de arredondamento em valores
+    grandes — notadamente as distâncias em metros das consultas espaciais, em que
+    PostGIS (elipsoide) e Neo4j (esfera) divergem alguns metros.
+    """
+    if abs(x - y) <= TOL_FLOAT:
+        return True
+    maior = max(abs(x), abs(y))
+    return maior > 0 and abs(x - y) / maior <= 0.005
+
+
+def linhas_iguais(a, b):
+    """Compara duas linhas normalizadas, com tolerância em floats."""
+    if len(a) != len(b):
+        return False
+    for x, y in zip(a, b):
+        if isinstance(x, float) and isinstance(y, float):
+            if not floats_proximos(x, y):
+                return False
+        elif x != y:
+            return False
+    return True
+
+
+def comparar_linha_a_linha(sql_rows, cypher_rows):
+    """
+    Compara os conjuntos de linhas de SQL e Cypher como multiconjuntos de valores.
+
+    Cada linha é normalizada e comparada por presença nos dois lados, e não por posição 
+    — assim uma diferença de poucas linhas não desalinha o resto. A comparação de floats
+    usa tolerância, então as linhas são chaveadas por uma versão "quantizada" que 
+    preserva a tolerância.
+    Retorna (num_em_comum, num_divergentes, exemplo_divergente).
+    """
+    from collections import defaultdict
+
+    def partes(linha):
+        # Separa a linha em (chave não-float, lista de floats). Os campos não-float
+        # identificam a linha; os floats são comparados por tolerância à parte.
+        chave, floats = [], []
+        for v in linha:
+            if isinstance(v, float):
+                floats.append(v)
+            else:
+                chave.append(v)
+        return tuple(chave), floats
+
+    # Indexa as linhas do SQL por chave não-float (lista de vetores de floats).
+    sql_idx = defaultdict(list)
+    for r in sql_rows:
+        ch, fl = partes(normalizar_linha(r))
+        sql_idx[ch].append(fl)
+
+    em_comum = 0
+    exemplo = None
+    cy_sobra = 0
+    for r in cypher_rows:
+        ch, fl = partes(normalizar_linha(r))
+        candidatos = sql_idx.get(ch)
+        achou = None
+        if candidatos:
+            for i, fl_sql in enumerate(candidatos):
+                if len(fl_sql) == len(fl) and all(floats_proximos(a, b) for a, b in zip(fl_sql, fl)):
+                    achou = i
+                    break
+        if achou is not None:
+            em_comum += 1
+            candidatos.pop(achou)  # consome o match (multiconjunto)
+        else:
+            cy_sobra += 1
+            if exemplo is None:
+                exemplo = ("só no Cypher", ch + tuple(fl))
+
+    # O que sobrou no índice SQL é "só no SQL"
+    sql_sobra = sum(len(v) for v in sql_idx.values())
+    if exemplo is None and sql_sobra:
+        for ch, listas in sql_idx.items():
+            if listas:
+                exemplo = ("só no SQL", ch + tuple(listas[0]))
+                break
+
+    divergentes = cy_sobra + sql_sobra
+    return em_comum, divergentes, exemplo
 
 
 def compare_results(sql_cols, sql_rows, cypher_cols, cypher_rows):
     """
-    Compara resultados de SQL e Cypher.
+    Compara resultados de SQL e Cypher — contagem de linhas e valores linha a linha.
     Retorna (status, detalhes).
     """
-    # Compara número de linhas
     row_match = len(sql_rows) == len(cypher_rows)
+    em_comum, divergentes, exemplo = comparar_linha_a_linha(sql_rows, cypher_rows)
 
-    # Extrai totais numéricos
-    sql_totals = extract_numeric_totals(sql_cols, sql_rows)
-    cypher_totals = extract_numeric_totals(cypher_cols, cypher_rows)
-
-    # Tenta casar colunas numéricas por valor (nomes podem ser diferentes)
-    sql_values = sorted(sql_totals.values())
-    cypher_values = sorted(cypher_totals.values())
-
-    # Compara os totais mais relevantes (primeiros valores numéricos)
-    numeric_match = None
-    if sql_values and cypher_values:
-        # Compara com tolerância de 1% (float rounding)
-        matches = 0
-        for sv in sql_values[:5]:
-            for cv in cypher_values[:5]:
-                if sv == 0 and cv == 0:
-                    matches += 1
-                elif sv != 0 and abs(sv - cv) / abs(sv) < 0.01:
-                    matches += 1
-        numeric_match = matches > 0
-
-    # Determina status
-    if row_match and (numeric_match is None or numeric_match):
+    if divergentes == 0:
         status = "OK"
-    elif row_match and not numeric_match:
+    elif row_match:
+        # mesmo nº de linhas, mas há valores que divergem
         status = "DIVERGENTE_VALORES"
-    elif not row_match and numeric_match:
-        status = "DIVERGENTE_LINHAS"
     else:
-        status = "DIVERGENTE"
+        status = "DIVERGENTE_LINHAS"
 
-    detalhes = (
-        f"SQL={len(sql_rows)} linhas | Cypher={len(cypher_rows)} linhas"
-    )
+    detalhes = f"SQL={len(sql_rows)} | Cypher={len(cypher_rows)} | em comum={em_comum}, divergentes={divergentes}"
+    if exemplo is not None and status != "OK":
+        lado, valores = exemplo
+        detalhes += f"\n      ex. divergente ({lado}): {valores}"
 
     return status, detalhes
 
