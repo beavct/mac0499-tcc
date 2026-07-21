@@ -98,7 +98,8 @@ A associação escola→setor já é resolvida no PostgreSQL usando `ST_Contains
 
 ### `03_saude.py`
 
-Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cada unidade de saúde vira um nó `EquipamentoSaude` com as 35 colunas de atendimento/convênio como propriedades.
+Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cada unidade de saúde vira um nó `EquipamentoSaude` com as 35 colunas de atendimento/convênio como propriedades. 
+Durante os testes, notou-se que nem todos os equipamentos de saúde do cadastro possuem dados de atendimento. Para não perder esses equipamentos, o carregamento utiliza uma junção externa (`LEFT JOIN`) para manter todos os equipamentos de saúde, até mesmo aqueles que não possuem entradas na tabela de dados de atendimento, que no banco de dados em grafos ficam com as propriedades de atendimento ausentes.
 
 ### `04_perfis.py`
 

@@ -11,6 +11,7 @@ Uso:
   python pg_admin.py contar <tabela>       # conta as linhas de uma tabela
   python pg_admin.py ufs                    # verifica se há dados fora de São Paulo (UF 35)
   python pg_admin.py bairros                # bairros que cruzam >1 subdistrito/distrito
+  python pg_admin.py saude-sem-microdados   # equipamentos de saúde sem dados de atendimento
 
 Para reduzir a base ao recorte de São Paulo (operação destrutiva), use o script
 separado limpar_pg_sp.py.
@@ -108,6 +109,29 @@ def ufs(arg=None):
 
 
 # ---------------------------------------------------------------------------
+# EQUIPAMENTOS DE SAÚDE SEM MICRODADOS DE ATENDIMENTO
+# ---------------------------------------------------------------------------
+
+def saude_sem_microdados(arg=None):
+    """Lista os equipamentos de saúde sem nenhum registro em microdados_saude.
+    """
+    faltantes = pg_fetch_all(f"""
+        SELECT saude.co_unidade, saude.no_fantasia, saude.nm_mun
+        FROM {SCHEMA}.eq_saude_2025 saude
+        WHERE NOT EXISTS (
+            SELECT 1 FROM {SCHEMA}.microdados_saude_2025_atendimentos a
+            WHERE a.co_unidade = saude.co_unidade
+        )
+        ORDER BY saude.nm_mun, saude.no_fantasia
+    """)
+    total = pg_fetch_all(f"SELECT count(*) AS n FROM {SCHEMA}.eq_saude_2025")[0]["n"]
+    print(f"Equipamentos de saúde sem microdados de atendimento: {len(faltantes)} de {total}")
+    print("(não são carregados como nós no Neo4j — ver decisão de arquitetura no README/monografia)\n")
+    for r in faltantes:
+        print(f"  {r['co_unidade']} | {r['nm_mun']} | {r['no_fantasia']}")
+
+
+# ---------------------------------------------------------------------------
 # BAIRROS QUE CRUZAM SUBDISTRITOS/DISTRITOS
 # ---------------------------------------------------------------------------
 
@@ -160,6 +184,7 @@ COMANDOS = {
     "contar": contar,
     "ufs": ufs,
     "bairros": bairros,
+    "saude-sem-microdados": saude_sem_microdados,
 }
 
 

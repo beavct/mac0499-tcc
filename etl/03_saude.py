@@ -46,7 +46,7 @@ SELECT DISTINCT
     s.cd_setor,
     {cols_sql}
 FROM culturaeduca.datasets.eq_saude_2025 eq
-JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
+LEFT JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON eq.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
