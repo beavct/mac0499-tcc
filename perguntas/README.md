@@ -1,173 +1,118 @@
 # Mapa de Consultas Analíticas — PostgreSQL vs. Neo4j
 
-Este documento apresenta as 60 consultas socioespaciais que compõem o benchmark comparativo entre o modelo relacional (PostgreSQL/PostGIS) e o modelo orientado a grafos (Neo4j). As consultas exploram cruzamentos entre microdados de equipamentos públicos (INEP 2024, CNES 2025) e agregados censitários do IBGE 2022, operando sobre todo o estado de São Paulo.
+Este documento apresenta as **66 consultas** socioespaciais que compõem o benchmark comparativo entre o modelo relacional (PostgreSQL/PostGIS) e o modelo orientado a grafos (Neo4j). As consultas exploram cruzamentos entre microdados de equipamentos públicos (INEP 2024, CNES 2025) e agregados censitários do IBGE 2022, operando sobre todo o estado de São Paulo.
 
 Cada consulta existe em 3 formatos:
 - `linguagem-natural/` — como um gestor público perguntaria (sem códigos técnicos)
 - `postgreSQL/` — query SQL com JOINs espaciais via PostGIS
 - `neo4j-cypher/` — query Cypher com travessias no grafo de propriedades
 
-## Níveis de agregação
+## Como as consultas são analisadas
 
-As consultas foram propositalmente distribuídas entre diferentes níveis de agregação territorial, para exercitar a hierarquia do grafo em diversas profundidades:
+Além dos três eixos temáticos (educação, saúde e intersetorial), cada consulta é classificada por **tipo de operação dominante**. Essa classificação — registrada em [`grupos.json`](grupos.json) — é o que orienta o benchmark: os tempos de execução são agrupados por operação (e não por consulta individual), o que permite comparar, via boxplots, como cada modelo se comporta em filtros, agregações, anti-joins. travessias multi-hop e operações espaciais.
 
-| Nível | O que a consulta retorna | Nº de consultas |
-|-------|--------------------------|-----------------|
-| **Município** | resultado agregado por município (visão macro estadual) | 8 |
-| **Distrito** | agregado por distrito (análise intra-municipal) | 16 |
-| **Subdistrito** | agregado por subdistrito | 2 |
-| **Bairro** | agregado por bairro | 4 |
-| **Setor** | agregado por setor censitário | 14 |
-| **Lista** | listagem de equipamentos individuais ou pares (ex.: escola × distrito) | 16 |
+| Operação | Descrição | Nº de consultas |
+|----------|-----------|-----------------|
+| **filtro** | seleção/listagem por atributos, sem agregação/anti-join/distância | 21 |
+| **agregacao** | `SUM`/`COUNT`/`AVG` ou estatística por território | 21 |
+| **anti_join** | ausência/vazio de cobertura (`NOT EXISTS`, sem equipamento) | 8 |
+| **multi_hop** | travessia lateral, auto-relação ou cruzamento educação × saúde | 10 |
+| **espacial** | distância/raio/KNN (`point.distance` / `ST_DWithin`) | 6 |
 
-Toda consulta que retorna um nível abaixo do município também retorna o município correspondente, para tornar o resultado autoexplicativo.
+## Níveis de agregação territorial
+
+As consultas foram propositalmente distribuídas entre diferentes níveis de agregação territorial, para exercitar a hierarquia do grafo (`UF → Município → Distrito → Subdistrito → [Bairro] → SetorCensitário`) em diversas profundidades. Toda consulta que retorna um nível abaixo do município também retorna o município correspondente, para tornar o resultado autoexplicativo.
 
 ---
 
-## Eixo 1 — Educação Básica (25 consultas)
+## Eixo 1 — Educação Básica (27 consultas)
 
 Cruzamento entre variáveis de oferta escolar (turmas por etapa, dependência administrativa, infraestrutura) e indicadores de vulnerabilidade territorial.
 
-### 1.1 Infraestrutura e Distribuição Escolar
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q01 | Município | Quantas escolas de educação básica existem em cada município? |
-| Q02 | Município | Qual é a proporção de escolas públicas em relação às privadas em cada município? |
-| Q03 | Lista | Quais escolas não possuem esgoto ligado à rede pública nem fossa séptica? |
-| Q04 | Município | Quantas escolas possuem quadra de esportes, seja coberta ou descoberta, em cada município? |
-| Q05 | Lista | Quais escolas atendem simultaneamente turmas de Creche e turmas de Ensino Médio? |
-
-### 1.2 Vazios Educacionais e Vulnerabilidade Habitacional
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q06 | Setor | Quais setores possuem as maiores populações de adultos não alfabetizados e não contam com nenhuma escola? |
-| Q09 | Lista | Quais escolas de Ensino Fundamental estão em setores onde mais de 50 moradores residem em domicílios improvisados? |
-| Q12 | Distrito | Qual a razão entre turmas de creche e a população de crianças de 0 a 4 anos em cada distrito do estado? |
-| Q13 | Lista | Quantos domicílios com mais de 5 moradores estão próximos de escolas que ofertam ensino EAD? |
-| Q17 | Setor | Quantas escolas de Ensino Médio estão em setores onde predominam moradores em casas de vila ou condomínio? |
-| Q23 | Setor | Quantas escolas da rede pública estão em setores onde os domicílios não possuem banheiro de uso exclusivo? |
-
-### 1.3 Primeira Infância e Arranjos Familiares
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q08 | Distrito | Quantas escolas de Educação Infantil oferecem turmas em tempo integral em distritos com famílias estendidas? |
-| Q14 | Lista | Quais escolas privadas de Educação Infantil estão em distritos com alta população de crianças de 0 a 4 anos? |
-| Q15 | Bairro | Quantas turmas de creche em tempo integral existem em bairros com alta presença de mulheres chefes de família? |
-| Q19 | Subdistrito | Quais subdistritos apresentam a maior disparidade na oferta de turmas de Educação Infantil entre seus setores? |
-
-### 1.4 Alfabetização, EJA e Ensino Noturno
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q11 | Lista | Quais escolas com Ensino Médio noturno estão em setores com jovens de 15 a 19 anos não alfabetizados? |
-| Q18 | Município | Qual a distribuição de turmas de EJA Médio por município, confrontando com a população analfabeta de 15 a 19 anos? |
-| Q21 | Lista | Quais escolas públicas estaduais com EJA Fundamental estão em setores com moradores em cortiços? |
-
-### 1.5 Educação Inclusiva e Equidade Racial
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q07 | Lista | Quais escolas públicas de Ensino Médio diurno estão em setores com famílias indígenas responsáveis por domicílios? |
-| Q16 | Distrito | Quais distritos têm os maiores vazios de Educação Especial Inclusiva frente ao volume de jovens de 15 a 19 anos? |
-| Q20 | Distrito | Qual a proporção de escolas com Educação Especial Inclusiva em cada distrito? |
-| Q22 | Distrito | Como se comporta a oferta de turmas de Ensino Fundamental diurno em distritos com alta concentração de população parda? |
-
-### 1.6 Travessia Multi-hop (vantagem do grafo)
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q10 | Lista | Para cada escola que oferta Ensino Médio, quantas escolas de Ensino Fundamental existem no mesmo distrito? |
-| Q24 | Lista | Quais escolas sem laboratório de ciências estão em distritos onde pelo menos 5 outras escolas possuem laboratório de ciências? |
-| Q25 | Distrito | Quais escolas sem quadra de esportes estão em distritos onde pelo menos 5 outras escolas possuem quadra? |
+| # | Nível | Operação | Pergunta |
+|---|-------|----------|----------|
+| Q01 | Município | agregacao | Quantas escolas de educação básica existem em cada município? |
+| Q02 | Município | agregacao | Qual é a proporção de escolas públicas em relação às privadas em cada município? |
+| Q03 | Lista | filtro | Quais escolas não possuem esgoto ligado à rede pública nem fossa séptica? |
+| Q04 | Município | filtro | Quantas escolas possuem quadra de esportes, seja coberta ou descoberta, em cada município? |
+| Q05 | Lista | filtro | Quais escolas atendem simultaneamente turmas de Creche e turmas de Ensino Médio no mesmo estabelecimento? |
+| Q06 | Setor | anti_join | Quais setores censitários possuem as maiores populações de adultos não alfabetizados e não contam com nenhuma escola instalada? |
+| Q07 | Lista | filtro | Quais escolas públicas de Ensino Médio diurno estão localizadas em setores onde há presença de famílias indígenas responsáveis por domicílios? |
+| Q08 | Distrito | agregacao | Quantas escolas de Educação Infantil oferecem turmas em tempo integral em distritos com alta concentração de famílias com estrutura estendida? |
+| Q09 | Lista | filtro | Quais escolas de Ensino Fundamental estão em setores onde mais de 50 moradores residem em domicílios improvisados? |
+| Q10 | Lista | multi_hop | Para cada escola que oferta Ensino Médio, quantas escolas de Ensino Fundamental existem no mesmo distrito? |
+| Q11 | Lista | filtro | Quais escolas com Ensino Médio noturno estão em setores onde há jovens de 15 a 19 anos não alfabetizados, indicando demanda por EJA? |
+| Q12 | Distrito | agregacao | Qual a razão entre turmas de creche e a população de crianças de 0 a 4 anos em cada distrito do estado? |
+| Q13 | Lista | filtro | Quantos domicílios com mais de 5 moradores estão próximos de escolas que ofertam ensino EAD ou semipresencial? |
+| Q14 | Lista | agregacao | Quais escolas privadas de Educação Infantil estão em distritos com alta população de crianças de 0 a 4 anos? |
+| Q15 | Bairro | multi_hop | Quantas turmas de creche em tempo integral existem em bairros com alta presença de mulheres chefes de família sem cônjuge? |
+| Q16 | Distrito | agregacao | Quais distritos têm os maiores vazios de Educação Especial Inclusiva frente ao volume de jovens de 15 a 19 anos? |
+| Q17 | Setor | filtro | Quantas escolas de Ensino Médio estão em setores onde predominam moradores em casas de vila ou condomínio? |
+| Q18 | Município | agregacao | Qual a distribuição de turmas de EJA de Ensino Médio por município, confrontando com a população analfabeta de 15 a 19 anos? |
+| Q19 | Subdistrito | agregacao | Quais subdistritos apresentam a maior disparidade na oferta de turmas de Educação Infantil entre seus setores? |
+| Q20 | Distrito | agregacao | Qual a proporção de escolas com Educação Especial Inclusiva em cada distrito, frente à demanda de domicílios permanentes ocupados? |
+| Q21 | Lista | filtro | Quais escolas públicas estaduais com turmas de EJA Fundamental estão em setores com presença expressiva de moradores em cortiços? |
+| Q22 | Distrito | agregacao | Como se comporta a oferta de turmas de Ensino Básico diurno em distritos com alta concentração de população parda? |
+| Q23 | Setor | filtro | Quantas escolas da rede pública estão em setores onde os domicílios não possuem nenhum banheiro de uso exclusivo? |
+| Q24 | Lista | multi_hop | Quais escolas sem laboratório de ciências estão em distritos onde pelo menos 5 outras escolas possuem laboratório de ciências? |
+| Q25 | Lista | multi_hop | Quais escolas são a única opção de Ensino Médio em seu distrito? |
+| Q26 | Lista | espacial | Quais escolas que não ofertam creche possuem alguma escola com creche num raio de 2 km? |
+| Q27 | Lista | espacial | Quais escolas de Educação Infantil localizadas em setores com mais de 100 crianças de 0 a 4 anos estão a mais de 3 km de qualquer outra escola de Educação Infantil? |
 
 ---
 
-## Eixo 2 — Saúde Pública e Privada (25 consultas)
+## Eixo 2 — Saúde Pública e Privada (27 consultas)
 
 Cruzamento entre variáveis de oferta assistencial (internação, ambulatório, urgência, vigilância, diagnose) por tipo de convênio e indicadores territoriais do Censo 2022.
 
-### 2.1 Desertos Sanitários e Infraestrutura Urbana
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q03 | Setor | Quais setores com mais de 1.000 moradores não possuem nenhum estabelecimento de saúde? |
-| Q10 | Distrito | Quais distritos com mais de 50.000 habitantes possuem menos de 3 ambulatórios pelo SUS? |
-| Q14 | Setor | Quais setores sem abastecimento de água pela rede geral possuem atendimento ambulatorial por plano público? |
-| Q18 | Distrito | Quais distritos têm domicílios sem banheiro e qual a presença de Vigilância em Saúde SUS? |
-| Q24 | Setor | Quantas unidades de Urgência por gratuidade estão em setores com esgotamento precário? |
-| Q25 | Município | Quantas pessoas em setores rurais contam com atendimento ambulatorial pelo SUS, por município? |
-
-### 2.2 Atenção a Faixas Etárias Extremas
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q04 | Lista | Quais unidades com plano privado estão em setores com alta população infantil feminina de 0 a 4 anos? |
-| Q06 | Setor | Quais setores com alta população de idosos de 80 anos ou mais não possuem nenhuma unidade de Urgência pelo SUS? |
-| Q09 | Lista | Quais unidades de Vigilância em Saúde SUS estão em territórios com idosos de 70 anos ou mais? |
-| Q11 | Lista | Quais unidades de Urgência SUS estão em setores com alta densidade de idosos de 80 anos ou mais? |
-
-### 2.3 Vulnerabilidade Habitacional e Populações Minoritárias
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q01 | Município | Quais municípios registram mais domicílios improvisados e qual a oferta de internação SUS? |
-| Q05 | Setor | Quantas unidades "Outros — SUS" cobrem setores com moradores em cortiços? |
-| Q12 | Distrito | Quantos centros de Diagnose e Terapia SUS existem em distritos com alta população preta? |
-| Q17 | Setor | Quantas unidades de Urgência por plano público cobrem setores com população parda expressiva? |
-| Q23 | Distrito | Como se comporta a oferta de leitos com gratuidade em distritos com população de raça amarela? |
-
-### 2.4 Convênios, Leitos e Perfil Socioeconômico
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q07 | Distrito | Qual o total de domicílios permanentes em distritos com mais de 5 unidades de internação SUS? |
-| Q08 | Bairro | Quais bairros de Campinas possuem internação por gratuidade em territórios com chefia feminina? |
-| Q13 | Lista | Quais unidades de internação por plano privado estão em setores com adensamento vertical? |
-| Q15 | Bairro | Quantas unidades de Urgência privada estão em bairros com responsáveis de raça amarela? |
-| Q19 | Distrito | Quantas unidades de internação por plano público existem no distrito da Vila Sônia? |
-
-### 2.5 Distribuição Geográfica e Análise Regional
-
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q02 | Lista | Quais unidades ambulatoriais SUS estão em setores com jovens analfabetos de 15 a 19 anos? |
-| Q16 | Distrito | Qual a proporção de domicílios em esgotamento sanitário precário por fossa rudimentar frente à população de cada distrito do estado? |
-| Q20 | Lista | Para cada unidade de internação pelo SUS, quantas unidades de atendimento ambulatorial pelo SUS existem no mesmo distrito? |
-| Q21 | Município | Qual a distribuição de Vigilância em Saúde por plano público em cada município vs. analfabetismo adulto? |
-| Q22 | Subdistrito | Quais subdistritos registram a maior disparidade na oferta de leitos de internação SUS? |
+| # | Nível | Operação | Pergunta |
+|---|-------|----------|----------|
+| Q01 | Município | agregacao | Quais municípios registram os maiores índices de domicílios improvisados e qual a oferta de leitos de internação pelo SUS nessas localidades? |
+| Q02 | Lista | filtro | Quais unidades de saúde com atendimento ambulatorial pelo SUS estão em setores onde há jovens de 15 a 19 anos não alfabetizados? |
+| Q03 | Setor | anti_join | Quais setores com mais de 1.000 moradores não possuem nenhum estabelecimento de saúde, configurando um vazio sanitário? |
+| Q04 | Lista | filtro | Quais unidades de saúde com atendimento de urgência por plano privado estão em setores com alta população de crianças de 0 a 4 anos do sexo feminino? |
+| Q05 | Setor | filtro | Quantas unidades de saúde com atendimento de Vigilância em Saúde pelo SUS cobrem setores com alta presença de crianças de 0 a 9 anos moradoras de domicílios cujo esgotamento é por fossa rudimentar ou buraco? |
+| Q06 | Setor | anti_join | Quais setores com alta população de idosos de 60 anos ou mais não possuem nenhuma unidade de Urgência pelo SUS? |
+| Q07 | Distrito | agregacao | Qual o total de domicílios permanentes ocupados em distritos que contam com mais de 5 unidades de internação pelo SUS? |
+| Q08 | Distrito | agregacao | Quais distritos de Campinas possuem internação por gratuidade em territórios com alta proporção de domicílios chefiados por mulheres sem cônjuge? |
+| Q09 | Lista | filtro | Quais unidades de Vigilância em Saúde pelo SUS estão em territórios com alta concentração de idosos de 70 anos ou mais? |
+| Q10 | Distrito | agregacao | Quais distritos com mais de 50.000 habitantes possuem menos de 3 ambulatórios pelo SUS? |
+| Q11 | Lista | filtro | Quais unidades de Urgência pelo SUS estão em setores com alta densidade de população idosa de 60 anos ou mais? |
+| Q12 | Distrito | agregacao | Quantos centros de Diagnose e Terapia pelo SUS existem em distritos com alta população autodeclarada preta? |
+| Q13 | Lista | filtro | Quais unidades de internação por plano privado estão em setores com alto adensamento vertical de apartamentos (pelo menos 100 moradores desses domicílios)? |
+| Q14 | Setor | filtro | Quais setores sem abastecimento de água pela rede geral possuem atendimento ambulatorial por plano público? |
+| Q15 | Bairro | agregacao | Quantas unidades de Urgência particular privada estão em bairros com maior presença de responsáveis de domicílio de raça amarela? |
+| Q16 | Distrito | agregacao | Qual a proporção de domicílios em esgotamento sanitário precário por fossa rudimentar frente à população de cada distrito do estado? |
+| Q17 | Setor | filtro | Quantas unidades de Urgência por plano público cobrem setores com presença expressiva de população parda? |
+| Q18 | Distrito | filtro | Quais distritos têm domicílios sem banheiro de uso exclusivo e qual a presença de postos de Vigilância em Saúde pelo SUS nesses locais? |
+| Q19 | Distrito | agregacao | Quantas unidades de urgência do SUS existem no distrito da Vila Sônia e qual a população total dessa área? |
+| Q20 | Lista | multi_hop | Para cada unidade de internação pelo SUS, quantas unidades de atendimento ambulatorial pelo SUS existem no mesmo distrito? |
+| Q21 | Município | agregacao | Qual a distribuição de postos de Vigilância em Saúde por plano público em cada município, confrontando com a população analfabeta adulta de 15 anos ou mais? |
+| Q22 | Subdistrito | agregacao | Quais subdistritos registram a maior disparidade na oferta de leitos de internação pelo SUS entre seus setores? |
+| Q23 | Distrito | agregacao | Como se comporta a oferta de leitos de internação com gratuidade em distritos com alta concentração de população de raça amarela de 60 anos ou mais? |
+| Q24 | Setor | filtro | Quantas unidades de Vigilância em Saúde do SUS estão em setores com esgotamento sanitário inexistente? |
+| Q25 | Município | agregacao | Quantas pessoas em setores rurais contam com suporte de atendimento ambulatorial pelo SUS? |
+| Q26 | Lista | espacial | Para cada unidade de Diagnose e Terapia pelo SUS, qual a distância até a unidade de Urgência pelo SUS mais próxima? |
+| Q27 | Lista | espacial | Quais unidades de Urgência pelo SUS localizadas em setores com mais de 80 pessoas responsáveis por domicílio com 60 anos ou mais estão a mais de 10 km de qualquer outra unidade de Urgência pelo SUS? |
 
 ---
 
-## Eixo 3 — Intersetorial (10 consultas)
+## Eixo 3 — Intersetorial (12 consultas)
 
-Cruzamento simultâneo entre equipamentos de educação e saúde no mesmo território, identificando vazios, desbalanceamentos e coberturas complementares.
+Cruzamento simultâneo entre equipamentos de educação e saúde no mesmo território,
+mesclando as três fontes (IBGE, INEP e CNES) para identificar vazios, desbalanceamentos e coberturas complementares.
 
-| # | Nível | Pergunta |
-|---|-------|----------|
-| Q01 | Setor | Quais setores possuem escola pública mas nenhum estabelecimento de saúde ambulatorial SUS? |
-| Q02 | Setor | Quais setores com alta vulnerabilidade habitacional não possuem nenhum equipamento público? |
-| Q03 | Distrito | Quais distritos têm mais de 10 escolas mas menos de 3 unidades de saúde ambulatorial SUS? |
-| Q04 | Bairro | Quais bairros possuem creches mas nenhuma unidade de saúde ambulatorial SUS? |
-| Q05 | Município | Qual a razão entre escolas e unidades de saúde ambulatorial SUS por município? |
-| Q06 | Setor | Quais setores com idosos possuem EJA mas não possuem Urgência SUS? |
-| Q07 | Setor | Quais setores com escola pública e moradores em domicílios improvisados não possuem nenhuma unidade de saúde ambulatorial pelo SUS? |
-| Q08 | Distrito | Quais distritos com crianças em domicílios improvisados possuem creches e internação SUS? |
-| Q09 | Setor | Qual o total de equipamentos públicos por setor nos territórios mais populosos e desassistidos? |
-| Q10 | Distrito | Em cada distrito do estado, qual a presença de responsáveis indígenas por domicílio, de escolas públicas de Ensino Fundamental e de unidades de saúde ambulatorial pelo SUS? |
-
----
-
-## Fontes de Dados
-
-| Fonte | Ano | Conteúdo |
-|-------|-----|----------|
-| IBGE — Censo Demográfico | 2022 | Malha territorial, setores censitários, variáveis socioeconômicas |
-| INEP — Censo Escolar | 2024 | Microdados de educação básica (escolas, turmas, matrículas, infraestrutura) |
-| CNES/DATASUS | 2025 | Cadastro de estabelecimentos de saúde e atendimentos por convênio |
-
-## Recorte Territorial
-
-Todo o estado de São Paulo (UF 35) — 645 municípios. Duas consultas de saúde restringem-se propositalmente a um recorte específico, como exemplos de consulta pontual: a Q08 (bairros de Campinas) e a Q19 (distrito da Vila Sônia, em São Paulo).
+| # | Nível | Operação | Pergunta |
+|---|-------|----------|----------|
+| Q01 | Setor | anti_join | Quais setores possuem pelo menos uma escola pública mas nenhum estabelecimento de saúde com atendimento ambulatorial pelo SUS? |
+| Q02 | Setor | anti_join | Quais setores com alta vulnerabilidade habitacional (pelo menos 100 moradores em domicílios improvisados) não possuem nenhum equipamento público, nem escola nem unidade de saúde? |
+| Q03 | Distrito | multi_hop | Quais distritos com muitos domicílios em vias sem pavimentação e sem calçada concentram escolas públicas de Ensino Fundamental, mas oferecem menos de 3 unidades de Urgência pelo SUS? |
+| Q04 | Bairro | anti_join | Quais bairros possuem creches mas não possuem nenhuma unidade de saúde ambulatorial pelo SUS? |
+| Q05 | Município | multi_hop | Qual a razão entre o número de escolas públicas e o número de unidades de saúde ambulatorial pelo SUS por município, confrontada com a população de idosos de 60 anos ou mais de cada um? |
+| Q06 | Setor | anti_join | Quais setores com alta concentração de idosos possuem escola com EJA mas não possuem nenhuma unidade de Urgência pelo SUS? |
+| Q07 | Setor | anti_join | Quais setores com escola que oferta EJA e muitos domicílios sem iluminação pública no entorno não possuem nenhuma unidade de Urgência pelo SUS? |
+| Q08 | Distrito | multi_hop | Quais distritos com crianças em domicílios improvisados possuem cobertura simultânea de creches e internação pelo SUS? |
+| Q09 | Setor | multi_hop | Qual o total de equipamentos públicos por setor nos territórios com mais de 1.000 habitantes, identificando os mais desassistidos? |
+| Q10 | Distrito | multi_hop | Em cada distrito do estado, qual a presença de responsáveis indígenas por domicílio, de escolas públicas de Ensino Fundamental e de unidades de Vigilância em Saúde pelo SUS? |
+| Q11 | Lista | espacial | Quais escolas estão a mais de 5 km da unidade de Vigilância em Saúde pelo SUS mais próxima? |
+| Q12 | Lista | espacial | Quais escolas públicas localizadas em setores com mais de 30 domicílios que jogam lixo em terreno baldio, encosta ou área pública estão a mais de 4 km de qualquer unidade de Vigilância em Saúde pelo SUS? |

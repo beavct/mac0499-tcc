@@ -1,0 +1,88 @@
+{
+  "_descricao": "Agrupamento das perguntas por tipo de operacao dominante, para o benchmark (boxplots por grupo). Uma pergunta por grupo. Formato: eixo/numero.",
+  "_criterio": {
+    "filtro": "selecao/listagem por atributos, sem agregacao/anti-join/distancia",
+    "agregacao": "SUM/COUNT/AVG ou estatistica por territorio",
+    "anti_join": "ausencia/vazio de cobertura (NOT EXISTS / sem equipamento)",
+    "multi_hop": "travessia lateral, auto-relacao ou cruzamento educacao x saude",
+    "espacial": "distancia/raio (point.distance)"
+  },
+  "grupos": {
+    "filtro": [
+      "ed_basica/1",
+      "ed_basica/3",
+      "ed_basica/4",
+      "ed_basica/5",
+      "ed_basica/7",
+      "ed_basica/9",
+      "ed_basica/11",
+      "ed_basica/13",
+      "ed_basica/17",
+      "ed_basica/21",
+      "ed_basica/23",
+      "saude/2",
+      "saude/4",
+      "saude/5",
+      "saude/9",
+      "saude/11",
+      "saude/13", 
+      "saude/14",
+      "saude/17",
+      "saude/18",
+      "saude/24"
+    ],
+    "agregacao": [
+      "ed_basica/2",
+      "ed_basica/8",
+      "ed_basica/12",
+      "ed_basica/14",
+      "ed_basica/16",
+      "ed_basica/18",
+      "ed_basica/19",
+      "ed_basica/20",
+      "ed_basica/22",
+      "saude/1",
+      "saude/7",
+      "saude/8",
+      "saude/10",
+      "saude/12",
+      "saude/15",
+      "saude/16",
+      "saude/19",
+      "saude/21",
+      "saude/22",
+      "saude/23",
+      "saude/25"
+    ],
+    "anti_join": [
+      "ed_basica/6",
+      "intersetorial/1",
+      "intersetorial/2",
+      "intersetorial/4",
+      "intersetorial/6",
+      "intersetorial/7",
+      "saude/3",
+      "saude/6"
+    ],
+    "multi_hop": [
+      "ed_basica/10",
+      "ed_basica/15",
+      "ed_basica/24",
+      "ed_basica/25",
+      "intersetorial/3",
+      "intersetorial/5",
+      "intersetorial/8",
+      "intersetorial/9",
+      "intersetorial/10",
+      "saude/20"
+    ],
+    "espacial": [
+      "ed_basica/26",
+      "ed_basica/27",
+      "intersetorial/11",
+      "intersetorial/12",
+      "saude/26",
+      "saude/27"
+    ]
+  }
+}
