@@ -1,10 +1,3 @@
--- A soma de domicílios e a contagem de unidades são calculadas em CTEs separadas
--- para evitar fan-out: juntar setores diretamente aos equipamentos multiplicaria
--- a soma de domicílios pelo número de unidades no município.
---
--- O LEFT JOIN entre as CTEs faz o resultado listar todos os municípios, inclusive
--- os que não têm internação SUS (com contagem 0) — equivalente ao OPTIONAL MATCH
--- da versão Cypher. Isso preserva os "vazios" de oferta, úteis à análise.
 WITH domicilios_por_municipio AS (
     SELECT
         s.nm_mun AS municipio,

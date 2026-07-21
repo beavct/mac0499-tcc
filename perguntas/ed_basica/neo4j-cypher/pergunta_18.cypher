@@ -1,7 +1,5 @@
-// Agrega população analfabeta e turmas de EJA Médio separadamente por município
-// (evita o produto cartesiano entre setores e escolas do mesmo setor).
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(a:PerfilAlfabetizacao)
-WITH m, sum(coalesce(a.v00644, 0)) AS total_jovens_15_19_analfabetos
+WITH m, sum(coalesce(a.v00644, 0) - COALESCE(a.v00748, 0)) AS total_jovens_15_19_analfabetos
 
 OPTIONAL MATCH (m)<-[:PARTE_DE]-(d2:Distrito)<-[:PARTE_DE*1..3]-(s2:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
 WITH m, total_jovens_15_19_analfabetos, sum(coalesce(e.qt_tur_eja_med, 0)) AS total_turmas_eja_medio

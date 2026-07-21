@@ -1,1 +1,1 @@
-Quais distritos têm mais de 10 escolas mas menos de 3 unidades de saúde ambulatorial pelo SUS?
+Quais distritos com muitos domicílios em vias sem pavimentação e sem calçada concentram escolas públicas de Ensino Fundamental, mas oferecem menos de 3 unidades de Urgência pelo SUS?

@@ -1,8 +1,8 @@
 MATCH (m:Municipio)<-[:PARTE_DE*1..3]-(b:Bairro)<-[:PARTE_DE]-(s:SetorCensitario)-[:TEM_PERFIL]->(p:PerfilDomiciliosParte2)
-WITH m, b, sum(coalesce(p.v00093, 0)) AS pop_bairro_no
+WITH m, b, sum(coalesce(p.v00092, 0)) AS pop_bairro_no
 
 OPTIONAL MATCH (b)<-[:PARTE_DE]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
-WHERE saude.at_03_conv_06 = true
+WHERE saude.at_04_conv_06 = true
 
 WITH m, b, pop_bairro_no, count(DISTINCT saude) AS urg_bairro_no
 

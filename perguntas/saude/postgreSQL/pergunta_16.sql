@@ -12,7 +12,7 @@ fossa_por_distrito AS (
     SELECT
         s.nm_mun AS municipio,
         s.nm_dist AS distrito,
-        SUM(COALESCE(dom2.v00488, 0)) AS domicilios_fossa_rudimentar
+        SUM(COALESCE(dom2.v00312, 0)) AS domicilios_fossa_rudimentar
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 dom2
       ON s.cd_setor = dom2.cd_setor

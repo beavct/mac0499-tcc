@@ -10,5 +10,5 @@ LEFT JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
   ON ST_Contains(s._geom, eq._geom)
 WHERE eq.co_entidade IS NULL -- left join preenche com NULL
   AND COALESCE(alf.v00901, 0) > 0
-ORDER BY nao_alfabetizados_15_anos_mais DESC
+ORDER BY nao_alfabetizados_15_anos_mais DESC, s.cd_setor
 LIMIT 20;

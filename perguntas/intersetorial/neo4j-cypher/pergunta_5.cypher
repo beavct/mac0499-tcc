@@ -1,14 +1,19 @@
-MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)
+MATCH (m:Municipio)<-[:PARTE_DE]-(:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(demo:PerfilDemografia)
+WITH m, sum(coalesce(demo.v01040, 0) + coalesce(demo.v01041, 0)) AS populacao_60_mais
 
-OPTIONAL MATCH (s)<-[:LOCALIZADA_EM]-(e:Escola)
-OPTIONAL MATCH (s)<-[:LOCALIZADA_EM]-(es:EquipamentoSaude)
-WHERE es.at_02_conv_01 = true
+OPTIONAL MATCH (m)<-[:PARTE_DE*1..4]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
+WHERE e.tp_dependencia IN [1, 2, 3]
+WITH m, populacao_60_mais, count(DISTINCT e) AS escolas_publicas
+WHERE escolas_publicas > 0
 
-WITH m, count(DISTINCT e) AS total_escolas, count(DISTINCT es) AS total_saude_sus
-WHERE total_escolas > 0
+OPTIONAL MATCH (m)<-[:PARTE_DE*1..4]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
+WHERE saude.at_02_conv_01 = true
+WITH m, populacao_60_mais, escolas_publicas, count(DISTINCT saude) AS unidades_ambulatorial_sus
 
 RETURN m.nm_mun AS municipio,
-       total_escolas,
-       total_saude_sus,
-       round(toFloat(total_escolas) / CASE WHEN total_saude_sus = 0 THEN 1 ELSE total_saude_sus END, 2) AS razao_escola_saude
+       escolas_publicas,
+       unidades_ambulatorial_sus,
+       populacao_60_mais,
+       CASE WHEN unidades_ambulatorial_sus = 0 THEN null
+            ELSE round(toFloat(escolas_publicas) / unidades_ambulatorial_sus, 2) END AS razao_escola_saude
 ORDER BY razao_escola_saude DESC;

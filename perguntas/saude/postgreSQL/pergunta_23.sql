@@ -2,7 +2,7 @@ WITH populacao_por_distrito AS (
     SELECT
         s.nm_mun AS municipio,
         s.nm_dist AS distrito,
-        SUM(COALESCE(raca.v01319, 0)) AS populacao_amarela
+        SUM(COALESCE(raca.v01389, 0)) AS populacao_amarela
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_raca_cor raca
       ON s.cd_setor = raca.cd_setor

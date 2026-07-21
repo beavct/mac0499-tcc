@@ -2,7 +2,7 @@ MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitar
 WITH m, d, sum(coalesce(r.v01318, 0)) AS populacao_negra
 
 OPTIONAL MATCH (d)<-[:PARTE_DE*1..3]-(s2:SetorCensitario)<-[:LOCALIZADA_EM]-(saude:EquipamentoSaude)
-WHERE saude.at_07_conv_01 = true
+WHERE saude.at_03_conv_01 = true
 
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,

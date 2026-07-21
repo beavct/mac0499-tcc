@@ -1,8 +1,6 @@
--- Agrega população analfabeta e turmas de EJA Médio separadamente por município
--- (evita o produto cartesiano entre setores e escolas do mesmo setor).
 WITH analfabetos_por_mun AS (
     SELECT s.nm_mun AS municipio,
-           SUM(COALESCE(alf.v00644, 0)) AS total_jovens_15_19_analfabetos
+           SUM(COALESCE(alf.v00644, 0) - COALESCE(alf.v00748, 0)) AS total_jovens_15_19_analfabetos
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_alfabetizacao alf
       ON s.cd_setor = alf.cd_setor

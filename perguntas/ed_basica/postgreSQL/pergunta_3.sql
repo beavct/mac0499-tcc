@@ -18,5 +18,5 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
 WHERE m.in_esgoto_rede_publica = '0'
-  AND m.in_esgoto_fossa = '0'
+  AND m.in_esgoto_fossa_septica = '0'
 ORDER BY s.nm_mun, s.nm_dist, m.no_entidade;

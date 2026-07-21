@@ -12,6 +12,6 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_demografia demo 
   ON s.cd_setor = demo.cd_setor
-WHERE a.at_02_conv_06 = '1'
+WHERE a.at_04_conv_06 = '1'
   AND COALESCE(demo.v01020, 0) > 0
 ORDER BY pop_infantil_feminina DESC;

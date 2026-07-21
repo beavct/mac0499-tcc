@@ -2,7 +2,7 @@ SELECT
     s.nm_mun AS municipio,
     s.nm_dist AS distrito,
     s.cd_setor AS codigo_setor,
-    SUM(COALESCE(ascdp.v00085, 0)) AS moradores_casa_vila_condominio,
+    MAX(COALESCE(ascdp.v00085, 0)) AS moradores_casa_vila_condominio,
     COUNT(DISTINCT m.co_entidade) AS qtd_escolas_medio
 FROM culturaeduca.datasets.microdados_ed_basica_2024 m
 JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq 

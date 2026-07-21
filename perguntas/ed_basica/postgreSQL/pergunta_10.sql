@@ -33,4 +33,4 @@ SELECT
 FROM escolas_em em
 LEFT JOIN escolas_ef_por_distrito ef
   ON em.municipio = ef.municipio AND em.distrito = ef.distrito
-ORDER BY escolas_fundamental_no_distrito DESC, em.municipio, em.distrito;
+ORDER BY escolas_fundamental_no_distrito DESC, em.municipio, em.distrito, em.id_escola_em;

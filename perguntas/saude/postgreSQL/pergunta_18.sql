@@ -9,5 +9,5 @@ LEFT JOIN culturaeduca.datasets.eq_saude_2025 saude
   ON ST_Contains(s._geom, saude._geom)
 JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade AND a.at_06_conv_01 = '1'
-WHERE COALESCE(dom2.v00486, 0) = 0
+WHERE COALESCE(dom2.v00238, 0) > 0
 GROUP BY s.nm_mun, s.nm_dist;

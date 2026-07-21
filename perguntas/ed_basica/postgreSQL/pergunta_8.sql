@@ -9,7 +9,7 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
  AND m.nu_ano_censo = eq.nu_ano_censo
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
-JOIN (
+JOIN ( -- Famílias estendidas
     SELECT s2.nm_mun, s2.nm_dist, SUM(COALESCE(p.v01211, 0)) AS total_familias_estendidas
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s2
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_parentesco p 

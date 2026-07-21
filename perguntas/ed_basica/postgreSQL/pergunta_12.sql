@@ -2,7 +2,7 @@ WITH criancas_por_distrito AS (
     SELECT
         s.nm_mun AS municipio,
         s.nm_dist AS distrito,
-        SUM(COALESCE(demo.v01009, 0) + COALESCE(demo.v01020, 0)) AS criancas_0_4
+        SUM(COALESCE(demo.v01031, 0)) AS criancas_0_4
     FROM culturaeduca.datasets.dtb_setores_censitarios_2022 s
     JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_demografia demo
       ON s.cd_setor = demo.cd_setor

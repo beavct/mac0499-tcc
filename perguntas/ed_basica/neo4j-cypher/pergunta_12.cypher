@@ -1,5 +1,5 @@
 MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(demo:PerfilDemografia)
-WITH m, d, sum(coalesce(demo.v01009, 0) + coalesce(demo.v01020, 0)) AS criancas_0_4
+WITH m, d, sum(coalesce(demo.v01031, 0)) AS criancas_0_4
 
 OPTIONAL MATCH (d)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
 WHERE e.qt_tur_inf_cre > 0
@@ -9,5 +9,6 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        criancas_0_4,
        turmas_creche,
-       round(100.0 * turmas_creche / criancas_0_4, 2) AS turmas_por_100_criancas
+       CASE WHEN criancas_0_4 = 0 THEN null
+            ELSE round(100.0 * turmas_creche / criancas_0_4, 2) END AS turmas_por_100_criancas
 ORDER BY turmas_por_100_criancas ASC, criancas_0_4 DESC;

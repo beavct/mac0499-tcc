@@ -6,5 +6,5 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
        p.v00901 AS nao_alfabetizados
-ORDER BY nao_alfabetizados DESC
+ORDER BY nao_alfabetizados DESC, codigo_setor
 LIMIT 20;

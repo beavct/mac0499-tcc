@@ -13,7 +13,6 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
  AND m.nu_ano_censo = eq.nu_ano_censo
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
--- TABELA REAL CORRIGIDA:
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 dom2
   ON s.cd_setor = dom2.cd_setor
 WHERE m.tp_dependencia IN ('1', '2', '3') -- Escolas Públicas

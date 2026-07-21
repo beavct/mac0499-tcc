@@ -1,1 +1,1 @@
-Quais escolas sem quadra de esportes estão em distritos onde pelo menos 5 outras escolas possuem quadra, evidenciando desigualdade intra-distrital?
+Quais escolas são a única opção de Ensino Médio em seu distrito?

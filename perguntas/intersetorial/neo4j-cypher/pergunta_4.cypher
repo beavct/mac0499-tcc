@@ -1,8 +1,6 @@
 MATCH (m:Municipio)<-[:PARTE_DE*1..3]-(b:Bairro)<-[:PARTE_DE*1..3]-(s:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
 WHERE e.qt_tur_inf_cre > 0
 
-// Basta um bairro ter creche; a ausência de saúde é verificada no bairro INTEIRO
-// (qualquer setor), não apenas nos setores que têm creche.
 WITH DISTINCT m, b
 WHERE NOT EXISTS {
     MATCH (b)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(es:EquipamentoSaude)
