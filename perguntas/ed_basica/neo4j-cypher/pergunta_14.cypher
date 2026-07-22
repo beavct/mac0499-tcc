@@ -1,4 +1,5 @@
-WITH m, d, sum(coalesce(p.v01031, 0)) AS populacao_infantil_distrito
+MATCH (m:Municipio)<-[:PARTE_DE]-(d:Distrito)<-[:PARTE_DE*1..3]-(s:SetorCensitario)-[:TEM_PERFIL]->(demo:PerfilDemografia)
+WITH m, d, sum(coalesce(demo.v01031, 0)) AS populacao_infantil_distrito
 
 MATCH (d)<-[:PARTE_DE*1..3]-(:SetorCensitario)<-[:LOCALIZADA_EM]-(e:Escola)
 WHERE e.tp_dependencia = 4
