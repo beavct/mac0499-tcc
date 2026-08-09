@@ -11,6 +11,7 @@ Para escolher quais gráficos gerar, edite a lista GRAFICOS_ATIVOS abaixo.
 """
 import os
 import csv
+import glob
 import statistics
 from collections import defaultdict
 
@@ -35,6 +36,14 @@ LARGURA_FIG = 8       # largura (polegadas) das figuras de tamanho fixo
 ALPHA_PREENCH = 0.6   # opacidade do preenchimento de caixas e barras
 ALPHA_GRADE = 0.3     # opacidade da grade de fundo
 DESLOC_PAR = 0.2      # deslocamento de cada elemento do par PG/Neo em torno do centro
+
+# Consultas "destaque": têm latência/memória muito fora da faixa do seu grupo e,
+# se plotadas junto, achatam as caixas das demais. Vão para um gráfico à parte
+# (sufixo "_outliers"). Cada item é uma tupla (eixo, número).
+DESTAQUES = {
+    ("saude", 26),
+    ("intersetorial", 9), 
+}
 
 # Gráficos a gerar.
 GRAFICOS_ATIVOS = [
@@ -169,12 +178,12 @@ def _boxplot_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
     de cada execução de cada query. Cada caixa resume a variação entre as
     execuções (repetições) daquela query."""
     x = list(range(len(chaves)))
-    desloc = DESLOC_PAR
+    desloc = 0.22   # afasta as caixas PG e Neo do centro, para não se encostarem
     dados_pg = [dist_pg.get(c, []) for c in chaves]
     dados_neo = [dist_neo.get(c, []) for c in chaves]
-    bp_pg = ax.boxplot(dados_pg, positions=[i - desloc for i in x], widths=0.32,
+    bp_pg = ax.boxplot(dados_pg, positions=[i - desloc for i in x], widths=0.36,
                        patch_artist=True, showmeans=True, showfliers=False)
-    bp_neo = ax.boxplot(dados_neo, positions=[i + desloc for i in x], widths=0.32,
+    bp_neo = ax.boxplot(dados_neo, positions=[i + desloc for i in x], widths=0.36,
                         patch_artist=True, showmeans=True, showfliers=False)
     for caixa in bp_pg["boxes"]:
         caixa.set_facecolor(COR_PG)
@@ -182,13 +191,42 @@ def _boxplot_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
     for caixa in bp_neo["boxes"]:
         caixa.set_facecolor(COR_NEO)
         caixa.set_alpha(ALPHA_PREENCH)
-    ax.set_ylabel(ylabel)
+    ax.set_yscale("log") # As caixas ficam menos achatadas nessa escala
+    todos = [v for serie in dados_pg + dados_neo for v in serie if v > 0]
+    if todos:
+        ax.set_ylim(min(todos) / 1.6, max(todos) * 1.6)
+    ax.set_ylabel(f"{ylabel} — escala log")
     ax.set_xticks(x)
     ax.set_xticklabels([_rotulo_query(*c) for c in chaves], rotation=45, ha="right")
     ax.set_xlim(-0.6, len(chaves) - 0.4)
     from matplotlib.patches import Patch
-    ax.legend(handles=[Patch(facecolor=COR_PG, alpha=ALPHA_PREENCH, label="PostgreSQL"),
-                       Patch(facecolor=COR_NEO, alpha=ALPHA_PREENCH, label="Neo4j")])
+    ax.legend(handles=[Patch(facecolor=COR_PG, label="PostgreSQL"),
+                       Patch(facecolor=COR_NEO, label="Neo4j")])
+    ax.grid(axis="y", alpha=ALPHA_GRADE)
+
+
+def _pontos_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
+    """Um ponto por consulta (mediana), PG vs Neo4j lado a lado.
+
+    Usado para métricas como a memória de trabalho, que quase
+    não variam entre execuções.
+    """
+    x = list(range(len(chaves)))
+    vpg = [_mediana(dist_pg.get(c, [])) for c in chaves]
+    vneo = [_mediana(dist_neo.get(c, [])) for c in chaves]
+    ax.plot(x, vpg, color=COR_PG, marker="s", markersize=7, linewidth=1.5,
+            markeredgecolor="white", markeredgewidth=0.6, label="PostgreSQL", zorder=3)
+    ax.plot(x, vneo, color=COR_NEO, marker="o", markersize=7, linewidth=1.5,
+            markeredgecolor="white", markeredgewidth=0.6, label="Neo4j", zorder=3)
+    ax.set_yscale("log")
+    todos = [v for v in vpg + vneo if v and v > 0]
+    if todos:
+        ax.set_ylim(min(todos) / 1.6, max(todos) * 1.6)
+    ax.set_ylabel(f"{ylabel} — escala log")
+    ax.set_xticks(x)
+    ax.set_xticklabels([_rotulo_query(*c) for c in chaves], rotation=45, ha="right")
+    ax.set_xlim(-0.6, len(chaves) - 0.4)
+    ax.legend()
     ax.grid(axis="y", alpha=ALPHA_GRADE)
 
 
@@ -197,29 +235,54 @@ def _distribuicao_quente(linhas, grupo, campo):
     return _por_query(linhas, grupo, lambda rs: [r[campo] for r in rs if not r["warmup"]])
 
 
-def _plot_por_grupo(pg, neo, extrair, desenhar, ylabel, titulo, prefixo, ajustar=None):
-    """Gera um gráfico por grupo de operação, uma métrica por arquivo.
+def _mediana(valores):
+    """Mediana de uma lista, ou None se vazia."""
+    return statistics.median(valores) if valores else None
 
-    Faz o comum a todos os gráficos por grupo (percorrer os grupos, paginar as
-    consultas, montar título e salvar); o que varia entra por callbacks:
-      extrair(linhas, grupo) -> {(eixo, query): dados_da_consulta}
-      desenhar(ax, chaves, dados_pg, dados_neo, ylabel) -> desenha os eixos
-      ajustar(ax) -> ajustes opcionais no eixo (ex.: limites do y)
+
+def _separar_outliers(chaves, dpg, dneo):
+    """Separa as consultas marcadas como destaque (ver DESTAQUES) do restante.
     """
+    destaques = [c for c in chaves if c in DESTAQUES]
+    normais = [c for c in chaves if c not in DESTAQUES]
+    # se sobrar pouca coisa no principal, não vale separar
+    if not destaques or len(normais) < 3:
+        return chaves, []
+    return normais, destaques
+
+
+def _plot_por_grupo(pg, neo, extrair, desenhar, ylabel, titulo, prefixo,
+                    ajustar=None, separar_outliers=True):
+    """Gera um gráfico por grupo de operação, uma métrica por arquivo.
+    Quando uma ou mais consultas do grupo têm valores muito acima das demais
+    (que achatariam as caixas), elas são levadas a um gráfico à parte (sufixo
+    "_outliers"), mantendo o gráfico principal legível.
+    Usado apenas na geração dos gráficos em boxplot.
+    """
+    def desenhar_figura(g, chaves, dpg, dneo, sufixo_arquivo, sufixo_titulo):
+        paginas = _paginar(chaves)
+        for i, pag in enumerate(paginas, start=1):
+            fig, ax = plt.subplots(figsize=(max(7, len(pag) * 1.15), ALTURA_FIG + 1.5))
+            desenhar(ax, pag, dpg, dneo, ylabel)
+            if ajustar:
+                ajustar(ax)
+            num = f" ({i}/{len(paginas)})" if len(paginas) > 1 else ""
+            ax.set_title(f"{titulo} — grupo {GRUPOS_ROTULO[g]}{sufixo_titulo}{num}")
+            pag_suf = _sufixo_pagina(i, len(paginas))
+            _salvar(fig, f"{prefixo}_{g}{sufixo_arquivo}{pag_suf}.pdf")
+
     for g in _grupos_presentes(pg, neo):
         dpg, dneo = extrair(pg, g), extrair(neo, g)
         chaves = _chaves_ordenadas(dpg, dneo)
         if not chaves:
             continue
-        paginas = _paginar(chaves)
-        for i, pag in enumerate(paginas, start=1):
-            fig, ax = plt.subplots(figsize=(max(7, len(pag) * 0.95), ALTURA_FIG))
-            desenhar(ax, pag, dpg, dneo, ylabel)
-            if ajustar:
-                ajustar(ax)
-            sufixo_num = f" ({i}/{len(paginas)})" if len(paginas) > 1 else ""
-            ax.set_title(f"{titulo} — grupo {GRUPOS_ROTULO[g]}{sufixo_num}")
-            _salvar(fig, f"{prefixo}_{g}{_sufixo_pagina(i, len(paginas))}.pdf")
+        if separar_outliers:
+            normais, outliers = _separar_outliers(chaves, dpg, dneo)
+        else:
+            normais, outliers = chaves, []
+        desenhar_figura(g, normais, dpg, dneo, "", "")
+        if outliers:
+            desenhar_figura(g, outliers, dpg, dneo, "_outliers", " (destaques)")
 
 
 def latencia_por_grupo(pg, neo):
@@ -232,11 +295,17 @@ def latencia_por_grupo(pg, neo):
 
 
 def memoria_por_grupo(pg, neo):
-    """Boxplot da memória de trabalho de cada consulta, por grupo (PG vs Neo4j)."""
+    """Memória de trabalho de cada consulta, por grupo (PG vs Neo4j).
+
+    Usa pontos (não boxplot), pois a memória de trabalho quase não varia entre 
+    execuções de uma mesma consulta. Cada ponto é a mediana das execuções quentes 
+    da consulta.
+    """
     _plot_por_grupo(pg, neo,
                     lambda ls, g: _distribuicao_quente(ls, g, "mem_kb"),
-                    _boxplot_por_query, "Memória de trabalho (KB)",
-                    "Memória de trabalho por consulta", "grupo_memoria")
+                    _pontos_por_query, "Memória de trabalho (KB)",
+                    "Memória de trabalho por consulta", "grupo_memoria",
+                    separar_outliers=False)
 
 
 def _espalhar(n, largura=0.12):
@@ -387,6 +456,14 @@ def main():
     if not pg and not neo:
         print("Nenhum resultado encontrado. Rode bench_postgres.py e bench_neo4j.py antes.")
         return
+
+    # limpa PDFs de execuções anteriores, para não deixar gráficos órfãos
+    if os.path.isdir(GRAFICOS_DIR):
+        antigos = glob.glob(os.path.join(GRAFICOS_DIR, "*.pdf"))
+        for f in antigos:
+            os.remove(f)
+        if antigos:
+            print(f"Removidos {len(antigos)} gráficos anteriores.")
 
     print("Gerando gráficos...")
     for nome in GRAFICOS_ATIVOS:
