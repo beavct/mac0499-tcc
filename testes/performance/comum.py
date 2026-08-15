@@ -12,6 +12,9 @@ _AQUI = os.path.dirname(__file__)
 PERGUNTAS_DIR = os.path.join(_AQUI, "..", "..", "perguntas")
 GRUPOS_JSON = os.path.join(PERGUNTAS_DIR, "grupos.json")
 OUTPUT_DIR = os.path.join(_AQUI, "output")
+# Um plano de execução por query (para inspecionar os operadores usados por
+# cada banco: Nested Loop, Hash Join, Index Scan, Expand, CartesianProduct...).
+PLANOS_DIR = os.path.join(OUTPUT_DIR, "planos")
 
 # Número de execuções por query. A 1ª é aquecimento (warm-up), marcada como tal
 # no CSV e descartada na análise; as demais são as execuções quentes medidas.
@@ -108,6 +111,21 @@ def salvar_csv(nome_arquivo, linhas, colunas):
         writer.writeheader()
         writer.writerows(linhas)
     print(f"\n[CSV] Resultados salvos em: {caminho} ({len(linhas)} medições)")
+    return caminho
+
+
+def salvar_plano(banco, eixo, numero, texto):
+    """Grava o plano de execução de uma query em texto.
+
+    Um arquivo por (banco, query), em output/planos/<banco>/<eixo>_qNN.txt.
+    Como o plano é o mesmo em todas as execuções (só os tempos variam), basta
+    salvar um por query — o suficiente para discutir os operadores usados.
+    """
+    pasta = os.path.join(PLANOS_DIR, banco)
+    os.makedirs(pasta, exist_ok=True)
+    caminho = os.path.join(pasta, f"{eixo}_q{numero:02d}.txt")
+    with open(caminho, "w", encoding="utf-8") as f:
+        f.write(texto)
     return caminho
 
 

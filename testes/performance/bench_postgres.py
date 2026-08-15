@@ -12,6 +12,11 @@ Para cada query do benchmark, executa N vezes e registra, por execução:
 A 1ª execução de cada query é o aquecimento (warmup): fica registrada no CSV,
 mas é descartada na análise, que usa só as execuções quentes.
 
+Ao final de cada query, o plano de execução em texto (EXPLAIN ANALYZE) também é
+salvo em output/planos/postgres/, para inspecionar os operadores escolhidos pelo
+planejador (Nested Loop, Hash Join, Index Scan etc.). Essa captura ocorre fora
+do laço de medição e não afeta as latências registradas.
+
 Uso:
   python bench_postgres.py                 # todas as queries
   python bench_postgres.py ed_basica       # só um eixo
@@ -65,6 +70,17 @@ def executar_com_metricas(cur, query):
     }
 
 
+def capturar_plano_texto(cur, query):
+    """Devolve o plano de execução em texto (EXPLAIN ANALYZE, com buffers).
+
+    É o formato legível do PostgreSQL, que nomeia os operadores do plano
+    (Nested Loop, Hash Join, Index Scan using..., Seq Scan on...). Executa a
+    query mais uma vez, então é chamado fora do laço de medição.
+    """
+    cur.execute(f"EXPLAIN (ANALYZE, BUFFERS) {query}")
+    return "\n".join(linha[0] for linha in cur.fetchall())
+
+
 def main():
     eixos = [sys.argv[1]] if len(sys.argv) > 1 else None
     numero = int(sys.argv[2]) if len(sys.argv) > 2 else None
@@ -116,6 +132,15 @@ def main():
         if stats:
             print(f"  {label}: mediana {stats['mediana_ms']}ms "
                   f"(min {stats['min_ms']} / max {stats['max_ms']}) | {metricas['linhas']} linhas")
+
+        # captura o plano de execução em texto (uma vez, fora da medição)
+        try:
+            cur = conn.cursor()
+            plano_txt = capturar_plano_texto(cur, texto)
+            cur.close()
+            comum.salvar_plano("postgres", q["eixo"], q["numero"], plano_txt)
+        except Exception as e:
+            print(f"  [AVISO] plano {label}: {str(e)[:80]}")
 
     conn.close()
     comum.salvar_csv("resultados_postgres.csv", resultados, COLUNAS)

@@ -14,6 +14,10 @@ Para cada query do benchmark, executa N vezes e registra, por execução:
 A 1ª execução de cada query é o aquecimento (warmup): fica registrada no CSV,
 mas é descartada na análise, que usa só as execuções quentes.
 
+Ao final de cada query, a árvore do plano PROFILE também é salva em texto em
+output/planos/neo4j/, para inspecionar os operadores usados pelo Neo4j
+(Expand(All), NodeByLabelScan, NodeIndexSeek, CartesianProduct etc.).
+
 Uso:
   python bench_neo4j.py                 # todas as queries
   python bench_neo4j.py ed_basica       # só um eixo
@@ -69,6 +73,27 @@ def coletar_memoria_global_bytes(plano):
     return maior
 
 
+def formatar_plano_texto(plano, nivel=0):
+    """Serializa a árvore do plano PROFILE em texto indentado e legível.
+
+    Cada linha traz o operador e, entre parênteses, as linhas produzidas e os
+    dbHits daquele operador; quando disponível, os detalhes (ex.: rótulo/índice
+    acessado) aparecem em seguida. Percorre a árvore em profundidade.
+    """
+    indent = "  " * nivel
+    op = plano.get("operatorType", "?")
+    linhas = plano.get("rows", 0)
+    dbh = plano.get("dbHits", 0)
+    detalhes = plano.get("args", {}).get("Details", "")
+    texto = f"{indent}{op} (linhas={linhas}, dbHits={dbh})"
+    if detalhes:
+        texto += f" | {detalhes}"
+    partes = [texto]
+    for filho in plano.get("children", []):
+        partes.append(formatar_plano_texto(filho, nivel + 1))
+    return "\n".join(partes)
+
+
 def executar_com_metricas(session, query):
     """
     Executa a query com PROFILE e extrai latência interna, linhas, I/O e memória.
@@ -94,6 +119,8 @@ def executar_com_metricas(session, query):
         "db_hits": db_hits,
         "page_cache_hits": pc_hits,
         "page_cache_misses": pc_misses,
+        # árvore bruta do plano, para salvar o plano de execução (não vai p/ CSV)
+        "_profile": resumo.profile,
     }
 
 
@@ -147,6 +174,11 @@ def main():
         if stats:
             print(f"  {label}: mediana {stats['mediana_ms']}ms "
                   f"(min {stats['min_ms']} / max {stats['max_ms']}) | {metricas['linhas']} linhas")
+
+        # salva a árvore do plano PROFILE da última execução (uma vez por query)
+        if metricas and metricas.get("_profile"):
+            plano_txt = formatar_plano_texto(metricas["_profile"])
+            comum.salvar_plano("neo4j", q["eixo"], q["numero"], plano_txt)
 
     driver.close()
     comum.salvar_csv("resultados_neo4j.csv", resultados, COLUNAS)
