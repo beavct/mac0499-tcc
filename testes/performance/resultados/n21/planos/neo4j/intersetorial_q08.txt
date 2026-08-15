@@ -1,0 +1,28 @@
+ProduceResults@neo4j (linhas=181, dbHits=0) | municipio, distrito, total_dom_criancas, creches, unidades_internacao_sus
+  Projection@neo4j (linhas=181, dbHits=724) | m.nm_mun AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=181, dbHits=0) | total_dom_criancas DESC
+      OrderedAggregation@neo4j (linhas=181, dbHits=0) | m, d, total_dom_criancas, creches, count(DISTINCT es) AS unidades_internacao_sus
+        Apply@neo4j (linhas=480, dbHits=0)
+          OrderedAggregation@neo4j (linhas=181, dbHits=0) | m, d, total_dom_criancas, count(DISTINCT e) AS creches
+            Apply@neo4j (linhas=8007, dbHits=0)
+              Filter@neo4j (linhas=181, dbHits=0) | total_dom_criancas > $autoint_1
+                OrderedAggregation@neo4j (linhas=1042, dbHits=199332) | m, d, sum(coalesce(c.v00009, $autoint_0)) AS total_dom_criancas
+                  Filter@neo4j (linhas=100928, dbHits=1592660) | c:PerfilDomiciliosParte1
+                    Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(c)
+                      Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                          Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+              Optional@neo4j (linhas=8007, dbHits=0) | m, d, total_dom_criancas
+                Filter@neo4j (linhas=8004, dbHits=60762) | e.qt_tur_inf_cre > $autoint_2 AND e:Escola
+                  Expand(All)@neo4j (linhas=20200, dbHits=75745) | (s2)<-[:LOCALIZADA_EM]-(e)
+                    Filter@neo4j (linhas=55545, dbHits=113564) | s2:SetorCensitario
+                      VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=56781, dbHits=93467) | (d)<-[:PARTE_DE*..3]-(s2) 
+                        Argument@neo4j (linhas=181, dbHits=0) | d, m, total_dom_criancas
+          Optional@neo4j (linhas=480, dbHits=0) | m, d, total_dom_criancas, creches
+            Filter@neo4j (linhas=427, dbHits=49108) | es:EquipamentoSaude AND es.at_01_conv_01 = true
+              Expand(All)@neo4j (linhas=20200, dbHits=75745) | (s3)<-[:LOCALIZADA_EM]-(es)
+                Filter@neo4j (linhas=55545, dbHits=113562) | s3:SetorCensitario
+                  VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=56781, dbHits=93467) | (d)<-[:PARTE_DE*..3]-(s3) 
+                    Argument@neo4j (linhas=181, dbHits=0) | d, m, total_dom_criancas, creches

@@ -1,0 +1,40 @@
+Limit  (cost=575723.33..575723.34 rows=1 width=42) (actual time=1631.156..1637.609 rows=20.00 loops=1)
+  Buffers: shared hit=250966 read=33857
+  ->  Sort  (cost=575723.33..575723.34 rows=1 width=42) (actual time=1088.887..1095.338 rows=20.00 loops=1)
+        Sort Key: (COALESCE(alf.v00901, '0'::real)) DESC, s.cd_setor
+        Sort Method: top-N heapsort  Memory: 27kB
+        Buffers: shared hit=250966 read=33857
+        ->  Gather  (cost=20204.17..575723.32 rows=1 width=42) (actual time=657.703..1089.376 rows=57098.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=250966 read=33857
+              ->  Nested Loop Left Join  (cost=19204.17..574723.22 rows=1 width=42) (actual time=638.317..1063.152 rows=19032.67 loops=3)
+                    Filter: (eq.co_entidade IS NULL)
+                    Rows Removed by Filter: 8420
+                    Buffers: shared hit=250966 read=33857
+                    ->  Parallel Hash Join  (cost=19203.89..43258.24 rows=14018 width=1326) (actual time=638.212..666.257 rows=24988.33 loops=3)
+                          Hash Cond: ((s.cd_setor)::text = (alf.cd_setor)::text)
+                          Buffers: shared hit=8050 read=33857
+                          ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1322) (actual time=0.034..10.166 rows=34439.67 loops=3)
+                                Buffers: shared hit=5630 read=17774
+                          ->  Parallel Hash  (cost=19028.67..19028.67 rows=14018 width=20) (actual time=638.022..638.022 rows=24988.33 loops=3)
+                                Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 5696kB
+                                Buffers: shared hit=2420 read=16083
+                                ->  Parallel Seq Scan on agregado_setores_censitarios_2022_alfabetizacao alf  (cost=0.00..19028.67 rows=14018 width=20) (actual time=400.875..428.764 rows=24988.33 loops=3)
+                                      Filter: (COALESCE(v00901, '0'::real) > '0'::double precision)
+                                      Rows Removed by Filter: 8654
+                                      Buffers: shared hit=2420 read=16083
+                    ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=41) (actual time=0.015..0.015 rows=0.34 loops=74965)
+                          Index Cond: (_geom @ s._geom)
+                          Filter: st_contains(s._geom, _geom)
+                          Rows Removed by Filter: 1
+                          Index Searches: 74965
+                          Buffers: shared hit=232040
+Planning:
+  Buffers: shared hit=16
+Planning Time: 1.326 ms
+JIT:
+  Functions: 64
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 13.510 ms (Deform 12.296 ms), Inlining 110.541 ms, Optimization 834.544 ms, Emission 799.374 ms, Total 1757.969 ms
+Execution Time: 1641.826 ms

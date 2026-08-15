@@ -1,0 +1,20 @@
+ProduceResults@neo4j (linhas=71, dbHits=0) | id_urgencia, nome_urgencia, municipio, responsaveis_60_mais_no_setor
+  Projection@neo4j (linhas=71, dbHits=142) | cache[urg.id_aparelho] AS id_urgencia, cache[urg.nm_aparelho] AS nome_urgencia, m.nm_mun AS municipio
+    CacheProperties@neo4j (linhas=71, dbHits=213) | cache[urg.id_aparelho], cache[urg.nm_aparelho]
+      Sort@neo4j (linhas=71, dbHits=0) | responsaveis_60_mais_no_setor DESC
+        Projection@neo4j (linhas=71, dbHits=0) | coalesce(cache[par.v01068], $autoint_3) AS responsaveis_60_mais_no_setor
+          Filter@neo4j (linhas=71, dbHits=3678) | par:PerfilParentesco AND coalesce(cache[par.v01068], $autoint_0) > $autoint_1
+            Expand(All)@neo4j (linhas=1634, dbHits=1843) | (s)-[:TEM_PERFIL]->(par)
+              Apply@neo4j (linhas=209, dbHits=0)
+                CacheProperties@neo4j (linhas=1269, dbHits=2538) | cache[urg.id_aparelho]
+                  Filter@neo4j (linhas=1269, dbHits=105645) | urg:EquipamentoSaude AND urg.at_04_conv_01 = true
+                    Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(urg)
+                      Filter@neo4j (linhas=103319, dbHits=213102) | NOT anon_0 IN anon_2 AND s:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (anon_1)<-[anon_2:PARTE_DE*..3]-(s)
+                          Filter@neo4j (linhas=1042, dbHits=2086) | anon_1:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(anon_1)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                Anti@neo4j (linhas=209, dbHits=0)
+                  Limit@neo4j (linhas=1060, dbHits=0) | 1
+                    Filter@neo4j (linhas=1060, dbHits=38549) | outra.at_04_conv_01 = true AND point.distance(cache[urg.location], cache[outra.location]) <= $autoint_2 AND NOT outra.id_aparelho = cache[urg.id_aparelho]
+                      NodeIndexSeekByRange@neo4j (linhas=16552, dbHits=17827) | POINT INDEX outra:EquipamentoSaude(location) WHERE point.distance(location, cache[urg.location]) <= $autoint_2, cache[outra.location]

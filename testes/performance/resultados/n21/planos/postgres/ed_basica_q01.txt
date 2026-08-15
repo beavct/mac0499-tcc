@@ -1,0 +1,34 @@
+Incremental Sort  (cost=2508973.57..4124594.45 rows=640 width=19) (actual time=525.416..536.804 rows=645.00 loops=1)
+  Sort Key: s.nm_mun, (count(DISTINCT eq.co_entidade)) DESC
+  Presorted Key: s.nm_mun
+  Full-sort Groups: 21  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+  Buffers: shared hit=342169 read=17434
+  ->  GroupAggregate  (cost=2506445.24..4124565.65 rows=640 width=19) (actual time=525.236..536.670 rows=645.00 loops=1)
+        Group Key: s.nm_mun
+        Buffers: shared hit=342139 read=17434
+        ->  Gather Merge  (cost=2506445.24..4057951.82 rows=13321486 width=20) (actual time=525.201..534.801 rows=30745.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=341884 read=17434
+              ->  Sort  (cost=2505445.22..2519321.77 rows=5550619 width=20) (actual time=510.080..510.433 rows=10248.33 loops=3)
+                    Sort Key: s.nm_mun, eq.co_entidade
+                    Sort Method: quicksort  Memory: 874kB
+                    Buffers: shared hit=341092 read=17434
+                    Worker 0:  Sort Method: quicksort  Memory: 452kB
+                    Worker 1:  Sort Method: quicksort  Memory: 853kB
+                    ->  Nested Loop  (cost=0.28..1655990.85 rows=5550619 width=20) (actual time=103.395..499.420 rows=10248.33 loops=3)
+                          Buffers: shared hit=337947 read=17434
+                          ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1295) (actual time=0.109..7.231 rows=34439.67 loops=3)
+                                Buffers: shared hit=5970 read=17434
+                          ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=41) (actual time=0.011..0.011 rows=0.30 loops=103319)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 1
+                                Index Searches: 103319
+                                Buffers: shared hit=317394
+Planning Time: 0.692 ms
+JIT:
+  Functions: 27
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 1.495 ms (Deform 1.037 ms), Inlining 73.343 ms, Optimization 139.431 ms, Emission 96.590 ms, Total 310.859 ms
+Execution Time: 537.671 ms

@@ -1,0 +1,52 @@
+WindowAgg  (cost=2511927.60..4161525.18 rows=2560 width=85) (actual time=1741.565..1753.639 rows=1724.00 loops=1)
+  Window: w1 AS (PARTITION BY s.nm_mun)
+  Storage: Memory  Maximum Storage: 17kB
+  Buffers: shared hit=247684 read=37073
+  ->  GroupAggregate  (cost=2509992.27..4161435.58 rows=2560 width=21) (actual time=1741.530..1752.377 rows=1724.00 loops=1)
+        Group Key: s.nm_mun, m.tp_dependencia
+        Buffers: shared hit=247636 read=37073
+        ->  Gather Merge  (cost=2509992.27..4061498.84 rows=13321486 width=22) (actual time=1741.488..1747.594 rows=30745.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=247375 read=37073
+              ->  Sort  (cost=2508992.24..2522868.79 rows=5550619 width=22) (actual time=808.374..808.704 rows=10248.33 loops=3)
+                    Sort Key: s.nm_mun, m.tp_dependencia, m.co_entidade
+                    Sort Method: quicksort  Memory: 25kB
+                    Buffers: shared hit=247375 read=37073
+                    Worker 0:  Sort Method: quicksort  Memory: 25kB
+                    Worker 1:  Sort Method: quicksort  Memory: 2029kB
+                    ->  Nested Loop  (cost=10683.15..1659537.88 rows=5550619 width=22) (actual time=344.627..793.611 rows=10248.33 loops=3)
+                          Buffers: shared hit=243452 read=37053
+                          ->  Merge Join  (cost=10682.87..11147.25 rows=12811 width=43) (actual time=344.490..352.541 rows=10248.67 loops=3)
+                                Merge Cond: (((m.co_entidade)::text = (eq.co_entidade)::text) AND ((m.nu_ano_censo)::text = (eq.nu_ano_censo)::text))
+                                Buffers: shared hit=2444 read=6968
+                                ->  Sort  (cost=6862.59..6897.86 rows=14110 width=16) (actual time=292.335..293.471 rows=11287.67 loops=3)
+                                      Sort Key: m.co_entidade, m.nu_ano_censo
+                                      Sort Method: quicksort  Memory: 25kB
+                                      Buffers: shared read=5749
+                                      Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 2593kB
+                                      ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5890.10 rows=14110 width=16) (actual time=271.758..275.336 rows=11287.67 loops=3)
+                                            Buffers: shared read=5749
+                                ->  Sort  (cost=3820.28..3897.15 rows=30746 width=46) (actual time=50.062..52.380 rows=28436.00 loops=3)
+                                      Sort Key: eq.co_entidade, eq.nu_ano_censo
+                                      Sort Method: quicksort  Memory: 2690kB
+                                      Buffers: shared hit=2444 read=1219
+                                      Worker 0:  Sort Method: quicksort  Memory: 2690kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 2690kB
+                                      ->  Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1528.46 rows=30746 width=46) (actual time=0.067..3.809 rows=30746.00 loops=3)
+                                            Buffers: shared hit=2444 read=1219
+                          ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1295) (actual time=0.033..0.043 rows=1.00 loops=30746)
+                                Index Cond: (_geom ~ eq._geom)
+                                Filter: st_contains(_geom, eq._geom)
+                                Rows Removed by Filter: 2
+                                Index Searches: 30746
+                                Buffers: shared hit=241008 read=30085
+Planning:
+  Buffers: shared hit=3 read=9
+Planning Time: 1.328 ms
+JIT:
+  Functions: 74
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 2.856 ms (Deform 1.907 ms), Inlining 98.383 ms, Optimization 433.670 ms, Emission 282.881 ms, Total 817.790 ms
+Execution Time: 1755.094 ms

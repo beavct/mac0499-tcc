@@ -1,0 +1,11 @@
+ProduceResults@neo4j (linhas=246, dbHits=0) | municipio, populacao_rural_atendida
+  Sort@neo4j (linhas=246, dbHits=0) | populacao_rural_atendida DESC
+    EagerAggregation@neo4j (linhas=246, dbHits=1624) | m.nm_mun AS municipio, sum(s.v0001) AS populacao_rural_atendida
+      Distinct@neo4j (linhas=406, dbHits=0) | m, s
+        Filter@neo4j (linhas=484, dbHits=968) | NOT anon_0 IN anon_1 AND m:Municipio
+          Expand(All)@neo4j (linhas=484, dbHits=484) | (d)-[anon_0:PARTE_DE]->(m)
+            Filter@neo4j (linhas=484, dbHits=4288) | saude:EquipamentoSaude AND saude.at_02_conv_01 = true
+              Expand(All)@neo4j (linhas=1620, dbHits=10667) | (s)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=9047, dbHits=234673) | s.situacao = $autostring_0 AND s:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                    NodeByLabelScan@neo4j (linhas=1042, dbHits=1043) | d:Distrito

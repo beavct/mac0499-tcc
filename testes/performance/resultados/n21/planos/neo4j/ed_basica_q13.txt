@@ -1,0 +1,14 @@
+ProduceResults@neo4j (linhas=1628, dbHits=0) | municipio, distrito, codigo_setor, id_escola, nome_escola, turmas_ead, domicilios_mais_5_moradores
+  Projection@neo4j (linhas=1628, dbHits=9768) | cache[e.id_aparelho] AS id_escola, cache[e.qt_tur_bas_ead] AS turmas_ead, cache[e.nm_aparelho] AS nome_escola, s.cd_setor AS codigo_setor, m.nm_mun AS municipio, d.nm_dist AS distrito
+    CacheProperties@neo4j (linhas=1628, dbHits=4884) | cache[e.id_aparelho], cache[e.nm_aparelho]
+      Sort@neo4j (linhas=1628, dbHits=0) | domicilios_mais_5_moradores DESC
+        Projection@neo4j (linhas=1628, dbHits=3149) | coalesce(c.v00078, $autoint_1) AS domicilios_mais_5_moradores
+          Filter@neo4j (linhas=1628, dbHits=25884) | c:PerfilDomiciliosParte1
+            Expand(All)@neo4j (linhas=12942, dbHits=14585) | (s)-[:TEM_PERFIL]->(c)
+              Filter@neo4j (linhas=1643, dbHits=97903) | cache[e.qt_tur_bas_ead] > $autoint_0 AND e:Escola
+                Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+                  Filter@neo4j (linhas=103319, dbHits=213102) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                    VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                      Filter@neo4j (linhas=1042, dbHits=2086) | d:Distrito
+                        Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                          NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

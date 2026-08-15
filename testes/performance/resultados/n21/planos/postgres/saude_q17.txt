@@ -1,0 +1,41 @@
+Sort  (cost=19000.18..19042.49 rows=16925 width=50) (actual time=18.595..18.601 rows=61.00 loops=1)
+  Sort Key: (max(COALESCE(raca.v01320, '0'::real))) DESC
+  Sort Method: quicksort  Memory: 29kB
+  Buffers: shared hit=2915 read=3389
+  ->  GroupAggregate  (cost=17472.96..17811.46 rows=16925 width=50) (actual time=18.563..18.587 rows=61.00 loops=1)
+        Group Key: s.cd_setor
+        Buffers: shared hit=2915 read=3389
+        ->  Sort  (cost=17472.96..17515.27 rows=16925 width=56) (actual time=18.555..18.560 rows=63.00 loops=1)
+              Sort Key: s.cd_setor, saude.co_unidade
+              Sort Method: quicksort  Memory: 29kB
+              Buffers: shared hit=2915 read=3389
+              ->  Hash Join  (cost=9364.24..16284.25 rows=16925 width=56) (actual time=4.758..18.518 rows=63.00 loops=1)
+                    Hash Cond: ((raca.cd_setor)::text = (s.cd_setor)::text)
+                    Buffers: shared hit=2915 read=3389
+                    ->  Seq Scan on agregado_setores_censitarios_2022_raca_cor raca  (cost=0.00..6372.28 rows=100928 width=20) (actual time=0.167..6.476 rows=100928.00 loops=1)
+                          Buffers: shared hit=1974 read=3389
+                    ->  Hash  (cost=9147.66..9147.66 rows=17326 width=52) (actual time=4.310..4.312 rows=63.00 loops=1)
+                          Buckets: 32768  Batches: 1  Memory Usage: 262kB
+                          Buffers: shared hit=941
+                          ->  Nested Loop  (cost=0.57..9147.66 rows=17326 width=52) (actual time=0.064..4.297 rows=63.00 loops=1)
+                                Buffers: shared hit=941
+                                ->  Nested Loop  (cost=0.29..691.42 rows=63 width=46) (actual time=0.011..1.125 rows=63.00 loops=1)
+                                      Buffers: shared hit=359
+                                      ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=63 width=14) (actual time=0.004..0.931 rows=63.00 loops=1)
+                                            Filter: at_04_conv_05
+                                            Rows Removed by Filter: 10973
+                                            Buffers: shared hit=170
+                                      ->  Index Scan using eq_saude_2025_co_unidade_index on eq_saude_2025 saude  (cost=0.29..6.52 rows=1 width=46) (actual time=0.003..0.003 rows=1.00 loops=63)
+                                            Index Cond: ((co_unidade)::text = (a.co_unidade)::text)
+                                            Index Searches: 63
+                                            Buffers: shared hit=189
+                                ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1322) (actual time=0.037..0.050 rows=1.00 loops=63)
+                                      Index Cond: (_geom ~ saude._geom)
+                                      Filter: st_contains(_geom, saude._geom)
+                                      Rows Removed by Filter: 2
+                                      Index Searches: 63
+                                      Buffers: shared hit=582
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.143 ms
+Execution Time: 18.651 ms

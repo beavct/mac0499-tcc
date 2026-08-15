@@ -1,0 +1,45 @@
+GroupAggregate  (cost=29958.65..29981.79 rows=176 width=46) (actual time=97.866..101.722 rows=3.00 loops=1)
+  Group Key: s.cd_setor
+  Buffers: shared hit=63761 read=19123
+  ->  Gather Merge  (cost=29958.65..29979.15 rows=176 width=52) (actual time=97.856..101.708 rows=3.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=63761 read=19123
+        ->  Sort  (cost=28958.63..28958.81 rows=73 width=52) (actual time=74.860..74.863 rows=1.00 loops=3)
+              Sort Key: s.cd_setor, saude.co_unidade
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=63761 read=19123
+              Worker 0:  Sort Method: quicksort  Memory: 25kB
+              Worker 1:  Sort Method: quicksort  Memory: 25kB
+              ->  Hash Join  (cost=282.56..28956.37 rows=73 width=52) (actual time=34.548..74.839 rows=1.00 loops=3)
+                    Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                    Buffers: shared hit=63745 read=19123
+                    ->  Nested Loop  (cost=0.57..28658.12 rows=6186 width=52) (actual time=0.858..73.592 rows=126.00 loops=3)
+                          Buffers: shared hit=63235 read=19123
+                          ->  Nested Loop  (cost=0.42..25990.34 rows=210 width=1322) (actual time=0.277..30.149 rows=2382.33 loops=3)
+                                Buffers: shared hit=33493 read=19123
+                                ->  Parallel Seq Scan on agregado_setores_censitarios_2022_domicilios_parte2 dom2  (cost=0.00..24551.67 rows=210 width=16) (actual time=0.245..15.642 rows=2382.33 loops=3)
+                                      Filter: (COALESCE(v00111, '0'::real) = '0'::double precision)
+                                      Rows Removed by Filter: 31260
+                                      Buffers: shared hit=4903 read=19123
+                                ->  Index Scan using dtb_setores_censitarios_2022_cd_setor_index on dtb_setores_censitarios_2022 s  (cost=0.42..6.85 rows=1 width=1322) (actual time=0.005..0.005 rows=1.00 loops=7147)
+                                      Index Cond: ((cd_setor)::text = (dom2.cd_setor)::text)
+                                      Index Searches: 7147
+                                      Buffers: shared hit=28590
+                          ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.016..0.016 rows=0.05 loops=7147)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 1
+                                Index Searches: 7147
+                                Buffers: shared hit=22054
+                    ->  Hash  (cost=280.36..280.36 rows=131 width=14) (actual time=1.185..1.185 rows=131.00 loops=3)
+                          Buckets: 1024  Batches: 1  Memory Usage: 14kB
+                          Buffers: shared hit=510
+                          ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=131 width=14) (actual time=0.017..1.156 rows=131.00 loops=3)
+                                Filter: at_02_conv_05
+                                Rows Removed by Filter: 10905
+                                Buffers: shared hit=510
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.598 ms
+Execution Time: 101.808 ms

@@ -1,0 +1,19 @@
+ProduceResults@neo4j (linhas=2114, dbHits=0) | municipio, bairro, responsaveis_raca_amarela, urgencia_privada
+  Sort@neo4j (linhas=2114, dbHits=0) | responsaveis_raca_amarela DESC
+    EagerAggregation@neo4j (linhas=2114, dbHits=8536) | m.nm_mun AS municipio, b.nm_bairro AS bairro, sum(pop_bairro_no) AS responsaveis_raca_amarela, sum(urg_bairro_no) AS urgencia_privada
+      OrderedAggregation@neo4j (linhas=2134, dbHits=0) | m, b, pop_bairro_no, count(DISTINCT saude) AS urg_bairro_no
+        Apply@neo4j (linhas=2186, dbHits=0)
+          OrderedAggregation@neo4j (linhas=2134, dbHits=48470) | m, b, sum(coalesce(p.v00092, $autoint_0)) AS pop_bairro_no
+            Filter@neo4j (linhas=28329, dbHits=450536) | p:PerfilDomiciliosParte2
+              Expand(All)@neo4j (linhas=225268, dbHits=254293) | (s)-[:TEM_PERFIL]->(p)
+                Filter@neo4j (linhas=29025, dbHits=58104) | NOT anon_1 IN anon_0 AND s:SetorCensitario
+                  Expand(All)@neo4j (linhas=29025, dbHits=31214) | (b)<-[anon_1:PARTE_DE]-(s)
+                    Filter@neo4j (linhas=2189, dbHits=157188) | b:Bairro
+                      VarLengthExpand(All)@neo4j (linhas=78567, dbHits=81296) | (m)<-[anon_0:PARTE_DE*..3]-(b)
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+          Optional@neo4j (linhas=2186, dbHits=0) | m, b, pop_bairro_no
+            Filter@neo4j (linhas=148, dbHits=27188) | saude:EquipamentoSaude AND saude.at_04_conv_06 = true
+              Expand(All)@neo4j (linhas=10952, dbHits=39915) | (anon_4)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=28963, dbHits=57926) | anon_4:SetorCensitario
+                  Expand(All)@neo4j (linhas=28963, dbHits=31097) | (b)<-[:PARTE_DE]-(anon_4)
+                    Argument@neo4j (linhas=2134, dbHits=0) | b, m, pop_bairro_no

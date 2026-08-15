@@ -1,0 +1,11 @@
+ProduceResults@neo4j (linhas=156, dbHits=0) | municipio, distrito, codigo_setor, escolas_sem_saneamento_entorno
+  EagerAggregation@neo4j (linhas=156, dbHits=1015) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor, count(DISTINCT e) AS escolas_sem_saneamento_entorno
+    Filter@neo4j (linhas=203, dbHits=335313) | p:PerfilDomiciliosParte2 AND coalesce(p.v00495, $autoint_1) > $autoint_2
+      Expand(All)@neo4j (linhas=149695, dbHits=168752) | (s)-[:TEM_PERFIL]->(p)
+        Filter@neo4j (linhas=19057, dbHits=132727) | e.tp_dependencia IN $autolist_0 AND e:Escola
+          Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+            Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+              VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                Filter@neo4j (linhas=1042, dbHits=2084) | d:Distrito
+                  Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                    NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

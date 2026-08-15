@@ -1,0 +1,20 @@
+ProduceResults@neo4j (linhas=921, dbHits=0) | municipio, distrito, total_familias_estendidas, escolas_infantil_integral
+  Projection@neo4j (linhas=921, dbHits=3684) | m.nm_mun AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=921, dbHits=0) | total_familias_estendidas DESC
+      Filter@neo4j (linhas=921, dbHits=0) | escolas_infantil_integral > $autoint_2
+        OrderedAggregation@neo4j (linhas=1042, dbHits=0) | m, d, total_familias_estendidas, count(DISTINCT e) AS escolas_infantil_integral
+          Apply@neo4j (linhas=11432, dbHits=0)
+            OrderedAggregation@neo4j (linhas=1042, dbHits=196489) | m, d, sum(coalesce(p.v01211, $autoint_0)) AS total_familias_estendidas
+              Filter@neo4j (linhas=100928, dbHits=1592660) | p:PerfilParentesco
+                Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(p)
+                  Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                    VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                      Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                        Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                          NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+            Optional@neo4j (linhas=11432, dbHits=0) | m, d, total_familias_estendidas
+              Filter@neo4j (linhas=11311, dbHits=117235) | e.qt_tur_inf_int > $autoint_1 AND e:Escola
+                Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s2)<-[:LOCALIZADA_EM]-(e)
+                  Filter@neo4j (linhas=103319, dbHits=213108) | s2:SetorCensitario
+                    VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[:PARTE_DE*..3]-(s2) 
+                      Argument@neo4j (linhas=1042, dbHits=0) | d, m, total_familias_estendidas

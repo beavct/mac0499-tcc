@@ -1,0 +1,55 @@
+Limit  (cost=41215187.94..41215188.01 rows=30 width=70) (actual time=781.616..787.176 rows=30.00 loops=1)
+  Buffers: shared hit=108624 read=29160
+  ->  Sort  (cost=41215187.94..41541570.63 rows=130553078 width=70) (actual time=464.233..469.791 rows=30.00 loops=1)
+        Sort Key: ((count(DISTINCT eq.co_entidade) + count(DISTINCT saude.co_unidade))), (COALESCE(b.v0001, 0)) DESC
+        Sort Method: top-N heapsort  Memory: 31kB
+        Buffers: shared hit=108624 read=29160
+        ->  GroupAggregate  (cost=1181.99..37359374.19 rows=130553078 width=70) (actual time=356.165..469.041 rows=2169.00 loops=1)
+              Group Key: s.cd_setor, b.v0001
+              Buffers: shared hit=108624 read=29160
+              ->  Gather Merge  (cost=1181.99..34421929.94 rows=130553078 width=65) (actual time=356.127..466.038 rows=2611.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=108624 read=29160
+                    ->  Incremental Sort  (cost=181.96..19351865.36 rows=54397116 width=65) (actual time=201.851..316.568 rows=870.33 loops=3)
+                          Sort Key: s.cd_setor, b.v0001, eq.co_entidade
+                          Presorted Key: s.cd_setor
+                          Full-sort Groups: 6  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                          Buffers: shared hit=108624 read=29160
+                          Worker 0:  Full-sort Groups: 39  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                          Worker 1:  Full-sort Groups: 38  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+                          ->  Nested Loop Left Join  (cost=1.26..16211009.03 rows=54397116 width=65) (actual time=198.513..315.697 rows=870.33 loops=3)
+                                Buffers: shared hit=108514 read=29150
+                                ->  Nested Loop Left Join  (cost=0.98..215725.09 rows=421894 width=1340) (actual time=198.477..304.250 rows=739.00 loops=3)
+                                      Buffers: shared hit=102495 read=28057
+                                      ->  Merge Join  (cost=0.83..33426.85 rows=14350 width=1326) (actual time=198.410..297.044 rows=723.00 loops=3)
+                                            Merge Cond: ((b.cd_setor)::text = (s.cd_setor)::text)
+                                            Buffers: shared hit=97338 read=27721
+                                            ->  Parallel Index Scan using agregado_setores_censitarios_2022_basico_cd_setor_index on agregado_setores_censitarios_2022_basico b  (cost=0.42..6190.28 rows=14350 width=20) (actual time=197.309..207.214 rows=723.00 loops=3)
+                                                  Filter: (COALESCE(v0001, 0) > 1000)
+                                                  Rows Removed by Filter: 33717
+                                                  Index Searches: 1
+                                                  Buffers: shared hit=858 read=3934
+                                            ->  Index Scan using dtb_setores_censitarios_2022_cd_setor_index on dtb_setores_censitarios_2022 s  (cost=0.42..26798.90 rows=103319 width=1322) (actual time=0.024..60.937 rows=102870.33 loops=3)
+                                                  Index Searches: 3
+                                                  Buffers: shared hit=96480 read=23787
+                                      ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.009..0.009 rows=0.12 loops=2169)
+                                            Index Cond: (_geom @ s._geom)
+                                            Filter: st_contains(s._geom, _geom)
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 2169
+                                            Buffers: shared hit=5091 read=285
+                                ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=41) (actual time=0.014..0.015 rows=0.52 loops=2217)
+                                      Index Cond: (_geom @ s._geom)
+                                      Filter: st_contains(s._geom, _geom)
+                                      Rows Removed by Filter: 1
+                                      Index Searches: 2217
+                                      Buffers: shared hit=5988 read=1093
+Planning:
+  Buffers: shared hit=6 read=10
+Planning Time: 2.229 ms
+JIT:
+  Functions: 73
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 4.517 ms (Deform 3.317 ms), Inlining 77.886 ms, Optimization 494.162 ms, Emission 337.110 ms, Total 913.673 ms
+Execution Time: 789.366 ms

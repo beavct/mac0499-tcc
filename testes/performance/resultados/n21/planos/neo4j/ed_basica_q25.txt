@@ -1,0 +1,13 @@
+ProduceResults@neo4j (linhas=392, dbHits=0) | municipio, distrito, id_escola, nome_escola
+  Projection@neo4j (linhas=392, dbHits=1568) | (escolas_em[$autoint_2]).id_aparelho AS id_escola, (escolas_em[$autoint_3]).nm_aparelho AS nome_escola
+    Sort@neo4j (linhas=392, dbHits=0) | municipio ASC, distrito ASC
+      Projection@neo4j (linhas=392, dbHits=1568) | m.nm_mun AS municipio, d.nm_dist AS distrito
+        Filter@neo4j (linhas=392, dbHits=0) | size(escolas_em) = $autoint_1
+          OrderedAggregation@neo4j (linhas=892, dbHits=0) | m, d, collect(DISTINCT e) AS escolas_em
+            Filter@neo4j (linhas=6585, dbHits=107783) | e.qt_tur_med > $autoint_0 AND e:Escola
+              Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_2)<-[:LOCALIZADA_EM]-(e)
+                Filter@neo4j (linhas=103319, dbHits=213106) | NOT anon_0 IN anon_1 AND anon_2:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(anon_2)
+                    Filter@neo4j (linhas=1042, dbHits=2096) | d:Distrito
+                      Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

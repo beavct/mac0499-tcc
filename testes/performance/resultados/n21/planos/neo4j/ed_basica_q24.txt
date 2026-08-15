@@ -1,0 +1,18 @@
+ProduceResults@neo4j (linhas=19447, dbHits=0) | municipio, distrito, escolas_com_laboratorio, id_escola_sem_lab, nome_escola_sem_lab
+  Projection@neo4j (linhas=19447, dbHits=0) | cache[sem.nm_aparelho] AS nome_escola_sem_lab, cache[sem.id_aparelho] AS id_escola_sem_lab
+    CacheProperties@neo4j (linhas=19447, dbHits=58341) | cache[sem.nm_aparelho], cache[sem.id_aparelho]
+      Sort@neo4j (linhas=19447, dbHits=0) | escolas_com_laboratorio DESC, municipio ASC, distrito ASC
+        Projection@neo4j (linhas=19447, dbHits=77788) | m.nm_mun AS municipio, d.nm_dist AS distrito
+          Filter@neo4j (linhas=19447, dbHits=104128) | sem.in_laboratorio_ciencias = false AND sem:Escola
+            Expand(All)@neo4j (linhas=29255, dbHits=105571) | (anon_5)<-[:LOCALIZADA_EM]-(sem)
+              Filter@neo4j (linhas=76316, dbHits=156514) | anon_5:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=78247, dbHits=130607) | (d)<-[:PARTE_DE*..3]-(anon_5)
+                  Filter@neo4j (linhas=232, dbHits=0) | escolas_com_laboratorio >= $autoint_0
+                    OrderedAggregation@neo4j (linhas=539, dbHits=0) | m, d, count(DISTINCT com) AS escolas_com_laboratorio
+                      Filter@neo4j (linhas=3618, dbHits=101849) | com.in_laboratorio_ciencias = true AND com:Escola
+                        Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_2)<-[:LOCALIZADA_EM]-(com)
+                          Filter@neo4j (linhas=103319, dbHits=213106) | NOT anon_0 IN anon_1 AND anon_2:SetorCensitario
+                            VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(anon_2)
+                              Filter@neo4j (linhas=1042, dbHits=2090) | d:Distrito
+                                Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                                  NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

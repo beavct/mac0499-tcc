@@ -1,0 +1,10 @@
+ProduceResults@neo4j (linhas=10505, dbHits=0) | id_escola, nome_escola
+  Projection@neo4j (linhas=10505, dbHits=21010) | esc.id_aparelho AS id_escola
+    Sort@neo4j (linhas=10505, dbHits=0) | nome_escola ASC
+      Projection@neo4j (linhas=10505, dbHits=21010) | esc.nm_aparelho AS nome_escola
+        Apply@neo4j (linhas=10505, dbHits=0)
+          NodeByLabelScan@neo4j (linhas=30745, dbHits=30746) | esc:Escola
+          Anti@neo4j (linhas=10505, dbHits=0)
+            Limit@neo4j (linhas=20240, dbHits=0) | 1
+              Filter@neo4j (linhas=20240, dbHits=1350581) | vig.at_06_conv_01 = true AND point.distance(cache[esc.location], cache[vig.location]) <= $autoint_0
+                NodeIndexSeekByRange@neo4j (linhas=644633, dbHits=675478) | POINT INDEX vig:EquipamentoSaude(location) WHERE point.distance(location, cache[esc.location]) <= $autoint_0, cache[vig.location]

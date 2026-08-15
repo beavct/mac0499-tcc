@@ -1,0 +1,58 @@
+Sort  (cost=6407305.32..6407318.95 rows=5452 width=2064) (actual time=1072.457..1072.634 rows=392.00 loops=1)
+  Sort Key: e.municipio, e.distrito
+  Sort Method: quicksort  Memory: 55kB
+  Buffers: shared hit=59215 read=5214
+  CTE escolas_em
+    ->  Gather  (cost=6966.97..723064.35 rows=2601386 width=63) (actual time=904.132..1059.531 rows=6585.00 loops=1)
+          Workers Planned: 1
+          Workers Launched: 1
+          Buffers: shared hit=57622 read=5214
+          ->  Nested Loop  (cost=5966.97..461925.75 rows=1530227 width=63) (actual time=889.769..1045.175 rows=3292.50 loops=2)
+                Buffers: shared hit=57622 read=5214
+                ->  Parallel Hash Join  (cost=5966.69..7463.52 rows=3532 width=73) (actual time=889.650..894.112 rows=3292.50 loops=2)
+                      Hash Cond: (((eq.co_entidade)::text = (m.co_entidade)::text) AND ((eq.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+                      Buffers: shared hit=1756 read=5214
+                      ->  Parallel Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1401.86 rows=18086 width=46) (actual time=0.010..1.274 rows=15373.00 loops=2)
+                            Buffers: shared hit=1221
+                      ->  Parallel Hash  (cost=5925.37..5925.37 rows=2755 width=46) (actual time=889.411..889.411 rows=3292.50 loops=2)
+                            Buckets: 8192  Batches: 1  Memory Usage: 608kB
+                            Buffers: shared hit=535 read=5214
+                            ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5925.37 rows=2755 width=46) (actual time=823.242..840.798 rows=3292.50 loops=2)
+                                  Filter: (qt_tur_med > 0)
+                                  Rows Removed by Filter: 13639
+                                  Buffers: shared hit=535 read=5214
+                ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1306) (actual time=0.036..0.045 rows=1.00 loops=6585)
+                      Index Cond: (_geom ~ eq._geom)
+                      Filter: st_contains(_geom, eq._geom)
+                      Rows Removed by Filter: 2
+                      Index Searches: 6585
+                      Buffers: shared hit=55866
+  ->  Hash Join  (cost=5613352.55..5679037.60 rows=5452 width=2064) (actual time=1071.173..1072.138 rows=392.00 loops=1)
+        Hash Cond: (((e.municipio)::text = (escolas_em.municipio)::text) AND ((e.distrito)::text = (escolas_em.distrito)::text))
+        Buffers: shared hit=59170 read=5214
+        ->  CTE Scan on escolas_em e  (cost=0.00..52027.72 rows=2601386 width=2064) (actual time=904.135..904.469 rows=6585.00 loops=1)
+              Storage: Memory  Maximum Storage: 630kB
+              Buffers: shared hit=9
+        ->  Hash  (cost=5613333.04..5613333.04 rows=1301 width=1032) (actual time=167.028..167.029 rows=392.00 loops=1)
+              Buckets: 2048  Batches: 1  Memory Usage: 38kB
+              Buffers: shared hit=59050 read=5214
+              ->  GroupAggregate  (cost=5584067.44..5613333.04 rows=1301 width=1032) (actual time=165.929..166.962 rows=392.00 loops=1)
+                    Group Key: escolas_em.municipio, escolas_em.distrito
+                    Filter: (count(DISTINCT escolas_em.id_escola) = 1)
+                    Rows Removed by Filter: 500
+                    Buffers: shared hit=59038 read=5214
+                    ->  Sort  (cost=5584067.44..5590570.91 rows=2601386 width=1548) (actual time=165.899..166.120 rows=6585.00 loops=1)
+                          Sort Key: escolas_em.municipio, escolas_em.distrito, escolas_em.id_escola
+                          Sort Method: quicksort  Memory: 531kB
+                          Buffers: shared hit=58939 read=5214
+                          ->  CTE Scan on escolas_em  (cost=0.00..52027.72 rows=2601386 width=1548) (actual time=0.002..156.661 rows=6585.00 loops=1)
+                                Storage: Memory  Maximum Storage: 630kB
+                                Buffers: shared hit=57613 read=5214
+Planning:
+  Buffers: shared hit=12
+Planning Time: 1.275 ms
+JIT:
+  Functions: 56
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 8.176 ms (Deform 7.213 ms), Inlining 58.112 ms, Optimization 771.989 ms, Emission 815.918 ms, Total 1654.195 ms
+Execution Time: 1077.387 ms

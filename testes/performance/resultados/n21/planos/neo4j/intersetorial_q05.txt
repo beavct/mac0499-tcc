@@ -1,0 +1,33 @@
+ProduceResults@neo4j (linhas=645, dbHits=0) | municipio, escolas_publicas, unidades_ambulatorial_sus, populacao_60_mais, razao_escola_saude
+  Projection@neo4j (linhas=645, dbHits=1290) | m.nm_mun AS municipio
+    Sort@neo4j (linhas=645, dbHits=0) | razao_escola_saude DESC
+      Projection@neo4j (linhas=645, dbHits=0) | CASE
+  WHEN unidades_ambulatorial_sus = $autoint_4 THEN NULL
+  ELSE round(toFloat(escolas_publicas) / unidades_ambulatorial_sus, $autoint_5)
+END AS razao_escola_saude
+        OrderedAggregation@neo4j (linhas=645, dbHits=0) | m, populacao_60_mais, escolas_publicas, count(DISTINCT saude) AS unidades_ambulatorial_sus
+          Apply@neo4j (linhas=9887, dbHits=0)
+            Filter@neo4j (linhas=645, dbHits=0) | escolas_publicas > $autoint_3
+              OrderedAggregation@neo4j (linhas=645, dbHits=0) | m, populacao_60_mais, count(DISTINCT e) AS escolas_publicas
+                Apply@neo4j (linhas=19057, dbHits=0)
+                  OrderedAggregation@neo4j (linhas=645, dbHits=7774) | m, sum(coalesce(cache[demo.v01040], $autoint_0) + coalesce(cache[demo.v01041], $autoint_1)) AS populacao_60_mais
+                    CacheProperties@neo4j (linhas=100928, dbHits=295010) | cache[demo.v01040], cache[demo.v01041]
+                      Filter@neo4j (linhas=100928, dbHits=1592660) | demo:PerfilDemografia
+                        Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(demo)
+                          Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_2 AND s:SetorCensitario
+                            VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (anon_1)<-[anon_2:PARTE_DE*..3]-(s)
+                              Filter@neo4j (linhas=1042, dbHits=2280) | anon_1:Distrito
+                                Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(anon_1)
+                                  NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                  Optional@neo4j (linhas=19057, dbHits=0) | m, populacao_60_mais
+                    Filter@neo4j (linhas=19057, dbHits=132727) | e.tp_dependencia IN $autolist_2 AND e:Escola
+                      Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_5)<-[:LOCALIZADA_EM]-(e)
+                        Filter@neo4j (linhas=103319, dbHits=215200) | anon_5:SetorCensitario
+                          VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=107592, dbHits=186804) | (m)<-[:PARTE_DE*..4]-(anon_5) 
+                            Argument@neo4j (linhas=645, dbHits=0) | m, populacao_60_mais
+            Optional@neo4j (linhas=9887, dbHits=0) | m, populacao_60_mais, escolas_publicas
+              Filter@neo4j (linhas=9883, dbHits=105645) | saude:EquipamentoSaude AND saude.at_02_conv_01 = true
+                Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_8)<-[:LOCALIZADA_EM]-(saude)
+                  Filter@neo4j (linhas=103319, dbHits=215190) | anon_8:SetorCensitario
+                    VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=107592, dbHits=186804) | (m)<-[:PARTE_DE*..4]-(anon_8) 
+                      Argument@neo4j (linhas=645, dbHits=0) | m, populacao_60_mais, escolas_publicas

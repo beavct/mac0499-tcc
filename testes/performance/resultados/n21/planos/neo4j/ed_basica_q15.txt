@@ -1,0 +1,15 @@
+ProduceResults@neo4j (linhas=3146, dbHits=0) | municipio, distrito, bairro, chefia_feminina_unipessoal, turmas_creche_integral
+  Sort@neo4j (linhas=3146, dbHits=0) | chefia_feminina_unipessoal DESC
+    EagerAggregation@neo4j (linhas=3146, dbHits=403712) | m.nm_mun AS municipio, d.nm_dist AS distrito, bairro, sum(chefia_setor) AS chefia_feminina_unipessoal, sum(turmas_setor) AS turmas_creche_integral
+      OrderedAggregation@neo4j (linhas=100928, dbHits=61006) | m, s, d, bairro, chefia_setor, sum(coalesce(e.qt_tur_inf_cre_int, $autoint_2)) AS turmas_setor
+        OptionalExpand(All)@neo4j (linhas=109866, dbHits=225203) | (s)<-[:LOCALIZADA_EM]-(e) WHERE e:Escola
+          Projection@neo4j (linhas=100928, dbHits=193799) | coalesce(p.v01215, $autoint_1) AS chefia_setor
+            Filter@neo4j (linhas=100928, dbHits=1592678) | p:PerfilParentesco
+              Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(p)
+                Projection@neo4j (linhas=103319, dbHits=58112) | coalesce(b.nm_bairro, $autostring_0) AS bairro
+                  OptionalExpand(All)@neo4j (linhas=103319, dbHits=413642) | (s)-[:PARTE_DE]->(b) WHERE b:Bairro
+                    Filter@neo4j (linhas=103319, dbHits=213314) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                      VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                        Filter@neo4j (linhas=1042, dbHits=2298) | d:Distrito
+                          Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                            NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

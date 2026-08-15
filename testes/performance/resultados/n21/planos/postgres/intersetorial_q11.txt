@@ -1,0 +1,43 @@
+Gather Merge  (cost=251353.89..254844.12 rows=30624 width=41) (actual time=1385.250..1391.910 rows=10494.00 loops=1)
+  Workers Planned: 1
+  Workers Launched: 1
+  Buffers: shared hit=2351293 read=3712
+  ->  Sort  (cost=250353.88..250398.91 rows=18014 width=41) (actual time=1372.060..1372.266 rows=5247.00 loops=2)
+        Sort Key: m.no_entidade
+        Sort Method: quicksort  Memory: 510kB
+        Buffers: shared hit=2351293 read=3712
+        Worker 0:  Sort Method: quicksort  Memory: 508kB
+        ->  Parallel Hash Join  (cost=6102.43..249080.57 rows=18014 width=41) (actual time=27.481..1365.135 rows=5247.00 loops=2)
+              Hash Cond: (((esc.co_entidade)::text = (m.co_entidade)::text) AND ((esc.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+              Buffers: shared hit=2351285 read=3712
+              ->  Nested Loop Anti Join  (cost=0.69..242884.24 rows=18014 width=14) (actual time=4.242..1339.257 rows=5247.00 loops=2)
+                    Buffers: shared hit=2349248
+                    ->  Parallel Seq Scan on eq_educacao_basica_2024 esc  (cost=0.00..1401.86 rows=18086 width=46) (actual time=0.006..1.941 rows=15373.00 loops=2)
+                          Buffers: shared hit=1221
+                    ->  Nested Loop  (cost=0.69..13.39 rows=1 width=32) (actual time=0.087..0.087 rows=0.66 loops=30746)
+                          Buffers: shared hit=2348027
+                          ->  Index Scan using eq_saude_2025__geog_index on eq_saude_2025 saude  (cost=0.40..13.01 rows=1 width=46) (actual time=0.011..0.032 rows=21.33 loops=30746)
+                                Index Cond: (_geog && _st_expand(esc._geog, '5000'::double precision))
+                                Filter: st_dwithin(esc._geog, _geog, '5000'::double precision, true)
+                                Rows Removed by Filter: 10
+                                Index Searches: 30746
+                                Buffers: shared hit=381118
+                          ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.002..0.002 rows=0.03 loops=655661)
+                                Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                                Filter: at_06_conv_01
+                                Rows Removed by Filter: 1
+                                Index Searches: 655661
+                                Buffers: shared hit=1966909
+              ->  Parallel Hash  (cost=5890.10..5890.10 rows=14110 width=46) (actual time=23.038..23.039 rows=16931.50 loops=2)
+                    Buckets: 65536  Batches: 1  Memory Usage: 3264kB
+                    Buffers: shared hit=2037 read=3712
+                    ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5890.10 rows=14110 width=46) (actual time=10.388..17.269 rows=16931.50 loops=2)
+                          Buffers: shared hit=2037 read=3712
+Planning:
+  Buffers: shared hit=24
+Planning Time: 1.923 ms
+JIT:
+  Functions: 44
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 2.521 ms (Deform 1.677 ms), Inlining 0.000 ms, Optimization 1.418 ms, Emission 19.356 ms, Total 23.296 ms
+Execution Time: 1393.757 ms

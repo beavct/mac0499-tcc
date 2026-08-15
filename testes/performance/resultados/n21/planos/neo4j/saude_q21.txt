@@ -1,0 +1,19 @@
+ProduceResults@neo4j (linhas=645, dbHits=0) | municipio, analfabetos_15_mais, unidades_vigilancia_publica
+  Sort@neo4j (linhas=645, dbHits=0) | analfabetos_15_mais DESC
+    EagerAggregation@neo4j (linhas=645, dbHits=1280) | cache[m.nm_mun] AS municipio, analfabetos_15_mais, count(DISTINCT saude) AS unidades_vigilancia_publica
+      Apply@neo4j (linhas=645, dbHits=0)
+        OrderedAggregation@neo4j (linhas=645, dbHits=184791) | m, sum(coalesce(a.v00901, $autoint_0)) AS analfabetos_15_mais
+          Filter@neo4j (linhas=100928, dbHits=1592660) | a:PerfilAlfabetizacao
+            Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(a)
+              Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+        Optional@neo4j (linhas=645, dbHits=0) | m, analfabetos_15_mais
+          CacheProperties@neo4j (linhas=5, dbHits=10) | cache[m.nm_mun]
+            Filter@neo4j (linhas=5, dbHits=105645) | saude:EquipamentoSaude AND saude.at_06_conv_05 = true
+              Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s2)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=103319, dbHits=215184) | s2:SetorCensitario
+                  VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=107592, dbHits=186804) | (m)<-[:PARTE_DE*..4]-(s2) 
+                    Argument@neo4j (linhas=645, dbHits=0) | m, analfabetos_15_mais

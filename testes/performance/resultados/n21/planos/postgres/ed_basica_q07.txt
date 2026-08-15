@@ -1,0 +1,47 @@
+Gather Merge  (cost=320444.99..372478.15 rows=456549 width=91) (actual time=248.256..252.319 rows=47.00 loops=1)
+  Workers Planned: 1
+  Workers Launched: 1
+  Buffers: shared hit=40860 read=26885
+  ->  Sort  (cost=319444.98..320116.38 rows=268558 width=91) (actual time=227.899..227.904 rows=23.50 loops=2)
+        Sort Key: (COALESCE(dom2.v00094, '0'::real)) DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=40860 read=26885
+        Worker 0:  Sort Method: quicksort  Memory: 27kB
+        ->  Parallel Hash Join  (cost=30763.00..281458.93 rows=268558 width=91) (actual time=127.476..227.866 rows=23.50 loops=2)
+              Hash Cond: ((s.cd_setor)::text = (dom2.cd_setor)::text)
+              Buffers: shared hit=40852 read=26885
+              ->  Nested Loop  (cost=6036.11..252520.22 rows=824752 width=87) (actual time=44.826..151.892 rows=2020.00 loops=2)
+                    Buffers: shared hit=39815 read=3896
+                    ->  Parallel Hash Join  (cost=6035.83..7532.65 rows=1904 width=81) (actual time=44.710..48.928 rows=2020.00 loops=2)
+                          Hash Cond: (((eq.co_entidade)::text = (m.co_entidade)::text) AND ((eq.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+                          Buffers: shared hit=3077 read=3896
+                          ->  Parallel Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1401.86 rows=18086 width=46) (actual time=0.005..1.189 rows=15373.00 loops=2)
+                                Buffers: shared hit=1221
+                          ->  Parallel Hash  (cost=6013.55..6013.55 rows=1485 width=54) (actual time=44.648..44.649 rows=2020.00 loops=2)
+                                Buckets: 4096  Batches: 1  Memory Usage: 416kB
+                                Buffers: shared hit=1856 read=3896
+                                ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..6013.55 rows=1485 width=54) (actual time=0.123..43.903 rows=2020.00 loops=2)
+                                      Filter: ((qt_tur_med > 0) AND (qt_tur_bas_d > 0) AND ((tp_dependencia)::text = ANY ('{1,2,3}'::text[])))
+                                      Rows Removed by Filter: 14912
+                                      Buffers: shared hit=1856 read=3896
+                    ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1322) (actual time=0.039..0.050 rows=1.00 loops=4040)
+                          Index Cond: (_geom ~ eq._geom)
+                          Filter: st_contains(_geom, eq._geom)
+                          Rows Removed by Filter: 2
+                          Index Searches: 4040
+                          Buffers: shared hit=36738
+              ->  Parallel Hash  (cost=24551.67..24551.67 rows=14018 width=20) (actual time=75.295..75.296 rows=433.50 loops=2)
+                    Buckets: 65536  Batches: 1  Memory Usage: 608kB
+                    Buffers: shared hit=1037 read=22989
+                    ->  Parallel Seq Scan on agregado_setores_censitarios_2022_domicilios_parte2 dom2  (cost=0.00..24551.67 rows=14018 width=20) (actual time=54.735..71.344 rows=433.50 loops=2)
+                          Filter: (COALESCE(v00094, '0'::real) > '0'::double precision)
+                          Rows Removed by Filter: 50030
+                          Buffers: shared hit=1037 read=22989
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.407 ms
+JIT:
+  Functions: 60
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 14.849 ms (Deform 13.538 ms), Inlining 0.000 ms, Optimization 10.079 ms, Emission 98.642 ms, Total 123.570 ms
+Execution Time: 258.272 ms

@@ -1,0 +1,16 @@
+ProduceResults@neo4j (linhas=562, dbHits=0) | municipio, distrito, codigo_setor, id_escola, nome_escola, jovens_analfabetos
+  Projection@neo4j (linhas=562, dbHits=3372) | cache[e.id_aparelho] AS id_escola, cache[e.nm_aparelho] AS nome_escola, s.cd_setor AS codigo_setor, m.nm_mun AS municipio, d.nm_dist AS distrito
+    CacheProperties@neo4j (linhas=562, dbHits=1686) | cache[e.id_aparelho], cache[e.nm_aparelho]
+      Sort@neo4j (linhas=562, dbHits=0) | jovens_analfabetos DESC
+        Filter@neo4j (linhas=562, dbHits=0) | jovens_analfabetos > $autoint_4
+          Projection@neo4j (linhas=2492, dbHits=119) | coalesce(cache[a.v00644], $autoint_2) - coalesce(cache[a.v00748], $autoint_3) AS jovens_analfabetos
+            CacheProperties@neo4j (linhas=2492, dbHits=7357) | cache[a.v00644], cache[a.v00748]
+              Filter@neo4j (linhas=2492, dbHits=39562) | a:PerfilAlfabetizacao
+                Expand(All)@neo4j (linhas=19781, dbHits=22304) | (s)-[:TEM_PERFIL]->(a)
+                  Filter@neo4j (linhas=2523, dbHits=123870) | (e.qt_tur_med > $autoint_0 AND e.qt_tur_bas_n > $autoint_1) AND e:Escola
+                    Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+                      Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                          Filter@neo4j (linhas=1042, dbHits=2084) | d:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

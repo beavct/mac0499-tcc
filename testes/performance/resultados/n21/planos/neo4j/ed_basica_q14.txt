@@ -1,0 +1,16 @@
+ProduceResults@neo4j (linhas=9525, dbHits=0) | municipio, distrito, id_escola, nome_escola, populacao_infantil_distrito
+  Projection@neo4j (linhas=9525, dbHits=57150) | e.nm_aparelho AS nome_escola, m.nm_mun AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=9525, dbHits=0) | populacao_infantil_distrito DESC, id_escola ASC
+      Projection@neo4j (linhas=9525, dbHits=19050) | e.id_aparelho AS id_escola
+        Filter@neo4j (linhas=9525, dbHits=148080) | e.tp_dependencia = $autoint_1 AND e.qt_tur_inf > $autoint_2 AND e:Escola
+          Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_4)<-[:LOCALIZADA_EM]-(e)
+            Filter@neo4j (linhas=103319, dbHits=213108) | anon_4:SetorCensitario
+              VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[:PARTE_DE*..3]-(anon_4)
+                OrderedAggregation@neo4j (linhas=1042, dbHits=196905) | m, d, sum(coalesce(demo.v01031, $autoint_0)) AS populacao_infantil_distrito
+                  Filter@neo4j (linhas=100928, dbHits=1592660) | demo:PerfilDemografia
+                    Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(demo)
+                      Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                          Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

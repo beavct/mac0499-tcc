@@ -1,0 +1,15 @@
+ProduceResults@neo4j (linhas=1950, dbHits=0) | municipio, distrito, codigo_setor, total_moradores
+  Projection@neo4j (linhas=1950, dbHits=11700) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor
+    Sort@neo4j (linhas=1950, dbHits=0) | total_moradores DESC
+      Projection@neo4j (linhas=1950, dbHits=0) | cache[s.v0001] AS total_moradores
+        Filter@neo4j (linhas=1950, dbHits=3900) | NOT anon_0 IN anon_1 AND m:Municipio
+          Expand(All)@neo4j (linhas=1950, dbHits=3900) | (d)-[anon_0:PARTE_DE]->(m)
+            Apply@neo4j (linhas=1950, dbHits=0)
+              Filter@neo4j (linhas=2169, dbHits=220669) | cache[s.v0001] > $autoint_0 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  NodeByLabelScan@neo4j (linhas=1042, dbHits=1043) | d:Distrito
+              Anti@neo4j (linhas=1950, dbHits=0)
+                Limit@neo4j (linhas=219, dbHits=0) | 1
+                  Filter@neo4j (linhas=219, dbHits=2612) | anon_3:EquipamentoSaude
+                    Expand(All)@neo4j (linhas=1306, dbHits=3475) | (s)<-[:LOCALIZADA_EM]-(anon_3)
+                      Argument@neo4j (linhas=2169, dbHits=0) | s

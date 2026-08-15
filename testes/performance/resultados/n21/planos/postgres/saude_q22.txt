@@ -1,0 +1,52 @@
+Sort  (cost=1000505.99..1000514.60 rows=3444 width=47) (actual time=806.582..810.450 rows=438.00 loops=1)
+  Sort Key: ((max((count(DISTINCT a.co_unidade))) - min((count(DISTINCT a.co_unidade))))) DESC
+  Sort Method: quicksort  Memory: 53kB
+  Buffers: shared hit=316358 read=32410
+  ->  HashAggregate  (cost=1000140.07..1000303.66 rows=3444 width=47) (actual time=806.295..810.352 rows=438.00 loops=1)
+        Group Key: s.nm_mun, s.cd_subdist
+        Filter: ((max((count(DISTINCT a.co_unidade))) - min((count(DISTINCT a.co_unidade)))) > 0)
+        Batches: 1  Memory Usage: 409kB
+        Rows Removed by Filter: 604
+        Buffers: shared hit=316358 read=32410
+        ->  GroupAggregate  (cost=1006.80..998073.69 rows=103319 width=47) (actual time=285.073..789.494 rows=103319.00 loops=1)
+              Group Key: s.cd_setor
+              Buffers: shared hit=314888 read=32374
+              ->  Gather Merge  (cost=1006.80..981852.46 rows=3037608 width=53) (actual time=285.047..762.213 rows=106926.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=314888 read=32374
+                    ->  Incremental Sort  (cost=6.78..630237.10 rows=1265670 width=53) (actual time=223.543..656.104 rows=35642.00 loops=3)
+                          Sort Key: s.cd_setor, a.co_unidade
+                          Presorted Key: s.cd_setor
+                          Full-sort Groups: 496  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+                          Buffers: shared hit=314888 read=32374
+                          Worker 0:  Full-sort Groups: 1388  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                          Worker 1:  Full-sort Groups: 1442  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                            Pre-sorted Groups: 60  Sort Method: quicksort  Average Memory: 25kB  Peak Memory: 25kB
+                          ->  Nested Loop Left Join  (cost=0.85..589474.61 rows=1265670 width=53) (actual time=222.949..639.139 rows=35642.00 loops=3)
+                                Buffers: shared hit=314747 read=32361
+                                ->  Parallel Index Scan using dtb_setores_censitarios_2022_cd_setor_index on dtb_setores_censitarios_2022 s  (cost=0.42..26196.21 rows=43050 width=1323) (actual time=0.041..41.581 rows=34439.67 loops=3)
+                                      Index Searches: 1
+                                      Buffers: shared hit=16741 read=23796
+                                ->  Nested Loop Left Join  (cost=0.44..13.07 rows=1 width=46) (actual time=0.017..0.017 rows=0.11 loops=103319)
+                                      Buffers: shared hit=298006 read=8565
+                                      ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.009..0.009 rows=0.11 loops=103319)
+                                            Index Cond: (_geom @ s._geom)
+                                            Filter: st_contains(s._geom, _geom)
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 103319
+                                            Buffers: shared hit=258823 read=49
+                                      ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.003..0.003 rows=0.08 loops=11041)
+                                            Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                                            Filter: at_01_conv_01
+                                            Rows Removed by Filter: 1
+                                            Index Searches: 11041
+                                            Buffers: shared hit=33073 read=43
+Planning:
+  Buffers: shared hit=13 read=5
+Planning Time: 2.042 ms
+JIT:
+  Functions: 56
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 3.766 ms (Deform 2.296 ms), Inlining 125.414 ms, Optimization 348.197 ms, Emission 194.778 ms, Total 672.155 ms
+Execution Time: 812.465 ms

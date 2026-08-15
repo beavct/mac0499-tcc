@@ -1,0 +1,73 @@
+Sort  (cost=1246342.68..1246966.29 rows=249444 width=76) (actual time=885.433..885.629 rows=907.00 loops=1)
+  Sort Key: (COALESCE(amb.ambulatorios_sus, '0'::bigint)) DESC, s.nm_mun, s.nm_dist
+  Sort Method: quicksort  Memory: 113kB
+  Buffers: shared hit=295495 read=17390
+  ->  Hash Left Join  (cost=1089085.77..1212897.57 rows=249444 width=76) (actual time=833.176..885.143 rows=907.00 loops=1)
+        Hash Cond: (((s.nm_mun)::text = (amb.municipio)::text) AND ((s.nm_dist)::text = (amb.distrito)::text))
+        Buffers: shared hit=295477 read=17390
+        ->  Nested Loop  (cost=291.98..122794.20 rows=249444 width=68) (actual time=308.281..359.801 rows=907.00 loops=1)
+              Buffers: shared hit=8759
+              ->  Hash Join  (cost=291.70..1051.15 rows=907 width=78) (actual time=308.216..310.922 rows=907.00 loops=1)
+                    Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                    Buffers: shared hit=790
+                    ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=78) (actual time=0.007..0.716 rows=11045.00 loops=1)
+                          Buffers: shared hit=620
+                    ->  Hash  (cost=280.36..280.36 rows=907 width=14) (actual time=308.197..308.198 rows=907.00 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 49kB
+                          Buffers: shared hit=170
+                          ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=907 width=14) (actual time=307.827..308.129 rows=907.00 loops=1)
+                                Filter: at_01_conv_01
+                                Rows Removed by Filter: 10129
+                                Buffers: shared hit=170
+              ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1306) (actual time=0.041..0.053 rows=1.00 loops=907)
+                    Index Cond: (_geom ~ saude._geom)
+                    Filter: st_contains(_geom, saude._geom)
+                    Rows Removed by Filter: 2
+                    Index Searches: 907
+                    Buffers: shared hit=7969
+        ->  Hash  (cost=1088638.81..1088638.81 rows=10332 width=30) (actual time=524.877..525.039 rows=947.00 loops=1)
+              Buckets: 16384  Batches: 1  Memory Usage: 188kB
+              Buffers: shared hit=286688 read=17390
+              ->  Subquery Scan on amb  (cost=751350.71..1088638.81 rows=10332 width=30) (actual time=519.749..524.791 rows=947.00 loops=1)
+                    Buffers: shared hit=286640 read=17390
+                    ->  GroupAggregate  (cost=751350.71..1088535.49 rows=10332 width=30) (actual time=519.746..524.722 rows=947.00 loops=1)
+                          Group Key: s_1.nm_mun, s_1.nm_dist
+                          Buffers: shared hit=286640 read=17390
+                          ->  Gather Merge  (cost=751350.71..1068038.67 rows=2719134 width=36) (actual time=519.703..523.265 rows=9883.00 loops=1)
+                                Workers Planned: 2
+                                Workers Launched: 2
+                                Buffers: shared hit=286178 read=17390
+                                ->  Sort  (cost=750350.68..753183.11 rows=1132972 width=36) (actual time=499.822..499.959 rows=3294.33 loops=3)
+                                      Sort Key: s_1.nm_mun, s_1.nm_dist, saude_1.co_unidade
+                                      Sort Method: quicksort  Memory: 509kB
+                                      Buffers: shared hit=285740 read=17390
+                                      Worker 0:  Sort Method: quicksort  Memory: 269kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 80kB
+                                      ->  Hash Join  (cost=404.10..574456.83 rows=1132972 width=36) (actual time=149.278..494.080 rows=3294.33 loops=3)
+                                            Hash Cond: ((saude_1.co_unidade)::text = (a_1.co_unidade)::text)
+                                            Buffers: shared hit=279979 read=17390
+                                            ->  Nested Loop  (cost=0.15..570729.22 rows=1265670 width=36) (actual time=147.474..491.088 rows=3680.33 loops=3)
+                                                  Buffers: shared hit=279469 read=17390
+                                                  ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..23834.50 rows=43050 width=1306) (actual time=0.223..9.801 rows=34439.67 loops=3)
+                                                        Buffers: shared hit=6014 read=17390
+                                                  ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude_1  (cost=0.15..12.69 rows=1 width=46) (actual time=0.009..0.009 rows=0.11 loops=103319)
+                                                        Index Cond: (_geom @ s_1._geom)
+                                                        Filter: st_contains(s_1._geom, _geom)
+                                                        Rows Removed by Filter: 0
+                                                        Index Searches: 103319
+                                                        Buffers: shared hit=258872
+                                            ->  Hash  (cost=280.36..280.36 rows=9887 width=14) (actual time=1.732..1.733 rows=9887.00 loops=3)
+                                                  Buckets: 16384  Batches: 1  Memory Usage: 573kB
+                                                  Buffers: shared hit=510
+                                                  ->  Seq Scan on microdados_saude_2025_atendimentos a_1  (cost=0.00..280.36 rows=9887 width=14) (actual time=0.024..0.856 rows=9887.00 loops=3)
+                                                        Filter: at_02_conv_01
+                                                        Rows Removed by Filter: 1149
+                                                        Buffers: shared hit=510
+Planning:
+  Buffers: shared hit=24
+Planning Time: 2.287 ms
+JIT:
+  Functions: 80
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 3.562 ms (Deform 2.207 ms), Inlining 111.937 ms, Optimization 383.853 ms, Emission 253.142 ms, Total 752.493 ms
+Execution Time: 888.082 ms

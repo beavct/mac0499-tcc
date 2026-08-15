@@ -1,0 +1,19 @@
+ProduceResults@neo4j (linhas=1, dbHits=0) | municipio, distrito, total_habitantes, qtd_ambulatorios_sus
+  Projection@neo4j (linhas=1, dbHits=4) | m.nm_mun AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=1, dbHits=0) | total_habitantes DESC
+      Filter@neo4j (linhas=1, dbHits=0) | qtd_ambulatorios_sus < $autoint_1
+        OrderedAggregation@neo4j (linhas=236, dbHits=0) | m, d, total_habitantes, count(DISTINCT saude) AS qtd_ambulatorios_sus
+          Apply@neo4j (linhas=5887, dbHits=0)
+            Filter@neo4j (linhas=236, dbHits=0) | total_habitantes > $autoint_0
+              OrderedAggregation@neo4j (linhas=1042, dbHits=206638) | m, d, sum(s.v0001) AS total_habitantes
+                Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                    Filter@neo4j (linhas=1042, dbHits=2284) | d:Distrito
+                      Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+            Optional@neo4j (linhas=5887, dbHits=0) | m, d, total_habitantes
+              Filter@neo4j (linhas=5887, dbHits=74093) | saude:EquipamentoSaude AND saude.at_02_conv_01 = true
+                Expand(All)@neo4j (linhas=30224, dbHits=110759) | (s2)<-[:LOCALIZADA_EM]-(saude)
+                  Filter@neo4j (linhas=80535, dbHits=165276) | s2:SetorCensitario
+                    VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=82636, dbHits=137800) | (d)<-[:PARTE_DE*..3]-(s2) 
+                      Argument@neo4j (linhas=236, dbHits=0) | d, m, total_habitantes

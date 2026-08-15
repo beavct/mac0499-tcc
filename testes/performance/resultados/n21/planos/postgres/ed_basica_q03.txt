@@ -1,0 +1,37 @@
+Gather Merge  (cost=544816.07..743523.79 rows=1743500 width=111) (actual time=440.462..443.969 rows=236.00 loops=1)
+  Workers Planned: 1
+  Workers Launched: 1
+  Buffers: shared hit=5837 read=3771
+  ->  Sort  (cost=543816.06..546380.03 rows=1025588 width=111) (actual time=425.370..425.377 rows=118.00 loops=2)
+        Sort Key: s.nm_mun, s.nm_dist, m.no_entidade
+        Sort Method: quicksort  Memory: 38kB
+        Buffers: shared hit=5834 read=3771
+        Worker 0:  Sort Method: quicksort  Memory: 36kB
+        ->  Nested Loop  (cost=5918.08..322232.26 rows=1025588 width=111) (actual time=415.823..425.248 rows=118.00 loops=2)
+              Buffers: shared hit=5799 read=3771
+              ->  Parallel Hash Join  (cost=5917.80..7414.62 rows=2367 width=75) (actual time=415.664..418.123 rows=118.00 loops=2)
+                    Hash Cond: (((eq.co_entidade)::text = (m.co_entidade)::text) AND ((eq.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+                    Buffers: shared hit=3199 read=3771
+                    ->  Parallel Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1401.86 rows=18086 width=46) (actual time=0.010..1.274 rows=15373.00 loops=2)
+                          Buffers: shared hit=1221
+                    ->  Parallel Hash  (cost=5890.10..5890.10 rows=1847 width=48) (actual time=415.257..415.258 rows=118.00 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 96kB
+                          Buffers: shared hit=1978 read=3771
+                          ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5890.10 rows=1847 width=48) (actual time=397.028..404.149 rows=118.00 loops=2)
+                                Filter: ((NOT in_esgoto_rede_publica) AND (NOT in_esgoto_fossa_septica))
+                                Rows Removed by Filter: 16814
+                                Buffers: shared hit=1978 read=3771
+              ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1322) (actual time=0.048..0.060 rows=1.00 loops=236)
+                    Index Cond: (_geom ~ eq._geom)
+                    Filter: st_contains(_geom, eq._geom)
+                    Rows Removed by Filter: 2
+                    Index Searches: 236
+                    Buffers: shared hit=2600
+Planning:
+  Buffers: shared hit=12
+Planning Time: 1.183 ms
+JIT:
+  Functions: 40
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 4.125 ms (Deform 3.305 ms), Inlining 56.713 ms, Optimization 406.865 ms, Emission 329.673 ms, Total 797.376 ms
+Execution Time: 446.376 ms

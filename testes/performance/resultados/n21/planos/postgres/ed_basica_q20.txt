@@ -1,0 +1,70 @@
+Sort  (cost=4339482.23..4339508.06 rows=10332 width=42) (actual time=2245.807..2245.905 rows=1042.00 loops=1)
+  Sort Key: (sum(COALESCE(ascdp.v00004, '0'::real))) DESC
+  Sort Method: quicksort  Memory: 113kB
+  Buffers: shared hit=264271 read=53564
+  ->  Hash Right Join  (cost=2620507.32..4338793.35 rows=10332 width=42) (actual time=2236.340..2245.648 rows=1042.00 loops=1)
+        Hash Cond: (((s.nm_mun)::text = (s_1.nm_mun)::text) AND ((s.nm_dist)::text = (s_1.nm_dist)::text))
+        Buffers: shared hit=264271 read=53564
+        ->  GroupAggregate  (cost=2585879.27..4304007.73 rows=10332 width=38) (actual time=1416.307..1425.234 rows=998.00 loops=1)
+              Group Key: s.nm_mun, s.nm_dist
+              Buffers: shared hit=248724 read=36251
+              ->  Gather Merge  (cost=2585879.27..4137385.84 rows=13321486 width=35) (actual time=1416.268..1418.823 rows=30745.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=247995 read=36251
+                    ->  Sort  (cost=2584879.24..2598755.79 rows=5550619 width=35) (actual time=472.025..472.355 rows=10248.33 loops=3)
+                          Sort Key: s.nm_mun, s.nm_dist, m.co_entidade
+                          Sort Method: quicksort  Memory: 2460kB
+                          Buffers: shared hit=247995 read=36251
+                          Worker 0:  Sort Method: quicksort  Memory: 25kB
+                          Worker 1:  Sort Method: quicksort  Memory: 25kB
+                          ->  Nested Loop  (cost=10683.15..1659537.88 rows=5550619 width=35) (actual time=36.521..456.895 rows=10248.33 loops=3)
+                                Buffers: shared hit=241750 read=36222
+                                ->  Merge Join  (cost=10682.87..11147.25 rows=12811 width=45) (actual time=36.500..43.282 rows=10248.67 loops=3)
+                                      Merge Cond: (((m.co_entidade)::text = (eq.co_entidade)::text) AND ((m.nu_ano_censo)::text = (eq.nu_ano_censo)::text))
+                                      Buffers: shared hit=2 read=6968
+                                      ->  Sort  (cost=6862.59..6897.86 rows=14110 width=18) (actual time=22.819..23.870 rows=11287.67 loops=3)
+                                            Sort Key: m.co_entidade, m.nu_ano_censo
+                                            Sort Method: quicksort  Memory: 2859kB
+                                            Buffers: shared read=5749
+                                            Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                            Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                            ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5890.10 rows=14110 width=18) (actual time=0.042..9.126 rows=11287.67 loops=3)
+                                                  Buffers: shared read=5749
+                                      ->  Sort  (cost=3820.28..3897.15 rows=30746 width=46) (actual time=41.004..45.120 rows=30746.00 loops=1)
+                                            Sort Key: eq.co_entidade, eq.nu_ano_censo
+                                            Sort Method: quicksort  Memory: 2690kB
+                                            Buffers: shared hit=2 read=1219
+                                            ->  Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1528.46 rows=30746 width=46) (actual time=0.111..3.578 rows=30746.00 loops=1)
+                                                  Buffers: shared hit=2 read=1219
+                                ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1306) (actual time=0.031..0.040 rows=1.00 loops=30746)
+                                      Index Cond: (_geom ~ eq._geom)
+                                      Filter: st_contains(_geom, eq._geom)
+                                      Rows Removed by Filter: 2
+                                      Index Searches: 30746
+                                      Buffers: shared hit=241748 read=29254
+        ->  Hash  (cost=34473.08..34473.08 rows=10332 width=26) (actual time=820.018..820.020 rows=1042.00 loops=1)
+              Buckets: 16384  Batches: 1  Memory Usage: 191kB
+              Buffers: shared hit=15398 read=17309
+              ->  HashAggregate  (cost=34369.76..34473.08 rows=10332 width=26) (actual time=819.748..819.848 rows=1042.00 loops=1)
+                    Group Key: s_1.nm_mun, s_1.nm_dist
+                    Batches: 1  Memory Usage: 345kB
+                    Buffers: shared hit=15359 read=17309
+                    ->  Hash Join  (cost=7778.88..33612.80 rows=100928 width=26) (actual time=746.052..806.796 rows=100928.00 loops=1)
+                          Hash Cond: ((s_1.cd_setor)::text = (ascdp.cd_setor)::text)
+                          Buffers: shared hit=11690 read=17222
+                          ->  Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.014..21.927 rows=103319.00 loops=1)
+                                Buffers: shared hit=11690 read=11714
+                          ->  Hash  (cost=6517.28..6517.28 rows=100928 width=20) (actual time=745.963..745.963 rows=100928.00 loops=1)
+                                Buckets: 131072  Batches: 1  Memory Usage: 6143kB
+                                Buffers: shared read=5508
+                                ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte1 ascdp  (cost=0.00..6517.28 rows=100928 width=20) (actual time=730.801..738.185 rows=100928.00 loops=1)
+                                      Buffers: shared read=5508
+Planning:
+  Buffers: shared hit=7 read=21
+Planning Time: 1.323 ms
+JIT:
+  Functions: 93
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 12.295 ms (Deform 11.001 ms), Inlining 15.279 ms, Optimization 358.390 ms, Emission 357.111 ms, Total 743.074 ms
+Execution Time: 2250.762 ms

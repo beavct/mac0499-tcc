@@ -1,0 +1,17 @@
+ProduceResults@neo4j (linhas=236, dbHits=0) | municipio, distrito, codigo_setor, id_escola, nome_escola, rede_ensino
+  Projection@neo4j (linhas=236, dbHits=1416) | e.id_aparelho AS id_escola, CASE e.tp_dependencia
+  WHEN $autoint_0 THEN $autostring_1
+  WHEN $autoint_2 THEN $autostring_3
+  WHEN $autoint_4 THEN $autostring_5
+  WHEN $autoint_6 THEN $autostring_7
+  ELSE $autostring_8
+END AS rede_ensino, s.cd_setor AS codigo_setor
+    Sort@neo4j (linhas=236, dbHits=0) | municipio ASC, distrito ASC, nome_escola ASC
+      Projection@neo4j (linhas=236, dbHits=1180) | m.nm_mun AS municipio, d.nm_dist AS distrito, e.nm_aparelho AS nome_escola
+        Filter@neo4j (linhas=236, dbHits=109412) | (e.in_esgoto_fossa_septica = false AND e.in_esgoto_rede_publica = false) AND e:Escola
+          Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+            Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+              VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                Filter@neo4j (linhas=1042, dbHits=2084) | d:Distrito
+                  Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                    NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

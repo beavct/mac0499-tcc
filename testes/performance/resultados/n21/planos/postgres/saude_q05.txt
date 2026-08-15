@@ -1,0 +1,49 @@
+Sort  (cost=147644.13..147836.89 rows=77105 width=54) (actual time=100.380..100.385 rows=51.00 loops=1)
+  Sort Key: (COALESCE(carac.v00591, '0'::real)) DESC
+  Sort Method: quicksort  Memory: 28kB
+  Buffers: shared hit=10991 read=6379
+  ->  GroupAggregate  (cost=137207.71..138749.81 rows=77105 width=54) (actual time=100.353..100.371 rows=51.00 loops=1)
+        Group Key: s.cd_setor, carac.v00591
+        Buffers: shared hit=10991 read=6379
+        ->  Sort  (cost=137207.71..137400.47 rows=77105 width=56) (actual time=100.335..100.340 rows=55.00 loops=1)
+              Sort Key: s.cd_setor, carac.v00591, saude.co_unidade
+              Sort Method: quicksort  Memory: 29kB
+              Buffers: shared hit=10991 read=6379
+              ->  Hash Join  (cost=10326.54..128313.39 rows=77105 width=56) (actual time=59.542..100.283 rows=55.00 loops=1)
+                    Hash Cond: ((s.cd_setor)::text = (carac.cd_setor)::text)
+                    Buffers: shared hit=10991 read=6379
+                    ->  Nested Loop  (cost=291.40..116619.23 rows=236793 width=52) (actual time=21.351..62.511 rows=861.00 loops=1)
+                          Buffers: shared hit=9017
+                          ->  Hash Join  (cost=291.12..1050.58 rows=861 width=46) (actual time=21.299..23.328 rows=861.00 loops=1)
+                                Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                                Buffers: shared hit=790
+                                ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=46) (actual time=0.006..0.572 rows=11045.00 loops=1)
+                                      Buffers: shared hit=620
+                                ->  Hash  (cost=280.36..280.36 rows=861 width=14) (actual time=21.281..21.282 rows=861.00 loops=1)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 47kB
+                                      Buffers: shared hit=170
+                                      ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=861 width=14) (actual time=20.354..21.209 rows=861.00 loops=1)
+                                            Filter: at_06_conv_01
+                                            Rows Removed by Filter: 10175
+                                            Buffers: shared hit=170
+                          ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1322) (actual time=0.034..0.045 rows=1.00 loops=861)
+                                Index Cond: (_geom ~ saude._geom)
+                                Filter: st_contains(_geom, saude._geom)
+                                Rows Removed by Filter: 2
+                                Index Searches: 861
+                                Buffers: shared hit=8227
+                    ->  Hash  (cost=9614.60..9614.60 rows=33643 width=20) (actual time=37.584..37.584 rows=10042.00 loops=1)
+                          Buckets: 65536  Batches: 1  Memory Usage: 1022kB
+                          Buffers: shared hit=1974 read=6379
+                          ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte3 carac  (cost=0.00..9614.60 rows=33643 width=20) (actual time=0.429..36.505 rows=10042.00 loops=1)
+                                Filter: (COALESCE(v00591, '0'::real) > '0'::double precision)
+                                Rows Removed by Filter: 90886
+                                Buffers: shared hit=1974 read=6379
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.090 ms
+JIT:
+  Functions: 34
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 2.666 ms (Deform 2.167 ms), Inlining 0.000 ms, Optimization 1.666 ms, Emission 18.727 ms, Total 23.058 ms
+Execution Time: 103.154 ms

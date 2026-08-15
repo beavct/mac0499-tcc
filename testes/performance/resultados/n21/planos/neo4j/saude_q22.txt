@@ -1,0 +1,13 @@
+ProduceResults@neo4j (linhas=438, dbHits=0) | municipio, subdistrito, disparidade_leitos, max_leitos_setor, min_leitos_setor
+  Projection@neo4j (linhas=438, dbHits=1752) | sd.cd_subdist AS subdistrito, m.nm_mun AS municipio
+    Sort@neo4j (linhas=438, dbHits=0) | disparidade_leitos DESC
+      Projection@neo4j (linhas=438, dbHits=0) | max_leitos_setor - min_leitos_setor AS disparidade_leitos
+        Filter@neo4j (linhas=438, dbHits=0) | max_leitos_setor - min_leitos_setor > $autoint_0
+          OrderedAggregation@neo4j (linhas=1042, dbHits=0) | m, sd, max(leitos_no_setor) AS max_leitos_setor, min(leitos_no_setor) AS min_leitos_setor
+            OrderedAggregation@neo4j (linhas=103319, dbHits=0) | m, sd, s, count(DISTINCT saude) AS leitos_no_setor
+              OptionalExpand(All)@neo4j (linhas=103415, dbHits=261245) | (s)<-[:LOCALIZADA_EM]-(saude) WHERE saude.at_01_conv_01 = true AND saude:EquipamentoSaude
+                Filter@neo4j (linhas=103319, dbHits=211016) | none(anon_4 IN anon_1 WHERE anon_4 IN anon_0) AND s:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=105508, dbHits=212058) | (sd)<-[anon_1:PARTE_DE*..3]-(s)
+                    Filter@neo4j (linhas=1042, dbHits=157332) | sd:Subdistrito
+                      VarLengthExpand(All)@neo4j (linhas=78567, dbHits=81296) | (m)<-[anon_0:PARTE_DE*..3]-(sd)
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

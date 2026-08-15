@@ -1,0 +1,17 @@
+ProduceResults@neo4j (linhas=63943, dbHits=0) | municipio, distrito, codigo_setor, idosos_60_mais
+  Projection@neo4j (linhas=63943, dbHits=383658) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor
+    Sort@neo4j (linhas=63943, dbHits=0) | idosos_60_mais DESC
+      Projection@neo4j (linhas=63943, dbHits=0) | coalesce(cache[demo.v01040], $autoint_3) + coalesce(cache[demo.v01041], $autoint_4) AS idosos_60_mais
+        Filter@neo4j (linhas=63943, dbHits=1966463) | demo:PerfilDemografia AND coalesce(cache[demo.v01040], $autoint_0) + coalesce(cache[demo.v01041], $autoint_1) > $autoint_2
+          Expand(All)@neo4j (linhas=787468, dbHits=889654) | (s)-[:TEM_PERFIL]->(demo)
+            Apply@neo4j (linhas=102186, dbHits=0)
+              Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2284) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+              Anti@neo4j (linhas=102186, dbHits=0)
+                Limit@neo4j (linhas=1133, dbHits=0) | 1
+                  Filter@neo4j (linhas=1133, dbHits=100646) | saude:EquipamentoSaude AND saude.at_04_conv_01 = true
+                    Expand(All)@neo4j (linhas=40536, dbHits=143855) | (s)<-[:LOCALIZADA_EM]-(saude)
+                      Argument@neo4j (linhas=103319, dbHits=0) | s

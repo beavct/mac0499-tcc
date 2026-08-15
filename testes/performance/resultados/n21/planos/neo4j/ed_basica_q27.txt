@@ -1,0 +1,20 @@
+ProduceResults@neo4j (linhas=2, dbHits=0) | id_escola, nome_escola, municipio, criancas_0_4_no_setor
+  Projection@neo4j (linhas=2, dbHits=4) | cache[esc.id_aparelho] AS id_escola, cache[esc.nm_aparelho] AS nome_escola, m.nm_mun AS municipio
+    CacheProperties@neo4j (linhas=2, dbHits=6) | cache[esc.id_aparelho], cache[esc.nm_aparelho]
+      Sort@neo4j (linhas=2, dbHits=0) | criancas_0_4_no_setor DESC
+        Projection@neo4j (linhas=2, dbHits=0) | coalesce(cache[demo.v01031], $autoint_5) AS criancas_0_4_no_setor
+          Filter@neo4j (linhas=2, dbHits=11154) | demo:PerfilDemografia AND coalesce(cache[demo.v01031], $autoint_1) > $autoint_2
+            Expand(All)@neo4j (linhas=4925, dbHits=5586) | (s)-[:TEM_PERFIL]->(demo)
+              Apply@neo4j (linhas=661, dbHits=0)
+                CacheProperties@neo4j (linhas=18675, dbHits=37350) | cache[esc.id_aparelho]
+                  Filter@neo4j (linhas=18675, dbHits=131963) | esc.qt_tur_inf > $autoint_0 AND esc:Escola
+                    Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(esc)
+                      Filter@neo4j (linhas=103319, dbHits=213118) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                          Filter@neo4j (linhas=1042, dbHits=2120) | d:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                Anti@neo4j (linhas=661, dbHits=0)
+                  Limit@neo4j (linhas=18014, dbHits=0) | 1
+                    Filter@neo4j (linhas=18014, dbHits=142356) | (outra.qt_tur_inf > $autoint_3 AND point.distance(cache[esc.location], cache[outra.location]) <= $autoint_4) AND NOT outra.id_aparelho = cache[esc.id_aparelho]
+                      NodeIndexSeekByRange@neo4j (linhas=70847, dbHits=89594) | POINT INDEX outra:Escola(location) WHERE point.distance(location, cache[esc.location]) <= $autoint_4, cache[outra.location]

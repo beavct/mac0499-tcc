@@ -1,0 +1,23 @@
+ProduceResults@neo4j (linhas=645, dbHits=0) | municipio, total_jovens_15_19_analfabetos, total_turmas_eja_medio
+  Projection@neo4j (linhas=645, dbHits=1290) | m.nm_mun AS municipio
+    Sort@neo4j (linhas=645, dbHits=0) | total_jovens_15_19_analfabetos DESC
+      OrderedAggregation@neo4j (linhas=645, dbHits=0) | m, total_jovens_15_19_analfabetos, sum(coalesce(cache[e.qt_tur_eja_med], $autoint_2)) AS total_turmas_eja_medio
+        Apply@neo4j (linhas=30745, dbHits=0)
+          OrderedAggregation@neo4j (linhas=645, dbHits=8505) | m, sum(coalesce(cache[a.v00644], $autoint_0) - COALESCE(cache[a.v00748], $autoint_1)) AS total_jovens_15_19_analfabetos
+            CacheProperties@neo4j (linhas=100928, dbHits=294279) | cache[a.v00644], cache[a.v00748]
+              Filter@neo4j (linhas=100928, dbHits=1592660) | a:PerfilAlfabetizacao
+                Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(a)
+                  Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                    VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                      Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                        Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                          NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+          Optional@neo4j (linhas=30745, dbHits=0) | m, total_jovens_15_19_analfabetos
+            CacheProperties@neo4j (linhas=30745, dbHits=61490) | cache[e.qt_tur_eja_med]
+              Filter@neo4j (linhas=30745, dbHits=83572) | e:Escola
+                Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s2)<-[:LOCALIZADA_EM]-(e)
+                  Filter@neo4j (linhas=103319, dbHits=213124) | NOT anon_3 IN anon_4 AND s2:SetorCensitario
+                    VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d2)<-[anon_4:PARTE_DE*..3]-(s2)
+                      Filter@neo4j (linhas=1042, dbHits=2144) | d2:Distrito
+                        Expand(All)@neo4j (linhas=1042, dbHits=1687) | (m)<-[anon_3:PARTE_DE]-(d2)
+                          Argument@neo4j (linhas=645, dbHits=0) | m, total_jovens_15_19_analfabetos

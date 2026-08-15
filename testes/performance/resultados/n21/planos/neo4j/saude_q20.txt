@@ -1,0 +1,17 @@
+ProduceResults@neo4j (linhas=907, dbHits=0) | municipio, distrito, id_unidade_internacao, nome_unidade_internacao, ambulatorios_sus_no_distrito
+  Projection@neo4j (linhas=907, dbHits=0) | cache[internacao.id_aparelho] AS id_unidade_internacao, cache[internacao.nm_aparelho] AS nome_unidade_internacao
+    CacheProperties@neo4j (linhas=907, dbHits=2721) | cache[internacao.id_aparelho], cache[internacao.nm_aparelho]
+      Sort@neo4j (linhas=907, dbHits=0) | ambulatorios_sus_no_distrito DESC, municipio ASC, distrito ASC
+        Projection@neo4j (linhas=907, dbHits=3628) | m.nm_mun AS municipio, d.nm_dist AS distrito
+          Filter@neo4j (linhas=907, dbHits=105285) | internacao:EquipamentoSaude AND internacao.at_01_conv_01 = true
+            Expand(All)@neo4j (linhas=41610, dbHits=144359) | (anon_5)<-[:LOCALIZADA_EM]-(internacao)
+              Filter@neo4j (linhas=102749, dbHits=211740) | anon_5:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=105870, dbHits=183706) | (d)<-[:PARTE_DE*..3]-(anon_5)
+                  OrderedAggregation@neo4j (linhas=947, dbHits=0) | m, d, count(DISTINCT amb) AS ambulatorios_sus_no_distrito
+                    Filter@neo4j (linhas=9883, dbHits=105645) | amb:EquipamentoSaude AND amb.at_02_conv_01 = true
+                      Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_2)<-[:LOCALIZADA_EM]-(amb)
+                        Filter@neo4j (linhas=103319, dbHits=213106) | NOT anon_0 IN anon_1 AND anon_2:SetorCensitario
+                          VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(anon_2)
+                            Filter@neo4j (linhas=1042, dbHits=2102) | d:Distrito
+                              Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                                NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

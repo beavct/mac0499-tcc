@@ -1,0 +1,67 @@
+Sort  (cost=31533.96..31536.23 rows=906 width=34) (actual time=39.032..40.433 rows=7.00 loops=1)
+  Sort Key: (sum(COALESCE(par.v01188, '0'::real))) DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=24516 read=9442
+  ->  Hash Left Join  (cost=31196.85..31489.46 rows=906 width=34) (actual time=38.929..40.427 rows=7.00 loops=1)
+        Hash Cond: (((s.nm_mun)::text = (g.municipio)::text) AND ((s.nm_dist)::text = (g.distrito)::text))
+        Buffers: shared hit=24516 read=9442
+        ->  Finalize GroupAggregate  (cost=29915.86..30203.72 rows=906 width=26) (actual time=37.673..39.165 rows=7.00 loops=1)
+              Group Key: s.nm_dist
+              Buffers: shared hit=24277 read=9442
+              ->  Gather Merge  (cost=29915.86..30183.79 rows=2174 width=26) (actual time=37.446..39.157 rows=7.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=24277 read=9442
+                    ->  Partial GroupAggregate  (cost=28915.84..28932.83 rows=906 width=26) (actual time=19.786..19.893 rows=2.33 loops=3)
+                          Group Key: s.nm_dist
+                          Buffers: shared hit=24277 read=9442
+                          ->  Sort  (cost=28915.84..28918.48 rows=1058 width=26) (actual time=19.776..19.809 rows=841.00 loops=3)
+                                Sort Key: s.nm_dist
+                                Sort Method: quicksort  Memory: 199kB
+                                Buffers: shared hit=24277 read=9442
+                                Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                ->  Nested Loop  (cost=0.42..28862.69 rows=1058 width=26) (actual time=7.486..19.626 rows=841.00 loops=3)
+                                      Buffers: shared hit=24261 read=9442
+                                      ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23942.12 rows=1083 width=38) (actual time=7.479..15.415 rows=864.00 loops=3)
+                                            Filter: ((nm_mun)::text = 'Campinas'::text)
+                                            Rows Removed by Filter: 33576
+                                            Buffers: shared hit=13962 read=9442
+                                      ->  Index Scan using agregado_setores_censitarios_2022_parentesco_cd_setor_index on agregado_setores_censitarios_2022_parentesco par  (cost=0.42..4.53 rows=1 width=20) (actual time=0.004..0.004 rows=0.97 loops=2592)
+                                            Index Cond: ((cd_setor)::text = (s.cd_setor)::text)
+                                            Index Searches: 2592
+                                            Buffers: shared hit=10299
+        ->  Hash  (cost=1280.27..1280.27 rows=48 width=30) (actual time=1.234..1.238 rows=1.00 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=239
+              ->  Subquery Scan on g  (cost=1278.95..1280.27 rows=48 width=30) (actual time=1.206..1.209 rows=1.00 loops=1)
+                    Buffers: shared hit=239
+                    ->  GroupAggregate  (cost=1278.95..1279.79 rows=48 width=30) (actual time=1.204..1.207 rows=1.00 loops=1)
+                          Group Key: s_1.nm_dist
+                          Buffers: shared hit=239
+                          ->  Sort  (cost=1278.95..1279.07 rows=48 width=36) (actual time=1.199..1.202 rows=1.00 loops=1)
+                                Sort Key: s_1.nm_dist, saude.co_unidade
+                                Sort Method: quicksort  Memory: 25kB
+                                Buffers: shared hit=239
+                                ->  Nested Loop  (cost=0.57..1277.61 rows=48 width=36) (actual time=0.302..1.190 rows=1.00 loops=1)
+                                      Buffers: shared hit=239
+                                      ->  Nested Loop  (cost=0.29..338.48 rows=7 width=46) (actual time=0.189..0.822 rows=7.00 loops=1)
+                                            Buffers: shared hit=191
+                                            ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=7 width=14) (actual time=0.163..0.764 rows=7.00 loops=1)
+                                                  Filter: at_01_conv_07
+                                                  Rows Removed by Filter: 11029
+                                                  Buffers: shared hit=170
+                                            ->  Index Scan using eq_saude_2025_co_unidade_index on eq_saude_2025 saude  (cost=0.29..8.30 rows=1 width=46) (actual time=0.007..0.007 rows=1.00 loops=7)
+                                                  Index Cond: ((co_unidade)::text = (a.co_unidade)::text)
+                                                  Index Searches: 7
+                                                  Buffers: shared hit=21
+                                      ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s_1  (cost=0.28..134.15 rows=1 width=1306) (actual time=0.052..0.052 rows=0.14 loops=7)
+                                            Index Cond: (_geom ~ saude._geom)
+                                            Filter: (((nm_mun)::text = 'Campinas'::text) AND st_contains(_geom, saude._geom))
+                                            Rows Removed by Filter: 3
+                                            Index Searches: 7
+                                            Buffers: shared hit=48
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.553 ms
+Execution Time: 40.509 ms

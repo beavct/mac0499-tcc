@@ -1,0 +1,20 @@
+ProduceResults@neo4j (linhas=421, dbHits=0) | municipio, bairro
+  Sort@neo4j (linhas=421, dbHits=0) | municipio ASC, bairro ASC
+    Distinct@neo4j (linhas=421, dbHits=844) | cache[m.nm_mun] AS municipio, b.nm_bairro AS bairro
+      Apply@neo4j (linhas=422, dbHits=0)
+        OrderedDistinct@neo4j (linhas=1138, dbHits=0) | m, b
+          Filter@neo4j (linhas=4114, dbHits=32782) | e.qt_tur_inf_cre > $autoint_0 AND e:Escola
+            Expand(All)@neo4j (linhas=10956, dbHits=39981) | (s)<-[:LOCALIZADA_EM]-(e)
+              Filter@neo4j (linhas=29025, dbHits=58050) | none(anon_73 IN anon_1 WHERE anon_73 IN anon_0) AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=29025, dbHits=60239) | (b)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=2189, dbHits=157136) | b:Bairro
+                    VarLengthExpand(All)@neo4j (linhas=78567, dbHits=81296) | (m)<-[anon_0:PARTE_DE*..3]-(b)
+                      CacheProperties@neo4j (linhas=645, dbHits=646) | cache[m.nm_mun]
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+        Anti@neo4j (linhas=422, dbHits=0)
+          Limit@neo4j (linhas=716, dbHits=0) | 1
+            Filter@neo4j (linhas=716, dbHits=10346) | es:EquipamentoSaude AND es.at_02_conv_01 = true
+              Expand(All)@neo4j (linhas=4373, dbHits=14345) | (anon_4)<-[:LOCALIZADA_EM]-(es)
+                Filter@neo4j (linhas=9972, dbHits=19944) | anon_4:SetorCensitario
+                  VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=9972, dbHits=15481) | (b)<-[:PARTE_DE*..3]-(anon_4) 
+                    Argument@neo4j (linhas=1138, dbHits=0) | b

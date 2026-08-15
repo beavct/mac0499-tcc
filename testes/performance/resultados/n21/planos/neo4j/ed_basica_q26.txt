@@ -1,0 +1,11 @@
+ProduceResults@neo4j (linhas=15289, dbHits=0) | id_escola, nome_escola
+  Projection@neo4j (linhas=15289, dbHits=0) | cache[sem.id_aparelho] AS id_escola
+    Sort@neo4j (linhas=15289, dbHits=0) | nome_escola ASC
+      Projection@neo4j (linhas=15289, dbHits=61100) | sem.nm_aparelho AS nome_escola
+        Apply@neo4j (linhas=15289, dbHits=0)
+          CacheProperties@neo4j (linhas=16185, dbHits=16185) | cache[sem.id_aparelho]
+            Filter@neo4j (linhas=16185, dbHits=30745) | sem.qt_tur_inf_cre = $autoint_0
+              NodeByLabelScan@neo4j (linhas=30745, dbHits=30746) | sem:Escola
+          Limit@neo4j (linhas=15289, dbHits=0) | 1
+            Filter@neo4j (linhas=15289, dbHits=129698) | (com.qt_tur_inf_cre > $autoint_1 AND point.distance(cache[sem.location], cache[com.location]) <= $autoint_2) AND NOT com.id_aparelho = cache[sem.id_aparelho]
+              NodeIndexSeekByRange@neo4j (linhas=52226, dbHits=68471) | POINT INDEX com:Escola(location) WHERE point.distance(location, cache[sem.location]) <= $autoint_2, cache[com.location]

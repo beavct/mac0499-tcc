@@ -1,0 +1,12 @@
+ProduceResults@neo4j (linhas=6029, dbHits=0) | municipio, distrito, codigo_setor, moradores_casa_vila_condominio, qtd_escolas_medio
+  Sort@neo4j (linhas=6029, dbHits=0) | moradores_casa_vila_condominio DESC
+    EagerAggregation@neo4j (linhas=6029, dbHits=45251) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor, coalesce(c.v00085, $autoint_1) AS moradores_casa_vila_condominio, count(DISTINCT e) AS qtd_escolas_medio
+      Filter@neo4j (linhas=6518, dbHits=103532) | c:PerfilDomiciliosParte1
+        Expand(All)@neo4j (linhas=51766, dbHits=58351) | (s)-[:TEM_PERFIL]->(c)
+          Filter@neo4j (linhas=6585, dbHits=107807) | e.qt_tur_med > $autoint_0 AND e:Escola
+            Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+              Filter@neo4j (linhas=103319, dbHits=213112) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2096) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

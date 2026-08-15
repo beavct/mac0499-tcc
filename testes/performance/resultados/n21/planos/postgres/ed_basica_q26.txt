@@ -1,0 +1,54 @@
+Unique  (cost=436261.96..436275.64 rows=115 width=41) (actual time=583.903..587.215 rows=15289.00 loops=1)
+  Buffers: shared hit=219916
+  ->  Gather Merge  (cost=436261.96..436275.06 rows=115 width=41) (actual time=583.902..586.061 rows=15289.00 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=219916
+        ->  Sort  (cost=435261.95..435262.12 rows=68 width=41) (actual time=366.657..366.895 rows=7644.50 loops=2)
+              Sort Key: msem.no_entidade, sem.co_entidade
+              Sort Method: quicksort  Memory: 1269kB
+              Buffers: shared hit=219916
+              Worker 0:  Sort Method: quicksort  Memory: 26kB
+              ->  Nested Loop Semi Join  (cost=10228.34..435259.88 rows=68 width=41) (actual time=159.882..357.377 rows=7644.50 loops=2)
+                    Buffers: shared hit=219911
+                    ->  Merge Join  (cost=10227.65..10611.05 rows=10314 width=73) (actual time=156.213..165.678 rows=8092.50 loops=2)
+                          Merge Cond: (((sem.co_entidade)::text = (msem.co_entidade)::text) AND ((sem.nu_ano_censo)::text = (msem.nu_ano_censo)::text))
+                          Buffers: shared hit=12719
+                          ->  Sort  (cost=2680.77..2725.99 rows=18086 width=46) (actual time=64.236..66.112 rows=15373.00 loops=2)
+                                Sort Key: sem.co_entidade, sem.nu_ano_censo
+                                Sort Method: quicksort  Memory: 2687kB
+                                Buffers: shared hit=1221
+                                Worker 0:  Sort Method: quicksort  Memory: 28kB
+                                ->  Parallel Seq Scan on eq_educacao_basica_2024 sem  (cost=0.00..1401.86 rows=18086 width=46) (actual time=43.607..44.860 rows=15373.00 loops=2)
+                                      Buffers: shared hit=1221
+                          ->  Sort  (cost=7546.88..7595.15 rows=19310 width=46) (actual time=91.891..92.972 rows=18434.50 loops=2)
+                                Sort Key: msem.co_entidade, msem.nu_ano_censo
+                                Sort Method: quicksort  Memory: 1990kB
+                                Buffers: shared hit=11498
+                                Worker 0:  Sort Method: quicksort  Memory: 1990kB
+                                ->  Seq Scan on microdados_ed_basica_2024 msem  (cost=0.00..6172.29 rows=19310 width=46) (actual time=0.034..67.200 rows=19302.00 loops=2)
+                                      Filter: (qt_tur_inf_cre = 0)
+                                      Rows Removed by Filter: 14561
+                                      Buffers: shared hit=11498
+                    ->  Nested Loop  (cost=0.69..41.43 rows=1 width=41) (actual time=0.023..0.023 rows=0.94 loops=16185)
+                          Buffers: shared hit=207192
+                          ->  Index Scan using eq_educacao_basica_2024__geog_index on eq_educacao_basica_2024 com  (cost=0.40..38.16 rows=3 width=46) (actual time=0.014..0.015 rows=1.85 loops=16185)
+                                Index Cond: (_geog && _st_expand(sem._geog, '2000'::double precision))
+                                Filter: (((co_entidade)::text <> (sem.co_entidade)::text) AND st_dwithin(sem._geog, _geog, '2000'::double precision, true))
+                                Rows Removed by Filter: 3
+                                Index Searches: 16185
+                                Buffers: shared hit=117326
+                          ->  Index Scan using microdados_ed_basica_2024_co_entidade_index on microdados_ed_basica_2024 mcom  (cost=0.29..1.08 rows=1 width=14) (actual time=0.004..0.004 rows=0.51 loops=29955)
+                                Index Cond: ((co_entidade)::text = (com.co_entidade)::text)
+                                Filter: ((qt_tur_inf_cre > 0) AND ((nu_ano_censo)::text = (com.nu_ano_censo)::text))
+                                Rows Removed by Filter: 0
+                                Index Searches: 29955
+                                Buffers: shared hit=89866
+Planning:
+  Buffers: shared hit=24
+Planning Time: 1.480 ms
+JIT:
+  Functions: 61
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 9.572 ms (Deform 8.771 ms), Inlining 0.000 ms, Optimization 8.263 ms, Emission 79.020 ms, Total 96.855 ms
+Execution Time: 592.207 ms

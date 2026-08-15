@@ -1,0 +1,38 @@
+Sort  (cost=211601.57..211601.57 rows=1 width=42) (actual time=82.404..86.264 rows=1950.00 loops=1)
+  Sort Key: (COALESCE(b.v0001, 0)) DESC
+  Sort Method: quicksort  Memory: 166kB
+  Buffers: shared hit=21097 read=11330
+  ->  Gather  (cost=5247.64..211601.56 rows=1 width=42) (actual time=45.463..85.717 rows=1950.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=21097 read=11330
+        ->  Nested Loop Left Join  (cost=4247.64..210601.46 rows=1 width=42) (actual time=32.415..60.324 rows=650.00 loops=3)
+              Filter: (saude.co_unidade IS NULL)
+              Rows Removed by Filter: 89
+              Buffers: shared hit=21097 read=11330
+              ->  Parallel Hash Join  (cost=4247.49..28303.22 rows=14350 width=1326) (actual time=32.280..52.348 rows=723.00 loops=3)
+                    Hash Cond: ((s.cd_setor)::text = (b.cd_setor)::text)
+                    Buffers: shared hit=15604 read=11330
+                    ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1322) (actual time=0.460..9.946 rows=34439.67 loops=3)
+                          Buffers: shared hit=12074 read=11330
+                    ->  Parallel Hash  (cost=4068.12..4068.12 rows=14350 width=20) (actual time=22.727..22.728 rows=723.00 loops=3)
+                          Buckets: 65536  Batches: 1  Memory Usage: 672kB
+                          Buffers: shared hit=3530
+                          ->  Parallel Seq Scan on agregado_setores_censitarios_2022_basico b  (cost=0.00..4068.12 rows=14350 width=20) (actual time=9.640..15.032 rows=723.00 loops=3)
+                                Filter: (COALESCE(v0001, 0) > 1000)
+                                Rows Removed by Filter: 33717
+                                Buffers: shared hit=3530
+              ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.010..0.010 rows=0.12 loops=2169)
+                    Index Cond: (_geom @ s._geom)
+                    Filter: st_contains(s._geom, _geom)
+                    Rows Removed by Filter: 0
+                    Index Searches: 2169
+                    Buffers: shared hit=5376
+Planning:
+  Buffers: shared hit=16
+Planning Time: 1.267 ms
+JIT:
+  Functions: 63
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 5.677 ms (Deform 4.166 ms), Inlining 0.000 ms, Optimization 3.014 ms, Emission 51.781 ms, Total 60.472 ms
+Execution Time: 88.232 ms

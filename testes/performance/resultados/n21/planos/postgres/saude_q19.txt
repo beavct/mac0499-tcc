@@ -1,0 +1,68 @@
+Hash Right Join  (cost=53613.50..53760.12 rows=265 width=38) (actual time=104.341..108.121 rows=1.00 loops=1)
+  Hash Cond: (((s.nm_mun)::text = (s_1.nm_mun)::text) AND ((s.nm_dist)::text = (s_1.nm_dist)::text))
+  Buffers: shared hit=27917 read=21408
+  ->  GroupAggregate  (cost=27612.26..27754.84 rows=265 width=30) (actual time=52.751..56.417 rows=1.00 loops=1)
+        Group Key: s.nm_mun
+        Buffers: shared hit=14021 read=10610
+        ->  Gather Merge  (cost=27612.26..27746.43 rows=1152 width=36) (actual time=52.738..56.403 rows=2.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=14021 read=10610
+              ->  Sort  (cost=26612.24..26613.44 rows=480 width=36) (actual time=25.205..25.208 rows=0.67 loops=3)
+                    Sort Key: s.nm_mun, saude.co_unidade
+                    Sort Method: quicksort  Memory: 25kB
+                    Buffers: shared hit=14021 read=10610
+                    Worker 0:  Sort Method: quicksort  Memory: 25kB
+                    Worker 1:  Sort Method: quicksort  Memory: 25kB
+                    ->  Hash Join  (cost=296.37..26590.86 rows=480 width=36) (actual time=23.279..25.177 rows=0.67 loops=3)
+                          Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                          Buffers: shared hit=14005 read=10610
+                          ->  Nested Loop  (cost=0.15..26283.67 rows=4177 width=36) (actual time=21.849..23.743 rows=1.00 loops=3)
+                                Buffers: shared hit=13665 read=10610
+                                ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23942.12 rows=142 width=1306) (actual time=19.571..22.028 rows=106.00 loops=3)
+                                      Filter: ((nm_dist)::text = 'Vila Sônia'::text)
+                                      Rows Removed by Filter: 34334
+                                      Buffers: shared hit=12794 read=10610
+                                ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..16.48 rows=1 width=46) (actual time=0.016..0.016 rows=0.01 loops=318)
+                                      Index Cond: (_geom @ s._geom)
+                                      Filter: st_contains(s._geom, _geom)
+                                      Rows Removed by Filter: 0
+                                      Index Searches: 318
+                                      Buffers: shared hit=871
+                          ->  Hash  (cost=280.36..280.36 rows=1269 width=14) (actual time=2.115..2.116 rows=1269.00 loops=2)
+                                Buckets: 2048  Batches: 1  Memory Usage: 74kB
+                                Buffers: shared hit=340
+                                ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=1269 width=14) (actual time=0.022..1.861 rows=1269.00 loops=2)
+                                      Filter: at_04_conv_01
+                                      Rows Removed by Filter: 9767
+                                      Buffers: shared hit=340
+  ->  Hash  (cost=25997.26..25997.26 rows=265 width=30) (actual time=51.581..51.691 rows=1.00 loops=1)
+        Buckets: 1024  Batches: 1  Memory Usage: 9kB
+        Buffers: shared hit=13896 read=10798
+        ->  GroupAggregate  (cost=25953.19..25997.26 rows=265 width=30) (actual time=51.575..51.684 rows=1.00 loops=1)
+              Group Key: s_1.nm_mun
+              Buffers: shared hit=13896 read=10798
+              ->  Gather Merge  (cost=25953.19..25992.90 rows=341 width=26) (actual time=51.454..51.637 rows=318.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=13896 read=10798
+                    ->  Sort  (cost=24953.17..24953.52 rows=142 width=26) (actual time=25.466..25.475 rows=106.00 loops=3)
+                          Sort Key: s_1.nm_mun
+                          Sort Method: quicksort  Memory: 30kB
+                          Buffers: shared hit=13896 read=10798
+                          Worker 0:  Sort Method: quicksort  Memory: 29kB
+                          Worker 1:  Sort Method: quicksort  Memory: 29kB
+                          ->  Nested Loop  (cost=0.42..24948.09 rows=142 width=26) (actual time=21.636..25.403 rows=106.00 loops=3)
+                                Buffers: shared hit=13880 read=10798
+                                ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..23942.12 rows=142 width=38) (actual time=21.580..24.227 rows=106.00 loops=3)
+                                      Filter: ((nm_dist)::text = 'Vila Sônia'::text)
+                                      Rows Removed by Filter: 34334
+                                      Buffers: shared hit=12606 read=10798
+                                ->  Index Scan using agregado_setores_censitarios_2022_basico_cd_setor_index on agregado_setores_censitarios_2022_basico b  (cost=0.42..7.07 rows=1 width=20) (actual time=0.010..0.010 rows=1.00 loops=318)
+                                      Index Cond: ((cd_setor)::text = (s_1.cd_setor)::text)
+                                      Index Searches: 318
+                                      Buffers: shared hit=1274
+Planning:
+  Buffers: shared hit=28
+Planning Time: 3.282 ms
+Execution Time: 108.224 ms

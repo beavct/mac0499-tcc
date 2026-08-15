@@ -1,0 +1,19 @@
+ProduceResults@neo4j (linhas=1, dbHits=0) | id_escola, nome_escola, municipio, domicilios_lixo_irregular_no_setor
+  Projection@neo4j (linhas=1, dbHits=2) | cache[esc.id_aparelho] AS id_escola, cache[esc.nm_aparelho] AS nome_escola, m.nm_mun AS municipio
+    CacheProperties@neo4j (linhas=1, dbHits=3) | cache[esc.id_aparelho], cache[esc.nm_aparelho]
+      Sort@neo4j (linhas=1, dbHits=0) | domicilios_lixo_irregular_no_setor DESC
+        Projection@neo4j (linhas=1, dbHits=0) | coalesce(cache[dom2.v00401], $autoint_4) AS domicilios_lixo_irregular_no_setor
+          Filter@neo4j (linhas=1, dbHits=159351) | dom2:PerfilDomiciliosParte2 AND coalesce(cache[dom2.v00401], $autoint_1) > $autoint_2
+            Expand(All)@neo4j (linhas=70828, dbHits=79869) | (s)-[:TEM_PERFIL]->(dom2)
+              Apply@neo4j (linhas=9041, dbHits=0)
+                Filter@neo4j (linhas=19057, dbHits=132727) | esc.tp_dependencia IN $autolist_0 AND esc:Escola
+                  Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(esc)
+                    Filter@neo4j (linhas=103319, dbHits=213116) | NOT anon_0 IN anon_2 AND s:SetorCensitario
+                      VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (anon_1)<-[anon_2:PARTE_DE*..3]-(s)
+                        Filter@neo4j (linhas=1042, dbHits=2118) | anon_1:Distrito
+                          Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(anon_1)
+                            NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                Anti@neo4j (linhas=9041, dbHits=0)
+                  Limit@neo4j (linhas=10016, dbHits=0) | 1
+                    Filter@neo4j (linhas=10016, dbHits=685087) | vig.at_06_conv_01 = true AND point.distance(cache[esc.location], cache[vig.location]) <= $autoint_3
+                      NodeIndexSeekByRange@neo4j (linhas=323541, dbHits=342654) | POINT INDEX vig:EquipamentoSaude(location) WHERE point.distance(location, cache[esc.location]) <= $autoint_3, cache[vig.location]

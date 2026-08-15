@@ -1,0 +1,10 @@
+ProduceResults@neo4j (linhas=645, dbHits=0) | municipio, escolas_com_quadra
+  Sort@neo4j (linhas=645, dbHits=0) | municipio ASC, escolas_com_quadra DESC
+    EagerAggregation@neo4j (linhas=645, dbHits=14943) | m.nm_mun AS municipio, count(e) AS escolas_com_quadra
+      Filter@neo4j (linhas=14943, dbHits=124499) | e.in_quadra_esportes = true AND e:Escola
+        Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+          Filter@neo4j (linhas=103319, dbHits=213110) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+            VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+              Filter@neo4j (linhas=1042, dbHits=2112) | d:Distrito
+                Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                  NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

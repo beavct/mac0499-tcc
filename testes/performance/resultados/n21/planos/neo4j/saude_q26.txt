@@ -1,0 +1,13 @@
+ProduceResults@neo4j (linhas=4634, dbHits=0) | id_diagnose, nome_diagnose, id_urgencia_proxima, nome_urgencia_proxima, distancia_m
+  Projection@neo4j (linhas=4634, dbHits=18536) | diag.nm_aparelho AS nome_diagnose, u.nm_aparelho AS nome_urgencia_proxima, cache[diag.id_aparelho] AS id_diagnose, cache[u.id_aparelho] AS id_urgencia_proxima
+    Sort@neo4j (linhas=4634, dbHits=0) | distancia_m DESC
+      Projection@neo4j (linhas=4634, dbHits=0) | round(d, $autoint_0) AS distancia_m
+        Projection@neo4j (linhas=4634, dbHits=0) | urg AS u
+          Apply@neo4j (linhas=4634, dbHits=0)
+            CacheProperties@neo4j (linhas=4634, dbHits=9268) | cache[diag.id_aparelho], cache[diag.location]
+              Filter@neo4j (linhas=4634, dbHits=11032) | diag.at_03_conv_01 = true
+                NodeByLabelScan@neo4j (linhas=11041, dbHits=11042) | diag:EquipamentoSaude
+            Top@neo4j (linhas=4634, dbHits=0) | d ASC LIMIT 1
+              Projection@neo4j (linhas=5879499, dbHits=5879499) | point.distance(cache[diag.location], urg.location) AS d
+                Filter@neo4j (linhas=5879499, dbHits=51122288) | urg.at_04_conv_01 = true AND NOT cache[urg.id_aparelho] = cache[diag.id_aparelho]
+                  NodeIndexScan@neo4j (linhas=51163994, dbHits=51168628) | RANGE INDEX urg:EquipamentoSaude(id_aparelho) WHERE id_aparelho IS NOT NULL, cache[urg.id_aparelho]

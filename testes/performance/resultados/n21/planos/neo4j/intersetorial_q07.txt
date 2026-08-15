@@ -1,0 +1,18 @@
+ProduceResults@neo4j (linhas=20, dbHits=0) | municipio, distrito, codigo_setor, domicilios_sem_iluminacao
+  Sort@neo4j (linhas=20, dbHits=0) | domicilios_sem_iluminacao DESC
+    Distinct@neo4j (linhas=20, dbHits=120) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor, coalesce(cache[ent.v05013], $autoint_4) AS domicilios_sem_iluminacao
+      Filter@neo4j (linhas=20, dbHits=29125) | ent:PerfilEntornoDomicilios AND coalesce(cache[ent.v05013], $autoint_2) > $autoint_3
+        Expand(All)@neo4j (linhas=13080, dbHits=14754) | (s)-[:TEM_PERFIL]->(ent)
+          Filter@neo4j (linhas=1674, dbHits=192330) | e:Escola AND (e.qt_tur_eja_fund > $autoint_0 OR e.qt_tur_eja_med > $autoint_1)
+            Expand(All)@neo4j (linhas=37819, dbHits=140005) | (s)<-[:LOCALIZADA_EM]-(e)
+              Apply@neo4j (linhas=102186, dbHits=0)
+                Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                    Filter@neo4j (linhas=1042, dbHits=2284) | d:Distrito
+                      Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                        NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                Anti@neo4j (linhas=102186, dbHits=0)
+                  Limit@neo4j (linhas=1133, dbHits=0) | 1
+                    Filter@neo4j (linhas=1133, dbHits=100646) | saude:EquipamentoSaude AND saude.at_04_conv_01 = true
+                      Expand(All)@neo4j (linhas=40536, dbHits=143855) | (s)<-[:LOCALIZADA_EM]-(saude)
+                        Argument@neo4j (linhas=103319, dbHits=0) | s

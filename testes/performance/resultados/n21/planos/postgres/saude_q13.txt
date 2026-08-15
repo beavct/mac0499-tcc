@@ -1,0 +1,42 @@
+Sort  (cost=102827.68..102966.94 rows=55702 width=88) (actual time=52.254..52.265 rows=223.00 loops=1)
+  Sort Key: (COALESCE(dom3.v00498, '0'::real)) DESC
+  Sort Method: quicksort  Memory: 48kB
+  Buffers: shared hit=7829 read=6379
+  ->  Hash Join  (cost=10323.55..95769.85 rows=55702 width=88) (actual time=25.486..52.189 rows=223.00 loops=1)
+        Hash Cond: ((s.cd_setor)::text = (dom3.cd_setor)::text)
+        Buffers: shared hit=7829 read=6379
+        ->  Nested Loop  (cost=288.41..84536.21 rows=171063 width=84) (actual time=10.826..37.593 rows=622.00 loops=1)
+              Buffers: shared hit=5855
+              ->  Hash Join  (cost=288.13..1047.59 rows=622 width=78) (actual time=10.784..12.795 rows=622.00 loops=1)
+                    Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                    Buffers: shared hit=790
+                    ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=78) (actual time=0.005..0.532 rows=11045.00 loops=1)
+                          Buffers: shared hit=620
+                    ->  Hash  (cost=280.36..280.36 rows=622 width=14) (actual time=10.765..10.766 rows=622.00 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 36kB
+                          Buffers: shared hit=170
+                          ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=622 width=14) (actual time=10.238..10.714 rows=622.00 loops=1)
+                                Filter: at_01_conv_06
+                                Rows Removed by Filter: 10414
+                                Buffers: shared hit=170
+              ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1322) (actual time=0.031..0.039 rows=1.00 loops=622)
+                    Index Cond: (_geom ~ saude._geom)
+                    Filter: st_contains(_geom, saude._geom)
+                    Rows Removed by Filter: 2
+                    Index Searches: 622
+                    Buffers: shared hit=5065
+        ->  Hash  (cost=9614.60..9614.60 rows=33643 width=20) (actual time=14.394..14.395 rows=21580.00 loops=1)
+              Buckets: 65536  Batches: 1  Memory Usage: 1608kB
+              Buffers: shared hit=1974 read=6379
+              ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte3 dom3  (cost=0.00..9614.60 rows=33643 width=20) (actual time=0.210..12.166 rows=21580.00 loops=1)
+                    Filter: (COALESCE(v00498, '0'::real) > '100'::double precision)
+                    Rows Removed by Filter: 79348
+                    Buffers: shared hit=1974 read=6379
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.051 ms
+JIT:
+  Functions: 29
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.366 ms (Deform 0.900 ms), Inlining 0.000 ms, Optimization 0.781 ms, Emission 9.498 ms, Total 11.644 ms
+Execution Time: 53.717 ms

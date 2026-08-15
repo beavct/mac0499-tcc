@@ -1,0 +1,21 @@
+ProduceResults@neo4j (linhas=1724, dbHits=0) | municipio, dependencia_adm, qtd_escolas, percentual_no_municipio
+  Projection@neo4j (linhas=1724, dbHits=0) | r.qtd AS qtd_escolas, round((r.qtd * $autodouble_9) / total_municipio, $autoint_10) AS percentual_no_municipio
+    PartialSort@neo4j (linhas=1724, dbHits=0) | municipio ASC, dependencia_adm ASC
+      Projection@neo4j (linhas=1724, dbHits=0) | CASE r.rede
+  WHEN $autoint_0 THEN $autostring_1
+  WHEN $autoint_2 THEN $autostring_3
+  WHEN $autoint_4 THEN $autostring_5
+  WHEN $autoint_6 THEN $autostring_7
+  ELSE $autostring_8
+END AS dependencia_adm
+        Unwind@neo4j (linhas=1724, dbHits=0) | redes AS r
+          Sort@neo4j (linhas=645, dbHits=0) | municipio ASC
+            EagerAggregation@neo4j (linhas=645, dbHits=0) | municipio, collect({rede: rede, qtd: qtd_escolas}) AS redes, sum(qtd_escolas) AS total_municipio
+              EagerAggregation@neo4j (linhas=1724, dbHits=92235) | m.nm_mun AS municipio, e.tp_dependencia AS rede, count(DISTINCT e) AS qtd_escolas
+                Filter@neo4j (linhas=30745, dbHits=83572) | e:Escola
+                  Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+                    Filter@neo4j (linhas=103319, dbHits=213124) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                      VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                        Filter@neo4j (linhas=1042, dbHits=2144) | d:Distrito
+                          Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                            NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

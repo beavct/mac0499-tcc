@@ -1,0 +1,16 @@
+ProduceResults@neo4j (linhas=6585, dbHits=0) | municipio, distrito, id_escola_em, nome_escola_em, escolas_fundamental_no_distrito
+  Projection@neo4j (linhas=6585, dbHits=13170) | em.id_aparelho AS id_escola_em
+    Sort@neo4j (linhas=6585, dbHits=0) | escolas_fundamental_no_distrito DESC, municipio ASC, distrito ASC, nome_escola_em ASC
+      Projection@neo4j (linhas=6585, dbHits=39510) | m.nm_mun AS municipio, d.nm_dist AS distrito, em.nm_aparelho AS nome_escola_em
+        Filter@neo4j (linhas=6585, dbHits=107711) | em.qt_tur_med > $autoint_1 AND em:Escola
+          Expand(All)@neo4j (linhas=41760, dbHits=144927) | (anon_5)<-[:LOCALIZADA_EM]-(em)
+            Filter@neo4j (linhas=103167, dbHits=212702) | anon_5:SetorCensitario
+              VarLengthExpand(All)@neo4j (linhas=106348, dbHits=184663) | (d)<-[:PARTE_DE*..3]-(anon_5)
+                OrderedAggregation@neo4j (linhas=992, dbHits=0) | m, d, count(DISTINCT ef) AS escolas_fundamental_no_distrito
+                  Filter@neo4j (linhas=15335, dbHits=125283) | ef.qt_tur_fund > $autoint_0 AND ef:Escola
+                    Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_2)<-[:LOCALIZADA_EM]-(ef)
+                      Filter@neo4j (linhas=103319, dbHits=213112) | NOT anon_0 IN anon_1 AND anon_2:SetorCensitario
+                        VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(anon_2)
+                          Filter@neo4j (linhas=1042, dbHits=2112) | d:Distrito
+                            Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                              NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

@@ -1,0 +1,12 @@
+ProduceResults@neo4j (linhas=51, dbHits=0) | municipio, distrito, codigo_setor, crianças_rudimentar, qtd_saude_sus
+  Sort@neo4j (linhas=51, dbHits=0) | crianças_rudimentar DESC
+    EagerAggregation@neo4j (linhas=51, dbHits=275) | m.nm_mun AS municipio, d.nm_dist AS distrito, s.cd_setor AS codigo_setor, cache[c.v00591] AS crianças_rudimentar, count(DISTINCT saude) AS qtd_saude_sus
+      Filter@neo4j (linhas=55, dbHits=15099) | c:PerfilDomiciliosParte3 AND cache[c.v00591] > $autoint_0
+        Expand(All)@neo4j (linhas=6730, dbHits=7591) | (s)-[:TEM_PERFIL]->(c)
+          Filter@neo4j (linhas=861, dbHits=105645) | saude:EquipamentoSaude AND saude.at_06_conv_01 = true
+            Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(saude)
+              Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2084) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

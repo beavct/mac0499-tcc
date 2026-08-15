@@ -1,0 +1,13 @@
+ProduceResults@neo4j (linhas=30, dbHits=0) | municipio, distrito, codigo_setor, populacao, qtd_escolas, qtd_saude, total_equipamentos
+  Projection@neo4j (linhas=30, dbHits=180) | s.cd_setor AS codigo_setor, m.nm_mun AS municipio, d.nm_dist AS distrito
+    Top@neo4j (linhas=30, dbHits=0) | total_equipamentos ASC, populacao DESC LIMIT 30
+      Projection@neo4j (linhas=2169, dbHits=4338) | cache[s.v0001] AS populacao
+        Projection@neo4j (linhas=2169, dbHits=0) | anon_4 + anon_5 AS total_equipamentos
+          OrderedAggregation@neo4j (linhas=2169, dbHits=0) | d, s, m, count(DISTINCT es) AS qtd_saude, count(DISTINCT es) AS anon_5, count(DISTINCT e) AS anon_4, count(DISTINCT e) AS qtd_escolas
+            OptionalExpand(All)@neo4j (linhas=2611, dbHits=6945) | (s)<-[:LOCALIZADA_EM]-(e) WHERE e:Escola
+              OptionalExpand(All)@neo4j (linhas=2217, dbHits=6135) | (s)<-[:LOCALIZADA_EM]-(es) WHERE es:EquipamentoSaude
+                Filter@neo4j (linhas=2169, dbHits=4338) | NOT anon_0 IN anon_1 AND m:Municipio
+                  Expand(All)@neo4j (linhas=2169, dbHits=2169) | (d)-[anon_0:PARTE_DE]->(m)
+                    Filter@neo4j (linhas=2169, dbHits=220669) | cache[s.v0001] > $autoint_0 AND s:SetorCensitario
+                      VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                        NodeByLabelScan@neo4j (linhas=1042, dbHits=1043) | d:Distrito

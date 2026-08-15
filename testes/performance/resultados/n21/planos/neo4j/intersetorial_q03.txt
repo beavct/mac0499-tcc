@@ -1,0 +1,31 @@
+ProduceResults@neo4j (linhas=45, dbHits=0) | municipio, distrito, dom_sem_pavimentacao, dom_sem_calcada, escolas_fund_publicas, unidades_urgencia_sus
+  Projection@neo4j (linhas=45, dbHits=180) | m.nm_mun AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=45, dbHits=0) | dom_sem_pavimentacao DESC
+      Filter@neo4j (linhas=45, dbHits=0) | unidades_urgencia_sus < $autoint_7
+        OrderedAggregation@neo4j (linhas=110, dbHits=0) | m, d, dom_sem_calcada, escolas_fund_publicas, dom_sem_pavimentacao, count(DISTINCT saude) AS unidades_urgencia_sus
+          Apply@neo4j (linhas=438, dbHits=0)
+            Filter@neo4j (linhas=110, dbHits=0) | escolas_fund_publicas > $autoint_6
+              OrderedAggregation@neo4j (linhas=117, dbHits=0) | m, d, dom_sem_pavimentacao, dom_sem_calcada, count(DISTINCT e) AS escolas_fund_publicas
+                Apply@neo4j (linhas=4561, dbHits=0)
+                  Filter@neo4j (linhas=117, dbHits=0) | dom_sem_pavimentacao > $autoint_2 AND dom_sem_calcada > $autoint_3
+                    OrderedAggregation@neo4j (linhas=1015, dbHits=846) | m, d, sum(coalesce(cache[ent.v05007], $autoint_0)) AS dom_sem_pavimentacao, sum(coalesce(cache[ent.v05022], $autoint_1)) AS dom_sem_calcada
+                      CacheProperties@neo4j (linhas=89834, dbHits=268656) | cache[ent.v05007], cache[ent.v05022]
+                        Filter@neo4j (linhas=89834, dbHits=1592660) | ent:PerfilEntornoDomicilios
+                          Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(ent)
+                            Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                              VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                                Filter@neo4j (linhas=1042, dbHits=2258) | d:Distrito
+                                  Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                                    NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+                  Optional@neo4j (linhas=4561, dbHits=0) | m, d, dom_sem_pavimentacao, dom_sem_calcada
+                    Filter@neo4j (linhas=4561, dbHits=64752) | e.qt_tur_fund > $autoint_5 AND e.tp_dependencia IN $autolist_4 AND e:Escola
+                      Expand(All)@neo4j (linhas=17266, dbHits=65541) | (anon_4)<-[:LOCALIZADA_EM]-(e)
+                        Filter@neo4j (linhas=48275, dbHits=99358) | anon_4:SetorCensitario
+                          VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=49679, dbHits=76161) | (d)<-[:PARTE_DE*..3]-(anon_4) 
+                            Argument@neo4j (linhas=117, dbHits=0) | d, m, dom_sem_pavimentacao, dom_sem_calcada
+            Optional@neo4j (linhas=438, dbHits=0) | d, dom_sem_calcada, m, escolas_fund_publicas, dom_sem_pavimentacao
+              Filter@neo4j (linhas=432, dbHits=41924) | saude:EquipamentoSaude AND saude.at_04_conv_01 = true
+                Expand(All)@neo4j (linhas=17181, dbHits=65083) | (anon_7)<-[:LOCALIZADA_EM]-(saude)
+                  Filter@neo4j (linhas=47902, dbHits=98576) | anon_7:SetorCensitario
+                    VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=49288, dbHits=75508) | (d)<-[:PARTE_DE*..3]-(anon_7) 
+                      Argument@neo4j (linhas=110, dbHits=0) | d, m, escolas_fund_publicas, dom_sem_pavimentacao, dom_sem_calcada
