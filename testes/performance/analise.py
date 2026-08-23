@@ -42,7 +42,6 @@ DESLOC_PAR = 0.2      # deslocamento de cada elemento do par PG/Neo em torno do 
 # (sufixo "_outliers"). Cada item é uma tupla (eixo, número).
 DESTAQUES = {
     ("saude", 26),
-    ("intersetorial", 9), 
 }
 
 # Gráficos a gerar.
