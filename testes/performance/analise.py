@@ -205,21 +205,23 @@ def _boxplot_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
     ax.grid(axis="y", alpha=ALPHA_GRADE)
 
 
-def _pontos_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
-    """Um ponto por consulta (mediana), PG vs Neo4j lado a lado.
+def _barras_por_query(ax, chaves, dist_pg, dist_neo, ylabel):
+    """Colunas pareadas (PG e Neo4j) por consulta, usando a mediana das
+    execuções quentes de cada consulta.
 
-    Usado para métricas como a memória de trabalho, que quase
-    não variam entre execuções.
+    Usado para a memória de trabalho, que quase não varia entre execuções de
+    uma mesma consulta, de modo que um único valor por consulta a resume bem.
     """
     x = list(range(len(chaves)))
-    vpg = [_mediana(dist_pg.get(c, [])) for c in chaves]
-    vneo = [_mediana(dist_neo.get(c, [])) for c in chaves]
-    ax.plot(x, vpg, color=COR_PG, marker="s", markersize=7, linewidth=1.5,
-            markeredgecolor="white", markeredgewidth=0.6, label="PostgreSQL", zorder=3)
-    ax.plot(x, vneo, color=COR_NEO, marker="o", markersize=7, linewidth=1.5,
-            markeredgecolor="white", markeredgewidth=0.6, label="Neo4j", zorder=3)
-    ax.set_yscale("log")
-    todos = [v for v in vpg + vneo if v and v > 0]
+    largura = 0.4
+    vpg = [(_mediana(dist_pg.get(c, [])) or 0) for c in chaves]
+    vneo = [(_mediana(dist_neo.get(c, [])) or 0) for c in chaves]
+    ax.bar([i - largura / 2 for i in x], vpg, width=largura,
+           color=COR_PG, alpha=ALPHA_PREENCH, label="PostgreSQL", zorder=3)
+    ax.bar([i + largura / 2 for i in x], vneo, width=largura,
+           color=COR_NEO, alpha=ALPHA_PREENCH, label="Neo4j", zorder=3)
+    ax.set_yscale("log")   # a memória cobre várias ordens de grandeza
+    todos = [v for v in vpg + vneo if v > 0]
     if todos:
         ax.set_ylim(min(todos) / 1.6, max(todos) * 1.6)
     ax.set_ylabel(f"{ylabel} — escala log")
@@ -297,13 +299,13 @@ def latencia_por_grupo(pg, neo):
 def memoria_por_grupo(pg, neo):
     """Memória de trabalho de cada consulta, por grupo (PG vs Neo4j).
 
-    Usa pontos (não boxplot), pois a memória de trabalho quase não varia entre 
-    execuções de uma mesma consulta. Cada ponto é a mediana das execuções quentes 
-    da consulta.
+    Usa colunas (não boxplot), pois a memória de trabalho quase não varia entre
+    execuções de uma mesma consulta. Cada coluna é a mediana das execuções
+    quentes da consulta.
     """
     _plot_por_grupo(pg, neo,
                     lambda ls, g: _distribuicao_quente(ls, g, "mem_kb"),
-                    _pontos_por_query, "Memória de trabalho (KB)",
+                    _barras_por_query, "Memória de trabalho (KB)",
                     "Memória de trabalho por consulta", "grupo_memoria",
                     separar_outliers=False)
 
