@@ -5,3 +5,5 @@ __pycache__/
 output/
 .venv/
 *validacao/output/
+text2cypher/vectorstore/
+text2cypher/dicionario/corpus/variaveis.json
