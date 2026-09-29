@@ -20,7 +20,7 @@ Bacharelado em Ciência da Computação, IME-USP. Orientadora: Profa. Dra. Kelly
 
 Este projeto migra os dados geoespaciais e socioeconômicos da plataforma [CulturaEduca.cc](https://plataforma.culturaeduca.cc/) de um banco relacional (PostgreSQL/PostGIS) para um banco de dados orientado a grafos (Neo4j), e implementa uma interface de consulta em linguagem natural via LLMs (Text-to-Cypher).
 
-O benchmark compara 60 consultas analíticas executadas nos dois modelos (SQL vs. Cypher) sobre os municípios de São Paulo, Campinas e São Bernardo do Campo.
+O benchmark compara 66 consultas analíticas executadas nos dois modelos (SQL vs. Cypher) sobre o estado de São Paulo.
 
 ---
 
@@ -30,8 +30,9 @@ O benchmark compara 60 consultas analíticas executadas nos dois modelos (SQL vs
 ### Pré-requisitos
 
 - Python 3.10+
-- Neo4j 5.x rodando localmente (Community ou Desktop)
+- Neo4j rodando localmente (Community ou Desktop)
 - Acesso ao PostgreSQL da CulturaEduca — remoto ou uma cópia local (ver [Fonte de dados PostgreSQL](#pg))
+- Para a consulta em linguagem natural: [Ollama](https://ollama.com) com o modelo baixado (ver [`text2cypher/workflow/`](text2cypher/workflow))
 
 ### Instalação
 
@@ -150,14 +151,20 @@ mac0499-tcc/
 │   ├── 02_educacao.py        ← escolas (INEP 2024)
 │   ├── 03_saude.py           ← equipamentos de saúde (CNES 2025)
 │   ├── 04_perfis.py          ← perfis censitários (IBGE 2022)
+│   ├── 05_indices.py         ← índices (espaciais e, opcionalmente, de nome)
 │   ├── run_all.py            ← executa tudo em sequência
 │   └── auxiliares/           ← listas de colunas e configurações
 │
-├── perguntas/                ← 60 consultas do benchmark
+├── perguntas/                ← 66 consultas do benchmark
 │   ├── README.md             ← mapa de consultas (índice completo)
-│   ├── ed_basica/            ← 25 consultas de educação
-│   ├── saude/                ← 25 consultas de saúde
-│   └── intersetorial/       ← 10 consultas cruzando educação + saúde
+│   ├── ed_basica/            ← 27 consultas de educação
+│   ├── saude/                ← 27 consultas de saúde
+│   └── intersetorial/        ← 12 consultas cruzando educação + saúde
+│
+├── text2cypher/              ← consulta em linguagem natural (NL → Cypher)
+│   ├── README.md
+│   ├── dicionario/           ← RAG das propriedades (extração, indexação no Chroma, retriever)
+│   └── workflow/             ← workflow agêntico adaptado do CyVerACT (CC BY-SA 4.0)
 │
 ├── ferramentas/              ← utilitários de administração
 │   ├── neo4j_admin.py        ← inspeciona e limpa o grafo (contar, reset, etc.)
@@ -249,6 +256,22 @@ pg_dump -h localhost -U <usuario> -d culturaeduca -Fc -f backup_brasil.dump
 
 Os `DELETE` não liberam espaço em disco automaticamente; rode `VACUUM FULL` depois, se quiser recuperar.
 
+### 6. Consultar em linguagem natural (Text-to-Cypher)
+
+Com o PostgreSQL e o Neo4j no ar (o grafo já carregado pelo ETL):
+
+```bash
+# 1) monta o dicionário das propriedades e indexa no Chroma (uma vez, ou quando o grafo mudar)
+cd text2cypher/dicionario
+python run_all.py
+
+# 2) faz uma pergunta ao workflow (requer o Ollama com o modelo baixado)
+cd ../workflow
+python executar.py "quantas escolas sem água potável há em Campinas?"
+```
+
+Detalhes em [`text2cypher/README.md`](text2cypher/README.md) e [`text2cypher/workflow/README.md`](text2cypher/workflow/README.md).
+
 ---
 
 <a name="fontes"></a>
@@ -262,10 +285,10 @@ Os `DELETE` não liberam espaço em disco automaticamente; rode `VACUUM FULL` de
 
 <a name="recorte"></a>
 ## Recorte territorial
-Estados:
-- São Paulo (cd_uf: 35)
 
-Cidades:
+O recorte usado nos experimentos é o **estado de São Paulo** (`cd_uf: 35`, `ESCOPO=estado` em `compartilhado/.env`).
+
+O ETL também aceita um recorte reduzido, de três municípios (`ESCOPO=cidades`), usado nas etapas iniciais de desenvolvimento:
 - São Paulo (cd_mun: 3550308)
 - Campinas (cd_mun: 3548708)
 - São Bernardo do Campo (cd_mun: 3509502)

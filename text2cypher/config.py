@@ -34,19 +34,27 @@ EMBEDDING_MODEL = os.getenv(
     "EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 )
 
-# Nº de variáveis v* recuperadas por pergunta no retriever (Camada A)
+# Nº de propriedades recuperadas por pergunta no retriever
 TOP_K = int(os.getenv("TOP_K", "20"))
 
 # --- Mapeamento nó do grafo -> origem das descrições no Postgres ----------
-# Os perfis (label | tabela) são lidos de etl/auxiliares/config_perfis.txt,
-# para ficar em sincronia com o ETL. A geografia é mapeada aqui à parte:
-# as variáveis v0001..v0007 ficam como propriedades do nó SetorCensitario.
+# Os perfis vêm de etl/auxiliares/config_perfis.txt; as variáveis v0001..v0007
+# ficam no nó SetorCensitario.
 CONFIG_PERFIS = os.path.join(BASE_DIR, "..", "etl", "auxiliares", "config_perfis.txt")
 
 GEOGRAFIA = {
     "no_label": "SetorCensitario",
     "tabela": "dtb_setores_censitarios_2022",
 }
+
+# Equipamentos: mesmas listas de colunas do ETL, descrições das tabelas de microdados
+AUXILIARES_ETL = os.path.join(BASE_DIR, "..", "etl", "auxiliares")
+EQUIPAMENTOS = [
+    {"no_label": "Escola", "tabela": "microdados_ed_basica_2024",
+     "colunas": os.path.join(AUXILIARES_ETL, "colunas_educacao.txt")},
+    {"no_label": "EquipamentoSaude", "tabela": "microdados_saude_2025_atendimentos",
+     "colunas": os.path.join(AUXILIARES_ETL, "colunas_saude.txt")},
+]
 
 # Colunas internas do PG que nunca viram documento
 COLUNAS_IGNORAR = {
@@ -65,6 +73,8 @@ TEMA_POR_LABEL = {
     "PerfilDomiciliosParte3": "Domicílios (parte 3)",
     "PerfilEntornoDomicilios": "Entorno dos domicílios",
     "SetorCensitario": "Geografia / setor censitário",
+    "Escola": "Escola de educação básica",
+    "EquipamentoSaude": "Equipamento de saúde",
 }
 
 def load_perfis_config():
@@ -80,3 +90,9 @@ def load_perfis_config():
                 # a tabela no config vem com prefixo culturaeduca.datasets.
                 perfis.append({"no_label": parts[0], "tabela": parts[1].split(".")[-1]})
     return perfis
+
+
+def load_colunas(path):
+    """Lê uma lista de colunas do ETL (uma por linha; # é comentário) -> set."""
+    with open(path, "r", encoding="utf-8") as f:
+        return {l.strip() for l in f if l.strip() and not l.strip().startswith("#")}

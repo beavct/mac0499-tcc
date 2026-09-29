@@ -1,14 +1,6 @@
 """
-Etapa 2 (Camada A / schema-linking): embeda o corpus de variáveis e indexa no
-Chroma (persistente em disco).
-
-Lê dicionario/corpus/variaveis.json (etapa 01), embeda o campo `texto` de cada
-variável com o modelo multilíngue definido em config.EMBEDDING_MODEL e grava a
-coleção no diretório vectorstore/. As demais informações (variável, nó, tema,
-tabela, descrição) ficam como metadados, para o retriever montar o schema
-enxuto que alimenta o gerador de Cypher.
-
-Similaridade de cosseno (hnsw:space=cosine).
+Etapa 2: Embeda o corpus da etapa 1 e indexa no Chroma (vectorstore/), com
+similaridade de cosseno.
 """
 import json
 import os
@@ -63,11 +55,11 @@ def indexar(docs, batch_size=256):
 
 def main():
     print("=" * 60)
-    print("ETAPA 2: CAMADA A — Indexação no Chroma")
+    print("ETAPA 2: Indexação no Chroma")
     print("=" * 60)
 
     docs = carregar_corpus()
-    print(f"[corpus] {len(docs)} variáveis | modelo: {EMBEDDING_MODEL}")
+    print(f"[corpus] {len(docs)} propriedades | modelo: {EMBEDDING_MODEL}")
 
     model, col = indexar(docs)
     print(f"\n[OK] coleção '{CHROMA_COLLECTION}' com {col.count()} itens em {VECTORSTORE_DIR}")

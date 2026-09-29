@@ -1,11 +1,6 @@
 """
-Retriever da Camada A (schema-linking): dada uma pergunta em linguagem natural,
-recupera no índice Chroma as variáveis v* mais prováveis (por descrição) e monta
-o fragmento de esquema que alimenta o gerador de Cypher do workflow.
-
-As variáveis vêm agrupadas pelo nó do grafo onde vivem, já anotadas com a aresta
-de ligação (SetorCensitario)-[:TEM_PERFIL]->(Perfil*), que o gerador precisa para
-chegar às propriedades a partir do setor.
+Retriever do RAG das propriedades: dada uma pergunta, busca no Chroma as propriedades
+mais parecidas e monta o trecho do esquema com elas, agrupadas por nó.
 
 Uso (teste rápido pelo terminal):
     python retriever.py "Há quantas pessoas alfabetizadas de 15 a 19 anos por setor?" [k]
@@ -18,9 +13,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import chromadb
 from sentence_transformers import SentenceTransformer
 from config import VECTORSTORE_DIR, CHROMA_COLLECTION, EMBEDDING_MODEL, TOP_K
-
-# Perfis censitários ligam-se ao setor por esta aresta; SetorCensitario é a raiz.
-ARESTA_PERFIL = "(:SetorCensitario)-[:TEM_PERFIL]->(:{label})"
 
 _model = None
 _collection = None
@@ -47,7 +39,7 @@ def _get_collection():
 
 
 def buscar(pergunta, k=TOP_K):
-    """Retorna as top-k variáveis v* mais similares à pergunta (por cosseno)."""
+    """Retorna as top-k propriedades mais similares à pergunta (por cosseno)."""
     emb = _get_model().encode([pergunta], normalize_embeddings=True).tolist()
     res = _get_collection().query(query_embeddings=emb, n_results=k)
 
@@ -73,26 +65,35 @@ def agrupar_por_no(variaveis):
     return grupos
 
 
+def propriedades_indexadas():
+    """{rótulo: set(propriedades)} de tudo que está no índice."""
+    por_no = {}
+    for meta in _get_collection().get(include=["metadatas"])["metadatas"]:
+        por_no.setdefault(meta["no_label"], set()).add(meta["variavel"])
+    return por_no
+
+
+def _aresta(label):
+    """Aresta que liga o nó ao SetorCensitario (a raiz, que não precisa de aresta)."""
+    if label == "SetorCensitario":
+        return None
+    if label.startswith("Perfil"):
+        return f"(:SetorCensitario)-[:TEM_PERFIL]->(:{label})"
+    return f"(:{label})-[:LOCALIZADA_EM]->(:SetorCensitario)"  # Escola, EquipamentoSaude
+
+
 # ---------------------------------------------------------------------------
-# MONTAGEM DO ESQUEMA (fragmento das variáveis v*)
+# MONTAGEM DO ESQUEMA
 # ---------------------------------------------------------------------------
 
 
 def montar_fragmento_schema(pergunta, k=TOP_K):
-    """
-    Monta o fragmento de esquema com as variáveis v* relevantes, agrupadas por nó
-    e anotadas com a aresta de ligação. Retorna (texto, variaveis).
-
-    O backbone estrutural (hierarquia territorial, escolas, equipamentos) é
-    acrescentado depois pelo nó de esquema do workflow, a partir do próprio grafo.
-    """
+    """Monta o trecho do esquema com as propriedades relevantes. Retorna (texto, variaveis)."""
     variaveis = buscar(pergunta, k)
     linhas = []
     for label, vs in agrupar_por_no(variaveis).items():
-        if label == "SetorCensitario":
-            linhas.append(f"{label}:")
-        else:
-            linhas.append(f"{label}  // ligado por {ARESTA_PERFIL.format(label=label)}")
+        aresta = _aresta(label)
+        linhas.append(f"{label}  // ligado por {aresta}" if aresta else f"{label}:")
         for v in vs:
             linhas.append(f"    {v['variavel']}  // {v['descricao']}")
     return "\n".join(linhas), variaveis
@@ -114,7 +115,7 @@ def main():
     print(f"Pergunta: {pergunta!r}  (top-{k})\n")
     for v in variaveis:
         print(f"  {v['score']:.3f}  {v['no_label']}.{v['variavel']}  ->  {v['descricao']}")
-    print("\n--- fragmento de esquema ---")
+    print("\n--- trecho do esquema ---")
     print(fragmento)
 
 

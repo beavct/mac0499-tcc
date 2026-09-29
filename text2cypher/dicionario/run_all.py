@@ -1,5 +1,5 @@
 """
-Executa as etapas da Camada A (schema-linking) em ordem.
+Executa as etapas do dicionário (01 e 02) em ordem.
 Uso: python run_all.py
 """
 import subprocess
@@ -24,7 +24,7 @@ def main():
             sys.exit(1)
 
     print(f"\n{'#' * 60}")
-    print("# CAMADA A COMPLETA!")
+    print("# DICIONÁRIO COMPLETO!")
     print(f"{'#' * 60}")
 
 

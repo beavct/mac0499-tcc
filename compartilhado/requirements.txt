@@ -2,5 +2,12 @@ psycopg2-binary
 neo4j
 python-dotenv
 matplotlib
-chromadb
-sentence-transformers
+
+# Text-to-Cypher: versões fixadas para que todas as máquinas instalem o mesmo
+# (conferidas para Python 3.12 e 3.14)
+chromadb==1.5.9
+sentence-transformers==6.0.1
+langgraph==1.2.12
+langchain-core==1.6.5
+langchain-openai==1.6.6
+CyVer==2.0.2
