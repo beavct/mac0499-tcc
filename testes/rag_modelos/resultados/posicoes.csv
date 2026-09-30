@@ -1,0 +1,1009 @@
+modelo,consulta,propriedade,grupo,pos
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/2,tp_dependencia,código (tp_*),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/3,in_esgoto_fossa_septica,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/3,in_esgoto_rede_publica,booleana,1
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/3,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/4,in_quadra_esportes,booleana,2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/5,qt_tur_med,outras (qt_* etc.),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/6,v00901,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/7,qt_tur_med,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/7,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/7,v00094,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),3
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/8,v01211,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/9,qt_tur_fund,outras (qt_* etc.),12
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/9,v00006,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/10,qt_tur_fund,outras (qt_* etc.),10
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/10,qt_tur_med,outras (qt_* etc.),1
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),7
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/11,qt_tur_med,outras (qt_* etc.),8
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/11,v00644,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/11,v00748,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/12,v01031,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),1
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/13,v00078,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/14,qt_tur_inf,outras (qt_* etc.),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/14,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/14,v01031,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/15,v01215,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/16,v01034,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/17,qt_tur_med,outras (qt_* etc.),6
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/17,v00085,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),1
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/18,v00644,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/18,v00748,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/19,qt_tur_inf,outras (qt_* etc.),6
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),4
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/20,v00004,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),14
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/21,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/21,v00050,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),15
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/22,v01320,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/23,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/23,v00495,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/24,in_laboratorio_ciencias,booleana,1
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/25,qt_tur_med,outras (qt_* etc.),5
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),15
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/27,qt_tur_inf,outras (qt_* etc.),2
+paraphrase-multilingual-MiniLM-L12-v2,ed_basica/27,v01031,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/1,at_02_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/1,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/2,v00006,v* (Censo),4
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/3,at_04_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/3,qt_tur_fund,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/3,tp_dependencia,código (tp_*),1
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/3,v05007,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/3,v05022,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/4,at_02_conv_01,booleana,1
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/5,at_02_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/5,tp_dependencia,código (tp_*),5
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/5,v01040,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/5,v01041,v* (Censo),11
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/6,at_04_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),14
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),3
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/6,v01041,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/7,at_04_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/7,v05013,v* (Censo),6
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/8,at_01_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/8,v00009,v* (Censo),13
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/9,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/10,at_06_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/10,tp_dependencia,código (tp_*),5
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/10,v00094,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/11,at_06_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/12,at_06_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/12,tp_dependencia,código (tp_*),
+paraphrase-multilingual-MiniLM-L12-v2,intersetorial/12,v00401,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/1,at_01_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/1,v00002,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/2,at_02_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/2,v00644,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/2,v00748,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/3,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/4,at_04_conv_06,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/4,v01020,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/5,at_06_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/5,v00591,v* (Censo),2
+paraphrase-multilingual-MiniLM-L12-v2,saude/6,at_04_conv_01,booleana,5
+paraphrase-multilingual-MiniLM-L12-v2,saude/6,v01040,v* (Censo),2
+paraphrase-multilingual-MiniLM-L12-v2,saude/6,v01041,v* (Censo),3
+paraphrase-multilingual-MiniLM-L12-v2,saude/7,at_01_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/7,v00001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/8,at_01_conv_07,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/8,v01188,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/9,at_06_conv_01,booleana,3
+paraphrase-multilingual-MiniLM-L12-v2,saude/9,v01019,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/9,v01030,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/10,at_02_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/10,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/11,at_04_conv_01,booleana,5
+paraphrase-multilingual-MiniLM-L12-v2,saude/11,v01040,v* (Censo),3
+paraphrase-multilingual-MiniLM-L12-v2,saude/11,v01041,v* (Censo),1
+paraphrase-multilingual-MiniLM-L12-v2,saude/12,at_03_conv_01,booleana,10
+paraphrase-multilingual-MiniLM-L12-v2,saude/12,v01318,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/13,at_01_conv_06,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/13,v00498,v* (Censo),6
+paraphrase-multilingual-MiniLM-L12-v2,saude/14,at_02_conv_05,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/14,v00111,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/15,at_04_conv_06,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/15,v00092,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/16,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/16,v00312,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/17,at_04_conv_05,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/17,v01320,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/18,at_06_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/18,v00238,v* (Censo),19
+paraphrase-multilingual-MiniLM-L12-v2,saude/19,at_04_conv_01,booleana,7
+paraphrase-multilingual-MiniLM-L12-v2,saude/19,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/20,at_01_conv_01,booleana,6
+paraphrase-multilingual-MiniLM-L12-v2,saude/20,at_02_conv_01,booleana,5
+paraphrase-multilingual-MiniLM-L12-v2,saude/21,at_06_conv_05,booleana,1
+paraphrase-multilingual-MiniLM-L12-v2,saude/21,v00901,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/22,at_01_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/23,at_01_conv_07,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/23,v01389,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/24,at_06_conv_01,booleana,6
+paraphrase-multilingual-MiniLM-L12-v2,saude/24,v00316,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/25,at_02_conv_01,booleana,3
+paraphrase-multilingual-MiniLM-L12-v2,saude/25,v0001,v* (Censo),
+paraphrase-multilingual-MiniLM-L12-v2,saude/26,at_03_conv_01,booleana,4
+paraphrase-multilingual-MiniLM-L12-v2,saude/26,at_04_conv_01,booleana,1
+paraphrase-multilingual-MiniLM-L12-v2,saude/27,at_04_conv_01,booleana,
+paraphrase-multilingual-MiniLM-L12-v2,saude/27,v01068,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/2,tp_dependencia,código (tp_*),10
+paraphrase-multilingual-mpnet-base-v2,ed_basica/3,in_esgoto_fossa_septica,booleana,2
+paraphrase-multilingual-mpnet-base-v2,ed_basica/3,in_esgoto_rede_publica,booleana,1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/3,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/4,in_quadra_esportes,booleana,3
+paraphrase-multilingual-mpnet-base-v2,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/5,qt_tur_med,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/6,v00901,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/7,qt_tur_med,outras (qt_* etc.),17
+paraphrase-multilingual-mpnet-base-v2,ed_basica/7,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/7,v00094,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),3
+paraphrase-multilingual-mpnet-base-v2,ed_basica/8,v01211,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/9,qt_tur_fund,outras (qt_* etc.),13
+paraphrase-multilingual-mpnet-base-v2,ed_basica/9,v00006,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/10,qt_tur_fund,outras (qt_* etc.),8
+paraphrase-multilingual-mpnet-base-v2,ed_basica/10,qt_tur_med,outras (qt_* etc.),4
+paraphrase-multilingual-mpnet-base-v2,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/11,qt_tur_med,outras (qt_* etc.),10
+paraphrase-multilingual-mpnet-base-v2,ed_basica/11,v00644,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/11,v00748,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/12,v01031,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),9
+paraphrase-multilingual-mpnet-base-v2,ed_basica/13,v00078,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/14,qt_tur_inf,outras (qt_* etc.),8
+paraphrase-multilingual-mpnet-base-v2,ed_basica/14,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/14,v01031,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/15,v01215,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/16,v01034,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/17,qt_tur_med,outras (qt_* etc.),2
+paraphrase-multilingual-mpnet-base-v2,ed_basica/17,v00085,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/18,v00644,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/18,v00748,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/19,qt_tur_inf,outras (qt_* etc.),5
+paraphrase-multilingual-mpnet-base-v2,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/20,v00004,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/21,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/21,v00050,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),3
+paraphrase-multilingual-mpnet-base-v2,ed_basica/22,v01320,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/23,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/23,v00495,v* (Censo),16
+paraphrase-multilingual-mpnet-base-v2,ed_basica/24,in_laboratorio_ciencias,booleana,1
+paraphrase-multilingual-mpnet-base-v2,ed_basica/25,qt_tur_med,outras (qt_* etc.),2
+paraphrase-multilingual-mpnet-base-v2,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,ed_basica/27,qt_tur_inf,outras (qt_* etc.),8
+paraphrase-multilingual-mpnet-base-v2,ed_basica/27,v01031,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/1,at_02_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/1,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/2,v00006,v* (Censo),4
+paraphrase-multilingual-mpnet-base-v2,intersetorial/3,at_04_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/3,qt_tur_fund,outras (qt_* etc.),17
+paraphrase-multilingual-mpnet-base-v2,intersetorial/3,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/3,v05007,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/3,v05022,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/4,at_02_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/5,at_02_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/5,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/5,v01040,v* (Censo),3
+paraphrase-multilingual-mpnet-base-v2,intersetorial/5,v01041,v* (Censo),1
+paraphrase-multilingual-mpnet-base-v2,intersetorial/6,at_04_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),11
+paraphrase-multilingual-mpnet-base-v2,intersetorial/6,v01041,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/7,at_04_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/7,v05013,v* (Censo),6
+paraphrase-multilingual-mpnet-base-v2,intersetorial/8,at_01_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),13
+paraphrase-multilingual-mpnet-base-v2,intersetorial/8,v00009,v* (Censo),9
+paraphrase-multilingual-mpnet-base-v2,intersetorial/9,v0001,v* (Censo),1
+paraphrase-multilingual-mpnet-base-v2,intersetorial/10,at_06_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/10,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/10,v00094,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/11,at_06_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/12,at_06_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,intersetorial/12,tp_dependencia,código (tp_*),
+paraphrase-multilingual-mpnet-base-v2,intersetorial/12,v00401,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/1,at_01_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/1,v00002,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/2,at_02_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/2,v00644,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/2,v00748,v* (Censo),17
+paraphrase-multilingual-mpnet-base-v2,saude/3,v0001,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/4,at_04_conv_06,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/4,v01020,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/5,at_06_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/5,v00591,v* (Censo),1
+paraphrase-multilingual-mpnet-base-v2,saude/6,at_04_conv_01,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/6,v01040,v* (Censo),3
+paraphrase-multilingual-mpnet-base-v2,saude/6,v01041,v* (Censo),2
+paraphrase-multilingual-mpnet-base-v2,saude/7,at_01_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/7,v00001,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/8,at_01_conv_07,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/8,v01188,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/9,at_06_conv_01,booleana,5
+paraphrase-multilingual-mpnet-base-v2,saude/9,v01019,v* (Censo),13
+paraphrase-multilingual-mpnet-base-v2,saude/9,v01030,v* (Censo),6
+paraphrase-multilingual-mpnet-base-v2,saude/10,at_02_conv_01,booleana,8
+paraphrase-multilingual-mpnet-base-v2,saude/10,v0001,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/11,at_04_conv_01,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/11,v01040,v* (Censo),8
+paraphrase-multilingual-mpnet-base-v2,saude/11,v01041,v* (Censo),4
+paraphrase-multilingual-mpnet-base-v2,saude/12,at_03_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/12,v01318,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/13,at_01_conv_06,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/13,v00498,v* (Censo),5
+paraphrase-multilingual-mpnet-base-v2,saude/14,at_02_conv_05,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/14,v00111,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/15,at_04_conv_06,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/15,v00092,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/16,v0001,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/16,v00312,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/17,at_04_conv_05,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/17,v01320,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/18,at_06_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/18,v00238,v* (Censo),16
+paraphrase-multilingual-mpnet-base-v2,saude/19,at_04_conv_01,booleana,18
+paraphrase-multilingual-mpnet-base-v2,saude/19,v0001,v* (Censo),6
+paraphrase-multilingual-mpnet-base-v2,saude/20,at_01_conv_01,booleana,2
+paraphrase-multilingual-mpnet-base-v2,saude/20,at_02_conv_01,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/21,at_06_conv_05,booleana,7
+paraphrase-multilingual-mpnet-base-v2,saude/21,v00901,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/22,at_01_conv_01,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/23,at_01_conv_07,booleana,
+paraphrase-multilingual-mpnet-base-v2,saude/23,v01389,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/24,at_06_conv_01,booleana,8
+paraphrase-multilingual-mpnet-base-v2,saude/24,v00316,v* (Censo),5
+paraphrase-multilingual-mpnet-base-v2,saude/25,at_02_conv_01,booleana,6
+paraphrase-multilingual-mpnet-base-v2,saude/25,v0001,v* (Censo),
+paraphrase-multilingual-mpnet-base-v2,saude/26,at_03_conv_01,booleana,4
+paraphrase-multilingual-mpnet-base-v2,saude/26,at_04_conv_01,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/27,at_04_conv_01,booleana,1
+paraphrase-multilingual-mpnet-base-v2,saude/27,v01068,v* (Censo),
+multilingual-e5-small,ed_basica/2,tp_dependencia,código (tp_*),5
+multilingual-e5-small,ed_basica/3,in_esgoto_fossa_septica,booleana,1
+multilingual-e5-small,ed_basica/3,in_esgoto_rede_publica,booleana,2
+multilingual-e5-small,ed_basica/3,tp_dependencia,código (tp_*),
+multilingual-e5-small,ed_basica/4,in_quadra_esportes,booleana,1
+multilingual-e5-small,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),2
+multilingual-e5-small,ed_basica/5,qt_tur_med,outras (qt_* etc.),4
+multilingual-e5-small,ed_basica/6,v00901,v* (Censo),18
+multilingual-e5-small,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/7,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/7,tp_dependencia,código (tp_*),
+multilingual-e5-small,ed_basica/7,v00094,v* (Censo),11
+multilingual-e5-small,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),2
+multilingual-e5-small,ed_basica/8,v01211,v* (Censo),
+multilingual-e5-small,ed_basica/9,qt_tur_fund,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/9,v00006,v* (Censo),8
+multilingual-e5-small,ed_basica/10,qt_tur_fund,outras (qt_* etc.),3
+multilingual-e5-small,ed_basica/10,qt_tur_med,outras (qt_* etc.),1
+multilingual-e5-small,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),17
+multilingual-e5-small,ed_basica/11,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/11,v00644,v* (Censo),12
+multilingual-e5-small,ed_basica/11,v00748,v* (Censo),1
+multilingual-e5-small,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),1
+multilingual-e5-small,ed_basica/12,v01031,v* (Censo),2
+multilingual-e5-small,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/13,v00078,v* (Censo),3
+multilingual-e5-small,ed_basica/14,qt_tur_inf,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/14,tp_dependencia,código (tp_*),
+multilingual-e5-small,ed_basica/14,v01031,v* (Censo),17
+multilingual-e5-small,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),1
+multilingual-e5-small,ed_basica/15,v01215,v* (Censo),
+multilingual-e5-small,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),2
+multilingual-e5-small,ed_basica/16,v01034,v* (Censo),1
+multilingual-e5-small,ed_basica/17,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/17,v00085,v* (Censo),1
+multilingual-e5-small,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),2
+multilingual-e5-small,ed_basica/18,v00644,v* (Censo),8
+multilingual-e5-small,ed_basica/18,v00748,v* (Censo),1
+multilingual-e5-small,ed_basica/19,qt_tur_inf,outras (qt_* etc.),2
+multilingual-e5-small,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/20,v00004,v* (Censo),
+multilingual-e5-small,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),3
+multilingual-e5-small,ed_basica/21,tp_dependencia,código (tp_*),
+multilingual-e5-small,ed_basica/21,v00050,v* (Censo),1
+multilingual-e5-small,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),1
+multilingual-e5-small,ed_basica/22,v01320,v* (Censo),
+multilingual-e5-small,ed_basica/23,tp_dependencia,código (tp_*),
+multilingual-e5-small,ed_basica/23,v00495,v* (Censo),1
+multilingual-e5-small,ed_basica/24,in_laboratorio_ciencias,booleana,1
+multilingual-e5-small,ed_basica/25,qt_tur_med,outras (qt_* etc.),1
+multilingual-e5-small,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),9
+multilingual-e5-small,ed_basica/27,qt_tur_inf,outras (qt_* etc.),
+multilingual-e5-small,ed_basica/27,v01031,v* (Censo),
+multilingual-e5-small,intersetorial/1,at_02_conv_01,booleana,2
+multilingual-e5-small,intersetorial/1,tp_dependencia,código (tp_*),
+multilingual-e5-small,intersetorial/2,v00006,v* (Censo),5
+multilingual-e5-small,intersetorial/3,at_04_conv_01,booleana,13
+multilingual-e5-small,intersetorial/3,qt_tur_fund,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/3,tp_dependencia,código (tp_*),
+multilingual-e5-small,intersetorial/3,v05007,v* (Censo),2
+multilingual-e5-small,intersetorial/3,v05022,v* (Censo),16
+multilingual-e5-small,intersetorial/4,at_02_conv_01,booleana,1
+multilingual-e5-small,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/5,at_02_conv_01,booleana,12
+multilingual-e5-small,intersetorial/5,tp_dependencia,código (tp_*),
+multilingual-e5-small,intersetorial/5,v01040,v* (Censo),19
+multilingual-e5-small,intersetorial/5,v01041,v* (Censo),
+multilingual-e5-small,intersetorial/6,at_04_conv_01,booleana,2
+multilingual-e5-small,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/6,v01041,v* (Censo),
+multilingual-e5-small,intersetorial/7,at_04_conv_01,booleana,
+multilingual-e5-small,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/7,v05013,v* (Censo),1
+multilingual-e5-small,intersetorial/8,at_01_conv_01,booleana,
+multilingual-e5-small,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/8,v00009,v* (Censo),1
+multilingual-e5-small,intersetorial/9,v0001,v* (Censo),12
+multilingual-e5-small,intersetorial/10,at_06_conv_01,booleana,2
+multilingual-e5-small,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+multilingual-e5-small,intersetorial/10,tp_dependencia,código (tp_*),
+multilingual-e5-small,intersetorial/10,v00094,v* (Censo),
+multilingual-e5-small,intersetorial/11,at_06_conv_01,booleana,1
+multilingual-e5-small,intersetorial/12,at_06_conv_01,booleana,19
+multilingual-e5-small,intersetorial/12,tp_dependencia,código (tp_*),
+multilingual-e5-small,intersetorial/12,v00401,v* (Censo),3
+multilingual-e5-small,saude/1,at_01_conv_01,booleana,
+multilingual-e5-small,saude/1,v00002,v* (Censo),15
+multilingual-e5-small,saude/2,at_02_conv_01,booleana,6
+multilingual-e5-small,saude/2,v00644,v* (Censo),7
+multilingual-e5-small,saude/2,v00748,v* (Censo),1
+multilingual-e5-small,saude/3,v0001,v* (Censo),
+multilingual-e5-small,saude/4,at_04_conv_06,booleana,1
+multilingual-e5-small,saude/4,v01020,v* (Censo),2
+multilingual-e5-small,saude/5,at_06_conv_01,booleana,
+multilingual-e5-small,saude/5,v00591,v* (Censo),1
+multilingual-e5-small,saude/6,at_04_conv_01,booleana,1
+multilingual-e5-small,saude/6,v01040,v* (Censo),
+multilingual-e5-small,saude/6,v01041,v* (Censo),
+multilingual-e5-small,saude/7,at_01_conv_01,booleana,
+multilingual-e5-small,saude/7,v00001,v* (Censo),
+multilingual-e5-small,saude/8,at_01_conv_07,booleana,
+multilingual-e5-small,saude/8,v01188,v* (Censo),
+multilingual-e5-small,saude/9,at_06_conv_01,booleana,1
+multilingual-e5-small,saude/9,v01019,v* (Censo),
+multilingual-e5-small,saude/9,v01030,v* (Censo),13
+multilingual-e5-small,saude/10,at_02_conv_01,booleana,1
+multilingual-e5-small,saude/10,v0001,v* (Censo),
+multilingual-e5-small,saude/11,at_04_conv_01,booleana,1
+multilingual-e5-small,saude/11,v01040,v* (Censo),
+multilingual-e5-small,saude/11,v01041,v* (Censo),
+multilingual-e5-small,saude/12,at_03_conv_01,booleana,3
+multilingual-e5-small,saude/12,v01318,v* (Censo),
+multilingual-e5-small,saude/13,at_01_conv_06,booleana,
+multilingual-e5-small,saude/13,v00498,v* (Censo),
+multilingual-e5-small,saude/14,at_02_conv_05,booleana,2
+multilingual-e5-small,saude/14,v00111,v* (Censo),
+multilingual-e5-small,saude/15,at_04_conv_06,booleana,
+multilingual-e5-small,saude/15,v00092,v* (Censo),6
+multilingual-e5-small,saude/16,v0001,v* (Censo),
+multilingual-e5-small,saude/16,v00312,v* (Censo),3
+multilingual-e5-small,saude/17,at_04_conv_05,booleana,1
+multilingual-e5-small,saude/17,v01320,v* (Censo),
+multilingual-e5-small,saude/18,at_06_conv_01,booleana,1
+multilingual-e5-small,saude/18,v00238,v* (Censo),14
+multilingual-e5-small,saude/19,at_04_conv_01,booleana,1
+multilingual-e5-small,saude/19,v0001,v* (Censo),
+multilingual-e5-small,saude/20,at_01_conv_01,booleana,2
+multilingual-e5-small,saude/20,at_02_conv_01,booleana,1
+multilingual-e5-small,saude/21,at_06_conv_05,booleana,1
+multilingual-e5-small,saude/21,v00901,v* (Censo),
+multilingual-e5-small,saude/22,at_01_conv_01,booleana,1
+multilingual-e5-small,saude/23,at_01_conv_07,booleana,
+multilingual-e5-small,saude/23,v01389,v* (Censo),2
+multilingual-e5-small,saude/24,at_06_conv_01,booleana,1
+multilingual-e5-small,saude/24,v00316,v* (Censo),10
+multilingual-e5-small,saude/25,at_02_conv_01,booleana,1
+multilingual-e5-small,saude/25,v0001,v* (Censo),9
+multilingual-e5-small,saude/26,at_03_conv_01,booleana,2
+multilingual-e5-small,saude/26,at_04_conv_01,booleana,1
+multilingual-e5-small,saude/27,at_04_conv_01,booleana,8
+multilingual-e5-small,saude/27,v01068,v* (Censo),2
+multilingual-e5-base,ed_basica/2,tp_dependencia,código (tp_*),1
+multilingual-e5-base,ed_basica/3,in_esgoto_fossa_septica,booleana,3
+multilingual-e5-base,ed_basica/3,in_esgoto_rede_publica,booleana,1
+multilingual-e5-base,ed_basica/3,tp_dependencia,código (tp_*),
+multilingual-e5-base,ed_basica/4,in_quadra_esportes,booleana,1
+multilingual-e5-base,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),5
+multilingual-e5-base,ed_basica/5,qt_tur_med,outras (qt_* etc.),9
+multilingual-e5-base,ed_basica/6,v00901,v* (Censo),
+multilingual-e5-base,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),14
+multilingual-e5-base,ed_basica/7,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-base,ed_basica/7,tp_dependencia,código (tp_*),
+multilingual-e5-base,ed_basica/7,v00094,v* (Censo),
+multilingual-e5-base,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/8,v01211,v* (Censo),
+multilingual-e5-base,ed_basica/9,qt_tur_fund,outras (qt_* etc.),4
+multilingual-e5-base,ed_basica/9,v00006,v* (Censo),6
+multilingual-e5-base,ed_basica/10,qt_tur_fund,outras (qt_* etc.),6
+multilingual-e5-base,ed_basica/10,qt_tur_med,outras (qt_* etc.),5
+multilingual-e5-base,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),6
+multilingual-e5-base,ed_basica/11,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-base,ed_basica/11,v00644,v* (Censo),
+multilingual-e5-base,ed_basica/11,v00748,v* (Censo),14
+multilingual-e5-base,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),9
+multilingual-e5-base,ed_basica/12,v01031,v* (Censo),1
+multilingual-e5-base,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/13,v00078,v* (Censo),4
+multilingual-e5-base,ed_basica/14,qt_tur_inf,outras (qt_* etc.),8
+multilingual-e5-base,ed_basica/14,tp_dependencia,código (tp_*),2
+multilingual-e5-base,ed_basica/14,v01031,v* (Censo),3
+multilingual-e5-base,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/15,v01215,v* (Censo),
+multilingual-e5-base,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/16,v01034,v* (Censo),3
+multilingual-e5-base,ed_basica/17,qt_tur_med,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/17,v00085,v* (Censo),
+multilingual-e5-base,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),4
+multilingual-e5-base,ed_basica/18,v00644,v* (Censo),6
+multilingual-e5-base,ed_basica/18,v00748,v* (Censo),9
+multilingual-e5-base,ed_basica/19,qt_tur_inf,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),3
+multilingual-e5-base,ed_basica/20,v00004,v* (Censo),17
+multilingual-e5-base,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/21,tp_dependencia,código (tp_*),
+multilingual-e5-base,ed_basica/21,v00050,v* (Censo),
+multilingual-e5-base,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),1
+multilingual-e5-base,ed_basica/22,v01320,v* (Censo),
+multilingual-e5-base,ed_basica/23,tp_dependencia,código (tp_*),
+multilingual-e5-base,ed_basica/23,v00495,v* (Censo),
+multilingual-e5-base,ed_basica/24,in_laboratorio_ciencias,booleana,2
+multilingual-e5-base,ed_basica/25,qt_tur_med,outras (qt_* etc.),3
+multilingual-e5-base,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),17
+multilingual-e5-base,ed_basica/27,qt_tur_inf,outras (qt_* etc.),2
+multilingual-e5-base,ed_basica/27,v01031,v* (Censo),7
+multilingual-e5-base,intersetorial/1,at_02_conv_01,booleana,9
+multilingual-e5-base,intersetorial/1,tp_dependencia,código (tp_*),12
+multilingual-e5-base,intersetorial/2,v00006,v* (Censo),3
+multilingual-e5-base,intersetorial/3,at_04_conv_01,booleana,
+multilingual-e5-base,intersetorial/3,qt_tur_fund,outras (qt_* etc.),6
+multilingual-e5-base,intersetorial/3,tp_dependencia,código (tp_*),1
+multilingual-e5-base,intersetorial/3,v05007,v* (Censo),
+multilingual-e5-base,intersetorial/3,v05022,v* (Censo),
+multilingual-e5-base,intersetorial/4,at_02_conv_01,booleana,2
+multilingual-e5-base,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/5,at_02_conv_01,booleana,1
+multilingual-e5-base,intersetorial/5,tp_dependencia,código (tp_*),16
+multilingual-e5-base,intersetorial/5,v01040,v* (Censo),2
+multilingual-e5-base,intersetorial/5,v01041,v* (Censo),
+multilingual-e5-base,intersetorial/6,at_04_conv_01,booleana,1
+multilingual-e5-base,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),18
+multilingual-e5-base,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/6,v01041,v* (Censo),
+multilingual-e5-base,intersetorial/7,at_04_conv_01,booleana,1
+multilingual-e5-base,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),19
+multilingual-e5-base,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/7,v05013,v* (Censo),
+multilingual-e5-base,intersetorial/8,at_01_conv_01,booleana,
+multilingual-e5-base,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/8,v00009,v* (Censo),5
+multilingual-e5-base,intersetorial/9,v0001,v* (Censo),
+multilingual-e5-base,intersetorial/10,at_06_conv_01,booleana,
+multilingual-e5-base,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+multilingual-e5-base,intersetorial/10,tp_dependencia,código (tp_*),3
+multilingual-e5-base,intersetorial/10,v00094,v* (Censo),
+multilingual-e5-base,intersetorial/11,at_06_conv_01,booleana,5
+multilingual-e5-base,intersetorial/12,at_06_conv_01,booleana,
+multilingual-e5-base,intersetorial/12,tp_dependencia,código (tp_*),2
+multilingual-e5-base,intersetorial/12,v00401,v* (Censo),14
+multilingual-e5-base,saude/1,at_01_conv_01,booleana,14
+multilingual-e5-base,saude/1,v00002,v* (Censo),5
+multilingual-e5-base,saude/2,at_02_conv_01,booleana,7
+multilingual-e5-base,saude/2,v00644,v* (Censo),3
+multilingual-e5-base,saude/2,v00748,v* (Censo),2
+multilingual-e5-base,saude/3,v0001,v* (Censo),
+multilingual-e5-base,saude/4,at_04_conv_06,booleana,1
+multilingual-e5-base,saude/4,v01020,v* (Censo),2
+multilingual-e5-base,saude/5,at_06_conv_01,booleana,
+multilingual-e5-base,saude/5,v00591,v* (Censo),1
+multilingual-e5-base,saude/6,at_04_conv_01,booleana,1
+multilingual-e5-base,saude/6,v01040,v* (Censo),5
+multilingual-e5-base,saude/6,v01041,v* (Censo),12
+multilingual-e5-base,saude/7,at_01_conv_01,booleana,
+multilingual-e5-base,saude/7,v00001,v* (Censo),8
+multilingual-e5-base,saude/8,at_01_conv_07,booleana,
+multilingual-e5-base,saude/8,v01188,v* (Censo),
+multilingual-e5-base,saude/9,at_06_conv_01,booleana,4
+multilingual-e5-base,saude/9,v01019,v* (Censo),
+multilingual-e5-base,saude/9,v01030,v* (Censo),13
+multilingual-e5-base,saude/10,at_02_conv_01,booleana,1
+multilingual-e5-base,saude/10,v0001,v* (Censo),
+multilingual-e5-base,saude/11,at_04_conv_01,booleana,1
+multilingual-e5-base,saude/11,v01040,v* (Censo),5
+multilingual-e5-base,saude/11,v01041,v* (Censo),14
+multilingual-e5-base,saude/12,at_03_conv_01,booleana,
+multilingual-e5-base,saude/12,v01318,v* (Censo),
+multilingual-e5-base,saude/13,at_01_conv_06,booleana,14
+multilingual-e5-base,saude/13,v00498,v* (Censo),15
+multilingual-e5-base,saude/14,at_02_conv_05,booleana,1
+multilingual-e5-base,saude/14,v00111,v* (Censo),
+multilingual-e5-base,saude/15,at_04_conv_06,booleana,
+multilingual-e5-base,saude/15,v00092,v* (Censo),12
+multilingual-e5-base,saude/16,v0001,v* (Censo),
+multilingual-e5-base,saude/16,v00312,v* (Censo),4
+multilingual-e5-base,saude/17,at_04_conv_05,booleana,1
+multilingual-e5-base,saude/17,v01320,v* (Censo),
+multilingual-e5-base,saude/18,at_06_conv_01,booleana,
+multilingual-e5-base,saude/18,v00238,v* (Censo),
+multilingual-e5-base,saude/19,at_04_conv_01,booleana,1
+multilingual-e5-base,saude/19,v0001,v* (Censo),13
+multilingual-e5-base,saude/20,at_01_conv_01,booleana,2
+multilingual-e5-base,saude/20,at_02_conv_01,booleana,1
+multilingual-e5-base,saude/21,at_06_conv_05,booleana,15
+multilingual-e5-base,saude/21,v00901,v* (Censo),
+multilingual-e5-base,saude/22,at_01_conv_01,booleana,1
+multilingual-e5-base,saude/23,at_01_conv_07,booleana,4
+multilingual-e5-base,saude/23,v01389,v* (Censo),5
+multilingual-e5-base,saude/24,at_06_conv_01,booleana,1
+multilingual-e5-base,saude/24,v00316,v* (Censo),
+multilingual-e5-base,saude/25,at_02_conv_01,booleana,1
+multilingual-e5-base,saude/25,v0001,v* (Censo),
+multilingual-e5-base,saude/26,at_03_conv_01,booleana,2
+multilingual-e5-base,saude/26,at_04_conv_01,booleana,1
+multilingual-e5-base,saude/27,at_04_conv_01,booleana,1
+multilingual-e5-base,saude/27,v01068,v* (Censo),
+multilingual-e5-large,ed_basica/2,tp_dependencia,código (tp_*),1
+multilingual-e5-large,ed_basica/3,in_esgoto_fossa_septica,booleana,9
+multilingual-e5-large,ed_basica/3,in_esgoto_rede_publica,booleana,13
+multilingual-e5-large,ed_basica/3,tp_dependencia,código (tp_*),
+multilingual-e5-large,ed_basica/4,in_quadra_esportes,booleana,1
+multilingual-e5-large,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),14
+multilingual-e5-large,ed_basica/5,qt_tur_med,outras (qt_* etc.),7
+multilingual-e5-large,ed_basica/6,v00901,v* (Censo),
+multilingual-e5-large,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+multilingual-e5-large,ed_basica/7,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-large,ed_basica/7,tp_dependencia,código (tp_*),
+multilingual-e5-large,ed_basica/7,v00094,v* (Censo),20
+multilingual-e5-large,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),1
+multilingual-e5-large,ed_basica/8,v01211,v* (Censo),
+multilingual-e5-large,ed_basica/9,qt_tur_fund,outras (qt_* etc.),17
+multilingual-e5-large,ed_basica/9,v00006,v* (Censo),18
+multilingual-e5-large,ed_basica/10,qt_tur_fund,outras (qt_* etc.),4
+multilingual-e5-large,ed_basica/10,qt_tur_med,outras (qt_* etc.),2
+multilingual-e5-large,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),8
+multilingual-e5-large,ed_basica/11,qt_tur_med,outras (qt_* etc.),
+multilingual-e5-large,ed_basica/11,v00644,v* (Censo),
+multilingual-e5-large,ed_basica/11,v00748,v* (Censo),13
+multilingual-e5-large,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),2
+multilingual-e5-large,ed_basica/12,v01031,v* (Censo),1
+multilingual-e5-large,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),2
+multilingual-e5-large,ed_basica/13,v00078,v* (Censo),5
+multilingual-e5-large,ed_basica/14,qt_tur_inf,outras (qt_* etc.),5
+multilingual-e5-large,ed_basica/14,tp_dependencia,código (tp_*),2
+multilingual-e5-large,ed_basica/14,v01031,v* (Censo),18
+multilingual-e5-large,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),1
+multilingual-e5-large,ed_basica/15,v01215,v* (Censo),
+multilingual-e5-large,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),8
+multilingual-e5-large,ed_basica/16,v01034,v* (Censo),4
+multilingual-e5-large,ed_basica/17,qt_tur_med,outras (qt_* etc.),14
+multilingual-e5-large,ed_basica/17,v00085,v* (Censo),1
+multilingual-e5-large,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),1
+multilingual-e5-large,ed_basica/18,v00644,v* (Censo),7
+multilingual-e5-large,ed_basica/18,v00748,v* (Censo),4
+multilingual-e5-large,ed_basica/19,qt_tur_inf,outras (qt_* etc.),1
+multilingual-e5-large,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),
+multilingual-e5-large,ed_basica/20,v00004,v* (Censo),2
+multilingual-e5-large,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),6
+multilingual-e5-large,ed_basica/21,tp_dependencia,código (tp_*),
+multilingual-e5-large,ed_basica/21,v00050,v* (Censo),
+multilingual-e5-large,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),3
+multilingual-e5-large,ed_basica/22,v01320,v* (Censo),17
+multilingual-e5-large,ed_basica/23,tp_dependencia,código (tp_*),
+multilingual-e5-large,ed_basica/23,v00495,v* (Censo),
+multilingual-e5-large,ed_basica/24,in_laboratorio_ciencias,booleana,
+multilingual-e5-large,ed_basica/25,qt_tur_med,outras (qt_* etc.),4
+multilingual-e5-large,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-large,ed_basica/27,qt_tur_inf,outras (qt_* etc.),3
+multilingual-e5-large,ed_basica/27,v01031,v* (Censo),16
+multilingual-e5-large,intersetorial/1,at_02_conv_01,booleana,
+multilingual-e5-large,intersetorial/1,tp_dependencia,código (tp_*),7
+multilingual-e5-large,intersetorial/2,v00006,v* (Censo),7
+multilingual-e5-large,intersetorial/3,at_04_conv_01,booleana,
+multilingual-e5-large,intersetorial/3,qt_tur_fund,outras (qt_* etc.),17
+multilingual-e5-large,intersetorial/3,tp_dependencia,código (tp_*),
+multilingual-e5-large,intersetorial/3,v05007,v* (Censo),4
+multilingual-e5-large,intersetorial/3,v05022,v* (Censo),7
+multilingual-e5-large,intersetorial/4,at_02_conv_01,booleana,19
+multilingual-e5-large,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/5,at_02_conv_01,booleana,3
+multilingual-e5-large,intersetorial/5,tp_dependencia,código (tp_*),
+multilingual-e5-large,intersetorial/5,v01040,v* (Censo),1
+multilingual-e5-large,intersetorial/5,v01041,v* (Censo),
+multilingual-e5-large,intersetorial/6,at_04_conv_01,booleana,19
+multilingual-e5-large,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),6
+multilingual-e5-large,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),9
+multilingual-e5-large,intersetorial/6,v01041,v* (Censo),
+multilingual-e5-large,intersetorial/7,at_04_conv_01,booleana,1
+multilingual-e5-large,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/7,v05013,v* (Censo),5
+multilingual-e5-large,intersetorial/8,at_01_conv_01,booleana,
+multilingual-e5-large,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/8,v00009,v* (Censo),1
+multilingual-e5-large,intersetorial/9,v0001,v* (Censo),1
+multilingual-e5-large,intersetorial/10,at_06_conv_01,booleana,14
+multilingual-e5-large,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+multilingual-e5-large,intersetorial/10,tp_dependencia,código (tp_*),
+multilingual-e5-large,intersetorial/10,v00094,v* (Censo),
+multilingual-e5-large,intersetorial/11,at_06_conv_01,booleana,1
+multilingual-e5-large,intersetorial/12,at_06_conv_01,booleana,
+multilingual-e5-large,intersetorial/12,tp_dependencia,código (tp_*),
+multilingual-e5-large,intersetorial/12,v00401,v* (Censo),2
+multilingual-e5-large,saude/1,at_01_conv_01,booleana,
+multilingual-e5-large,saude/1,v00002,v* (Censo),3
+multilingual-e5-large,saude/2,at_02_conv_01,booleana,
+multilingual-e5-large,saude/2,v00644,v* (Censo),6
+multilingual-e5-large,saude/2,v00748,v* (Censo),1
+multilingual-e5-large,saude/3,v0001,v* (Censo),
+multilingual-e5-large,saude/4,at_04_conv_06,booleana,1
+multilingual-e5-large,saude/4,v01020,v* (Censo),4
+multilingual-e5-large,saude/5,at_06_conv_01,booleana,
+multilingual-e5-large,saude/5,v00591,v* (Censo),1
+multilingual-e5-large,saude/6,at_04_conv_01,booleana,1
+multilingual-e5-large,saude/6,v01040,v* (Censo),5
+multilingual-e5-large,saude/6,v01041,v* (Censo),10
+multilingual-e5-large,saude/7,at_01_conv_01,booleana,
+multilingual-e5-large,saude/7,v00001,v* (Censo),
+multilingual-e5-large,saude/8,at_01_conv_07,booleana,
+multilingual-e5-large,saude/8,v01188,v* (Censo),2
+multilingual-e5-large,saude/9,at_06_conv_01,booleana,1
+multilingual-e5-large,saude/9,v01019,v* (Censo),15
+multilingual-e5-large,saude/9,v01030,v* (Censo),8
+multilingual-e5-large,saude/10,at_02_conv_01,booleana,1
+multilingual-e5-large,saude/10,v0001,v* (Censo),
+multilingual-e5-large,saude/11,at_04_conv_01,booleana,1
+multilingual-e5-large,saude/11,v01040,v* (Censo),7
+multilingual-e5-large,saude/11,v01041,v* (Censo),13
+multilingual-e5-large,saude/12,at_03_conv_01,booleana,
+multilingual-e5-large,saude/12,v01318,v* (Censo),
+multilingual-e5-large,saude/13,at_01_conv_06,booleana,3
+multilingual-e5-large,saude/13,v00498,v* (Censo),20
+multilingual-e5-large,saude/14,at_02_conv_05,booleana,1
+multilingual-e5-large,saude/14,v00111,v* (Censo),
+multilingual-e5-large,saude/15,at_04_conv_06,booleana,
+multilingual-e5-large,saude/15,v00092,v* (Censo),4
+multilingual-e5-large,saude/16,v0001,v* (Censo),
+multilingual-e5-large,saude/16,v00312,v* (Censo),3
+multilingual-e5-large,saude/17,at_04_conv_05,booleana,1
+multilingual-e5-large,saude/17,v01320,v* (Censo),
+multilingual-e5-large,saude/18,at_06_conv_01,booleana,
+multilingual-e5-large,saude/18,v00238,v* (Censo),
+multilingual-e5-large,saude/19,at_04_conv_01,booleana,1
+multilingual-e5-large,saude/19,v0001,v* (Censo),6
+multilingual-e5-large,saude/20,at_01_conv_01,booleana,1
+multilingual-e5-large,saude/20,at_02_conv_01,booleana,2
+multilingual-e5-large,saude/21,at_06_conv_05,booleana,2
+multilingual-e5-large,saude/21,v00901,v* (Censo),
+multilingual-e5-large,saude/22,at_01_conv_01,booleana,1
+multilingual-e5-large,saude/23,at_01_conv_07,booleana,1
+multilingual-e5-large,saude/23,v01389,v* (Censo),11
+multilingual-e5-large,saude/24,at_06_conv_01,booleana,1
+multilingual-e5-large,saude/24,v00316,v* (Censo),14
+multilingual-e5-large,saude/25,at_02_conv_01,booleana,1
+multilingual-e5-large,saude/25,v0001,v* (Censo),3
+multilingual-e5-large,saude/26,at_03_conv_01,booleana,8
+multilingual-e5-large,saude/26,at_04_conv_01,booleana,1
+multilingual-e5-large,saude/27,at_04_conv_01,booleana,1
+multilingual-e5-large,saude/27,v01068,v* (Censo),8
+bge-m3,ed_basica/2,tp_dependencia,código (tp_*),3
+bge-m3,ed_basica/3,in_esgoto_fossa_septica,booleana,3
+bge-m3,ed_basica/3,in_esgoto_rede_publica,booleana,11
+bge-m3,ed_basica/3,tp_dependencia,código (tp_*),
+bge-m3,ed_basica/4,in_quadra_esportes,booleana,1
+bge-m3,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),3
+bge-m3,ed_basica/5,qt_tur_med,outras (qt_* etc.),5
+bge-m3,ed_basica/6,v00901,v* (Censo),
+bge-m3,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+bge-m3,ed_basica/7,qt_tur_med,outras (qt_* etc.),
+bge-m3,ed_basica/7,tp_dependencia,código (tp_*),
+bge-m3,ed_basica/7,v00094,v* (Censo),16
+bge-m3,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),2
+bge-m3,ed_basica/8,v01211,v* (Censo),
+bge-m3,ed_basica/9,qt_tur_fund,outras (qt_* etc.),
+bge-m3,ed_basica/9,v00006,v* (Censo),14
+bge-m3,ed_basica/10,qt_tur_fund,outras (qt_* etc.),7
+bge-m3,ed_basica/10,qt_tur_med,outras (qt_* etc.),2
+bge-m3,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),
+bge-m3,ed_basica/11,qt_tur_med,outras (qt_* etc.),
+bge-m3,ed_basica/11,v00644,v* (Censo),
+bge-m3,ed_basica/11,v00748,v* (Censo),
+bge-m3,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),1
+bge-m3,ed_basica/12,v01031,v* (Censo),2
+bge-m3,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),
+bge-m3,ed_basica/13,v00078,v* (Censo),2
+bge-m3,ed_basica/14,qt_tur_inf,outras (qt_* etc.),11
+bge-m3,ed_basica/14,tp_dependencia,código (tp_*),
+bge-m3,ed_basica/14,v01031,v* (Censo),1
+bge-m3,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),1
+bge-m3,ed_basica/15,v01215,v* (Censo),
+bge-m3,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),
+bge-m3,ed_basica/16,v01034,v* (Censo),1
+bge-m3,ed_basica/17,qt_tur_med,outras (qt_* etc.),8
+bge-m3,ed_basica/17,v00085,v* (Censo),4
+bge-m3,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),1
+bge-m3,ed_basica/18,v00644,v* (Censo),
+bge-m3,ed_basica/18,v00748,v* (Censo),
+bge-m3,ed_basica/19,qt_tur_inf,outras (qt_* etc.),1
+bge-m3,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),5
+bge-m3,ed_basica/20,v00004,v* (Censo),
+bge-m3,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),1
+bge-m3,ed_basica/21,tp_dependencia,código (tp_*),
+bge-m3,ed_basica/21,v00050,v* (Censo),
+bge-m3,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),
+bge-m3,ed_basica/22,v01320,v* (Censo),
+bge-m3,ed_basica/23,tp_dependencia,código (tp_*),
+bge-m3,ed_basica/23,v00495,v* (Censo),13
+bge-m3,ed_basica/24,in_laboratorio_ciencias,booleana,1
+bge-m3,ed_basica/25,qt_tur_med,outras (qt_* etc.),2
+bge-m3,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),18
+bge-m3,ed_basica/27,qt_tur_inf,outras (qt_* etc.),3
+bge-m3,ed_basica/27,v01031,v* (Censo),
+bge-m3,intersetorial/1,at_02_conv_01,booleana,
+bge-m3,intersetorial/1,tp_dependencia,código (tp_*),
+bge-m3,intersetorial/2,v00006,v* (Censo),
+bge-m3,intersetorial/3,at_04_conv_01,booleana,
+bge-m3,intersetorial/3,qt_tur_fund,outras (qt_* etc.),
+bge-m3,intersetorial/3,tp_dependencia,código (tp_*),
+bge-m3,intersetorial/3,v05007,v* (Censo),1
+bge-m3,intersetorial/3,v05022,v* (Censo),9
+bge-m3,intersetorial/4,at_02_conv_01,booleana,
+bge-m3,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+bge-m3,intersetorial/5,at_02_conv_01,booleana,
+bge-m3,intersetorial/5,tp_dependencia,código (tp_*),4
+bge-m3,intersetorial/5,v01040,v* (Censo),17
+bge-m3,intersetorial/5,v01041,v* (Censo),
+bge-m3,intersetorial/6,at_04_conv_01,booleana,
+bge-m3,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),10
+bge-m3,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),9
+bge-m3,intersetorial/6,v01041,v* (Censo),
+bge-m3,intersetorial/7,at_04_conv_01,booleana,
+bge-m3,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+bge-m3,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+bge-m3,intersetorial/7,v05013,v* (Censo),1
+bge-m3,intersetorial/8,at_01_conv_01,booleana,
+bge-m3,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+bge-m3,intersetorial/8,v00009,v* (Censo),1
+bge-m3,intersetorial/9,v0001,v* (Censo),10
+bge-m3,intersetorial/10,at_06_conv_01,booleana,
+bge-m3,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+bge-m3,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+bge-m3,intersetorial/10,tp_dependencia,código (tp_*),
+bge-m3,intersetorial/10,v00094,v* (Censo),
+bge-m3,intersetorial/11,at_06_conv_01,booleana,1
+bge-m3,intersetorial/12,at_06_conv_01,booleana,
+bge-m3,intersetorial/12,tp_dependencia,código (tp_*),
+bge-m3,intersetorial/12,v00401,v* (Censo),2
+bge-m3,saude/1,at_01_conv_01,booleana,
+bge-m3,saude/1,v00002,v* (Censo),
+bge-m3,saude/2,at_02_conv_01,booleana,
+bge-m3,saude/2,v00644,v* (Censo),
+bge-m3,saude/2,v00748,v* (Censo),
+bge-m3,saude/3,v0001,v* (Censo),
+bge-m3,saude/4,at_04_conv_06,booleana,3
+bge-m3,saude/4,v01020,v* (Censo),2
+bge-m3,saude/5,at_06_conv_01,booleana,
+bge-m3,saude/5,v00591,v* (Censo),1
+bge-m3,saude/6,at_04_conv_01,booleana,
+bge-m3,saude/6,v01040,v* (Censo),20
+bge-m3,saude/6,v01041,v* (Censo),
+bge-m3,saude/7,at_01_conv_01,booleana,
+bge-m3,saude/7,v00001,v* (Censo),
+bge-m3,saude/8,at_01_conv_07,booleana,
+bge-m3,saude/8,v01188,v* (Censo),11
+bge-m3,saude/9,at_06_conv_01,booleana,3
+bge-m3,saude/9,v01019,v* (Censo),7
+bge-m3,saude/9,v01030,v* (Censo),5
+bge-m3,saude/10,at_02_conv_01,booleana,1
+bge-m3,saude/10,v0001,v* (Censo),
+bge-m3,saude/11,at_04_conv_01,booleana,1
+bge-m3,saude/11,v01040,v* (Censo),3
+bge-m3,saude/11,v01041,v* (Censo),10
+bge-m3,saude/12,at_03_conv_01,booleana,
+bge-m3,saude/12,v01318,v* (Censo),
+bge-m3,saude/13,at_01_conv_06,booleana,
+bge-m3,saude/13,v00498,v* (Censo),2
+bge-m3,saude/14,at_02_conv_05,booleana,1
+bge-m3,saude/14,v00111,v* (Censo),
+bge-m3,saude/15,at_04_conv_06,booleana,
+bge-m3,saude/15,v00092,v* (Censo),
+bge-m3,saude/16,v0001,v* (Censo),
+bge-m3,saude/16,v00312,v* (Censo),8
+bge-m3,saude/17,at_04_conv_05,booleana,15
+bge-m3,saude/17,v01320,v* (Censo),
+bge-m3,saude/18,at_06_conv_01,booleana,
+bge-m3,saude/18,v00238,v* (Censo),2
+bge-m3,saude/19,at_04_conv_01,booleana,12
+bge-m3,saude/19,v0001,v* (Censo),9
+bge-m3,saude/20,at_01_conv_01,booleana,1
+bge-m3,saude/20,at_02_conv_01,booleana,2
+bge-m3,saude/21,at_06_conv_05,booleana,
+bge-m3,saude/21,v00901,v* (Censo),19
+bge-m3,saude/22,at_01_conv_01,booleana,1
+bge-m3,saude/23,at_01_conv_07,booleana,
+bge-m3,saude/23,v01389,v* (Censo),10
+bge-m3,saude/24,at_06_conv_01,booleana,2
+bge-m3,saude/24,v00316,v* (Censo),
+bge-m3,saude/25,at_02_conv_01,booleana,1
+bge-m3,saude/25,v0001,v* (Censo),14
+bge-m3,saude/26,at_03_conv_01,booleana,10
+bge-m3,saude/26,at_04_conv_01,booleana,1
+bge-m3,saude/27,at_04_conv_01,booleana,
+bge-m3,saude/27,v01068,v* (Censo),4
+Qwen3-Embedding-0.6B,ed_basica/2,tp_dependencia,código (tp_*),1
+Qwen3-Embedding-0.6B,ed_basica/3,in_esgoto_fossa_septica,booleana,2
+Qwen3-Embedding-0.6B,ed_basica/3,in_esgoto_rede_publica,booleana,1
+Qwen3-Embedding-0.6B,ed_basica/3,tp_dependencia,código (tp_*),
+Qwen3-Embedding-0.6B,ed_basica/4,in_quadra_esportes,booleana,1
+Qwen3-Embedding-0.6B,ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),3
+Qwen3-Embedding-0.6B,ed_basica/5,qt_tur_med,outras (qt_* etc.),4
+Qwen3-Embedding-0.6B,ed_basica/6,v00901,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,ed_basica/7,qt_tur_med,outras (qt_* etc.),4
+Qwen3-Embedding-0.6B,ed_basica/7,tp_dependencia,código (tp_*),
+Qwen3-Embedding-0.6B,ed_basica/7,v00094,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/8,v01211,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/9,qt_tur_fund,outras (qt_* etc.),18
+Qwen3-Embedding-0.6B,ed_basica/9,v00006,v* (Censo),17
+Qwen3-Embedding-0.6B,ed_basica/10,qt_tur_fund,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/10,qt_tur_med,outras (qt_* etc.),2
+Qwen3-Embedding-0.6B,ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,ed_basica/11,qt_tur_med,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,ed_basica/11,v00644,v* (Censo),18
+Qwen3-Embedding-0.6B,ed_basica/11,v00748,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),5
+Qwen3-Embedding-0.6B,ed_basica/12,v01031,v* (Censo),1
+Qwen3-Embedding-0.6B,ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,ed_basica/13,v00078,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/14,qt_tur_inf,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/14,tp_dependencia,código (tp_*),9
+Qwen3-Embedding-0.6B,ed_basica/14,v01031,v* (Censo),4
+Qwen3-Embedding-0.6B,ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),3
+Qwen3-Embedding-0.6B,ed_basica/15,v01215,v* (Censo),16
+Qwen3-Embedding-0.6B,ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/16,v01034,v* (Censo),14
+Qwen3-Embedding-0.6B,ed_basica/17,qt_tur_med,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/17,v00085,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),2
+Qwen3-Embedding-0.6B,ed_basica/18,v00644,v* (Censo),19
+Qwen3-Embedding-0.6B,ed_basica/18,v00748,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/19,qt_tur_inf,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/20,v00004,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),2
+Qwen3-Embedding-0.6B,ed_basica/21,tp_dependencia,código (tp_*),16
+Qwen3-Embedding-0.6B,ed_basica/21,v00050,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),2
+Qwen3-Embedding-0.6B,ed_basica/22,v01320,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/23,tp_dependencia,código (tp_*),
+Qwen3-Embedding-0.6B,ed_basica/23,v00495,v* (Censo),
+Qwen3-Embedding-0.6B,ed_basica/24,in_laboratorio_ciencias,booleana,1
+Qwen3-Embedding-0.6B,ed_basica/25,qt_tur_med,outras (qt_* etc.),2
+Qwen3-Embedding-0.6B,ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),16
+Qwen3-Embedding-0.6B,ed_basica/27,qt_tur_inf,outras (qt_* etc.),1
+Qwen3-Embedding-0.6B,ed_basica/27,v01031,v* (Censo),7
+Qwen3-Embedding-0.6B,intersetorial/1,at_02_conv_01,booleana,2
+Qwen3-Embedding-0.6B,intersetorial/1,tp_dependencia,código (tp_*),8
+Qwen3-Embedding-0.6B,intersetorial/2,v00006,v* (Censo),20
+Qwen3-Embedding-0.6B,intersetorial/3,at_04_conv_01,booleana,
+Qwen3-Embedding-0.6B,intersetorial/3,qt_tur_fund,outras (qt_* etc.),7
+Qwen3-Embedding-0.6B,intersetorial/3,tp_dependencia,código (tp_*),10
+Qwen3-Embedding-0.6B,intersetorial/3,v05007,v* (Censo),
+Qwen3-Embedding-0.6B,intersetorial/3,v05022,v* (Censo),
+Qwen3-Embedding-0.6B,intersetorial/4,at_02_conv_01,booleana,1
+Qwen3-Embedding-0.6B,intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/5,at_02_conv_01,booleana,1
+Qwen3-Embedding-0.6B,intersetorial/5,tp_dependencia,código (tp_*),
+Qwen3-Embedding-0.6B,intersetorial/5,v01040,v* (Censo),6
+Qwen3-Embedding-0.6B,intersetorial/5,v01041,v* (Censo),13
+Qwen3-Embedding-0.6B,intersetorial/6,at_04_conv_01,booleana,10
+Qwen3-Embedding-0.6B,intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),9
+Qwen3-Embedding-0.6B,intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),5
+Qwen3-Embedding-0.6B,intersetorial/6,v01041,v* (Censo),
+Qwen3-Embedding-0.6B,intersetorial/7,at_04_conv_01,booleana,1
+Qwen3-Embedding-0.6B,intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/7,v05013,v* (Censo),10
+Qwen3-Embedding-0.6B,intersetorial/8,at_01_conv_01,booleana,1
+Qwen3-Embedding-0.6B,intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/8,v00009,v* (Censo),10
+Qwen3-Embedding-0.6B,intersetorial/9,v0001,v* (Censo),1
+Qwen3-Embedding-0.6B,intersetorial/10,at_06_conv_01,booleana,16
+Qwen3-Embedding-0.6B,intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),
+Qwen3-Embedding-0.6B,intersetorial/10,tp_dependencia,código (tp_*),10
+Qwen3-Embedding-0.6B,intersetorial/10,v00094,v* (Censo),
+Qwen3-Embedding-0.6B,intersetorial/11,at_06_conv_01,booleana,1
+Qwen3-Embedding-0.6B,intersetorial/12,at_06_conv_01,booleana,2
+Qwen3-Embedding-0.6B,intersetorial/12,tp_dependencia,código (tp_*),20
+Qwen3-Embedding-0.6B,intersetorial/12,v00401,v* (Censo),
+Qwen3-Embedding-0.6B,saude/1,at_01_conv_01,booleana,
+Qwen3-Embedding-0.6B,saude/1,v00002,v* (Censo),
+Qwen3-Embedding-0.6B,saude/2,at_02_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/2,v00644,v* (Censo),4
+Qwen3-Embedding-0.6B,saude/2,v00748,v* (Censo),9
+Qwen3-Embedding-0.6B,saude/3,v0001,v* (Censo),1
+Qwen3-Embedding-0.6B,saude/4,at_04_conv_06,booleana,1
+Qwen3-Embedding-0.6B,saude/4,v01020,v* (Censo),8
+Qwen3-Embedding-0.6B,saude/5,at_06_conv_01,booleana,
+Qwen3-Embedding-0.6B,saude/5,v00591,v* (Censo),1
+Qwen3-Embedding-0.6B,saude/6,at_04_conv_01,booleana,2
+Qwen3-Embedding-0.6B,saude/6,v01040,v* (Censo),1
+Qwen3-Embedding-0.6B,saude/6,v01041,v* (Censo),3
+Qwen3-Embedding-0.6B,saude/7,at_01_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/7,v00001,v* (Censo),
+Qwen3-Embedding-0.6B,saude/8,at_01_conv_07,booleana,6
+Qwen3-Embedding-0.6B,saude/8,v01188,v* (Censo),
+Qwen3-Embedding-0.6B,saude/9,at_06_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/9,v01019,v* (Censo),11
+Qwen3-Embedding-0.6B,saude/9,v01030,v* (Censo),5
+Qwen3-Embedding-0.6B,saude/10,at_02_conv_01,booleana,2
+Qwen3-Embedding-0.6B,saude/10,v0001,v* (Censo),5
+Qwen3-Embedding-0.6B,saude/11,at_04_conv_01,booleana,6
+Qwen3-Embedding-0.6B,saude/11,v01040,v* (Censo),1
+Qwen3-Embedding-0.6B,saude/11,v01041,v* (Censo),5
+Qwen3-Embedding-0.6B,saude/12,at_03_conv_01,booleana,2
+Qwen3-Embedding-0.6B,saude/12,v01318,v* (Censo),
+Qwen3-Embedding-0.6B,saude/13,at_01_conv_06,booleana,1
+Qwen3-Embedding-0.6B,saude/13,v00498,v* (Censo),
+Qwen3-Embedding-0.6B,saude/14,at_02_conv_05,booleana,1
+Qwen3-Embedding-0.6B,saude/14,v00111,v* (Censo),
+Qwen3-Embedding-0.6B,saude/15,at_04_conv_06,booleana,
+Qwen3-Embedding-0.6B,saude/15,v00092,v* (Censo),
+Qwen3-Embedding-0.6B,saude/16,v0001,v* (Censo),
+Qwen3-Embedding-0.6B,saude/16,v00312,v* (Censo),16
+Qwen3-Embedding-0.6B,saude/17,at_04_conv_05,booleana,1
+Qwen3-Embedding-0.6B,saude/17,v01320,v* (Censo),
+Qwen3-Embedding-0.6B,saude/18,at_06_conv_01,booleana,
+Qwen3-Embedding-0.6B,saude/18,v00238,v* (Censo),
+Qwen3-Embedding-0.6B,saude/19,at_04_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/19,v0001,v* (Censo),5
+Qwen3-Embedding-0.6B,saude/20,at_01_conv_01,booleana,2
+Qwen3-Embedding-0.6B,saude/20,at_02_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/21,at_06_conv_05,booleana,1
+Qwen3-Embedding-0.6B,saude/21,v00901,v* (Censo),
+Qwen3-Embedding-0.6B,saude/22,at_01_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/23,at_01_conv_07,booleana,1
+Qwen3-Embedding-0.6B,saude/23,v01389,v* (Censo),9
+Qwen3-Embedding-0.6B,saude/24,at_06_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/24,v00316,v* (Censo),
+Qwen3-Embedding-0.6B,saude/25,at_02_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/25,v0001,v* (Censo),14
+Qwen3-Embedding-0.6B,saude/26,at_03_conv_01,booleana,6
+Qwen3-Embedding-0.6B,saude/26,at_04_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/27,at_04_conv_01,booleana,1
+Qwen3-Embedding-0.6B,saude/27,v01068,v* (Censo),14

@@ -9,7 +9,8 @@ O código é construído sobre o [CyVerACT](../../referencias_codigo/CyVerACT), 
 1. [Visão geral](#visao)
 2. [Estrutura](#estrutura)
 3. [Camada A — dicionário de variáveis (RAG)](#camada_a)
-4. [Referências](#refs)
+4. [Avaliação](#avaliacao)
+5. [Referências](#refs)
 
 ---
 
@@ -23,7 +24,7 @@ Por isso, a gente busca as propriedades pela **descrição**. São duas partes (
 - **Dicionário das propriedades (RAG):** cada propriedade vira um documento com o tema do nó e a descrição, guardado no Chroma. Na hora da pergunta, só as propriedades mais parecidas com ela vão pro esquema, junto da estrutura do grafo (rótulos, códigos, nomes e relações), que vai sempre.
 - **Valores dos filtros:** (a fazer) usar nos `WHERE` os valores que existem de fato no grafo (*value grounding*).
 
-As descrições vêm dos `COMMENT ON COLUMN` do PostgreSQL da CulturaEduca: das tabelas de agregados do Censo e dos microdados de educação e saúde. Os nomes das propriedades são os mesmos no grafo.
+As descrições vêm dos `COMMENT ON COLUMN` do PostgreSQL da CulturaEduca: das tabelas de agregados do Censo e dos microdados de educação e saúde. Os valores das colunas de código (ex.: `tp_dependencia`: 1 = Federal, 2 = Estadual…) vêm do `metadata.attribute`, o catálogo de colunas da plataforma, e o tipo de cada propriedade é lido do próprio Neo4j. Os nomes das propriedades são os mesmos no grafo.
 
 <a name="estrutura"></a>
 ## Estrutura
@@ -33,16 +34,17 @@ text2cypher/
 ├── README.md
 ├── config.py                 ← caminhos + credenciais
 ├── dicionario/               ← dicionário das propriedades (RAG)
-│   ├── 01_extrair_dicionario.py   ← lê os COMMENTs do PG → corpus/variaveis.json
+│   ├── 01_extrair_dicionario.py   ← descrições, tipos e valores (PG + Neo4j) → corpus/variaveis.json
 │   ├── 02_indexar_chroma.py       ← embeda o corpus e indexa no Chroma
 │   ├── run_all.py                 ← roda as etapas 01 e 02 em ordem
 │   ├── retriever.py               ← consulta o Chroma e monta o trecho do esquema
 │   ├── inspecionar.py             ← inspeciona a coleção do Chroma pelo terminal
 │   └── corpus/variaveis.json      ← dicionário gerado pela etapa 01 (fora do git; regenerável)
 ├── vectorstore/              ← índice Chroma persistido (fora do git)
-├── workflow/                 ← pipeline sobre o CyVerACT (ver workflow/README.md)
-└── avaliacao/                ← (a fazer) métricas EX / CM / AST
+└── workflow/                 ← pipeline sobre o CyVerACT (ver workflow/README.md)
 ```
+
+Os experimentos com o RAG e o workflow ficam em [`../testes/`](../testes), junto dos outros testes do trabalho.
 
 <a name="camada_a"></a>
 ## Camada A — dicionário de variáveis (RAG)
@@ -68,9 +70,23 @@ Lê os comentários de coluna (`col_description`) e monta um documento por propr
 Cada documento junta o **tema** com a **descrição** da fonte, porque a descrição
 sozinha é ambígua ("15 a 19 anos" de quê?).
 
-No fim, ele confere no Neo4j quais propriedades existem de fato e descarta as outras.
-O ETL grava algumas colunas com outro nome (`co_entidade` → `id_aparelho`,
-`no_entidade` → `nm_aparelho`) e não grava colunas vazias no recorte.
+Antes de tudo, ele lê do Neo4j quais propriedades existem de fato e o **tipo** de cada
+uma (`INTEGER`, `FLOAT`, `BOOLEAN`, `STRING`). O que não está no grafo fica de fora: o ETL
+grava algumas colunas com outro nome (`co_entidade` → `id_aparelho`, `no_entidade` →
+`nm_aparelho`) e não grava colunas vazias no recorte.
+
+Os **valores** das colunas de código saem do `metadata.attribute` e são escritos como o
+modelo deve usá-los na consulta: `1 = Federal` pra inteiros, `'1' = Municipal` pra texto
+e `true = Sim` pras booleanas. Cada documento guarda o tipo e os valores, mas o texto que
+é buscado só recebe os valores das colunas de código. Nas booleanas, o mesmo
+`true = Sim, false = Não` em centenas de textos atrapalha a busca (ver [Avaliação](#avaliacao)).
+
+Duas coisas ficam no `config.py` em vez de virem do PG:
+- `PROPRIEDADES_FIXAS`: as propriedades que aparecem sempre no esquema (código, nome,
+  `location`, `geometry`, `tp_gestao`, `situacao`), com a descrição copiada do PG ou,
+  quando o ETL criou a propriedade, escrita à mão;
+- `DESCRICOES_INFERIDAS`: o `qt_mat_prof_tec`, que está sem descrição no PG e na planilha
+  de metadados; a descrição foi inferida pelas colunas irmãs.
 
 As listas de origem vêm dos arquivos do ETL (`../etl/auxiliares/config_perfis.txt`,
 `colunas_educacao.txt` e `colunas_saude.txt`), pra ficar em sincronia com ele. A saída é
@@ -78,10 +94,17 @@ o `corpus/variaveis.json`.
 
 ### `02_indexar_chroma.py`
 
-Transforma o campo `texto` de cada propriedade em vetor (embedding), com um modelo
-multilíngue, e grava a coleção no Chroma em `vectorstore/`, usando similaridade de cosseno.
-Variável, nó, tema, tabela e descrição ficam como metadados, que o retriever usa pra
-montar o esquema. Pode rodar de novo sem medo: ele recria a coleção do zero.
+Transforma o campo `texto` de cada propriedade em vetor (embedding), com o modelo
+multilíngue `intfloat/multilingual-e5-base` (escolhido no [teste dos modelos](../testes/rag_modelos)),
+e grava a coleção no Chroma em `vectorstore/`, usando similaridade de cosseno.
+
+O E5 foi treinado com o prefixo `passage: ` nos textos e `query: ` nas perguntas, e sem eles
+o recall cai de 0,65 pra 0,50. Por isso o indexador e o `retriever.py` colocam os prefixos
+definidos no `config.py`. Se trocar de modelo, confira na página dele no Hugging Face quais prefixos usar e
+rode esta etapa de novo.
+Variável, nó, tema, tabela, descrição, tipo e valores ficam como metadados: são
+devolvidos junto com cada resultado, mas não entram na busca. Pode rodar de novo sem
+medo: ele recria a coleção do zero.
 
 ### `retriever.py`
 
@@ -90,8 +113,16 @@ propriedades mais parecidas (`config.TOP_K`). Depois agrupa por nó e anota a ar
 liga cada nó ao setor: `(:SetorCensitario)-[:TEM_PERFIL]->(:Perfil*)` pros perfis e
 `(:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)` pros equipamentos.
 
-O resultado é o trecho do esquema com as propriedades relevantes. A estrutura do grafo
-(rótulos, códigos, nomes e relações) entra depois, no nó de esquema do workflow.
+O resultado é o trecho do esquema com as propriedades relevantes, cada uma com a
+descrição, o tipo e os valores, por exemplo:
+
+```
+tp_dependencia   // Dependência Administrativa (INTEGER: 1 = Federal, 2 = Estadual, 3 = Municipal, 4 = Privada)
+in_agua_potavel  // Fornece água potável para o consumo humano (BOOLEAN: true = Sim, false = Não)
+```
+
+A estrutura do grafo (rótulos, códigos, nomes e relações) entra depois, no nó de esquema
+do workflow.
 Pra uma olhada rápida, você pode rodar pelo terminal:
 
 ```bash
@@ -111,15 +142,22 @@ python inspecionar.py 20 PerfilRacaCor   # filtra por nó do grafo
 ```
 
 Mostra o total de registros da coleção e, para cada um, o `id`, o `texto`
-embeddado e os metadados (variável, nó, tema, tabela, descrição).
+embeddado e os metadados (variável, nó, tema, tabela, descrição, tipo, valores).
+
+<a name="avaliacao"></a>
+## Avaliação
+
+A decisão de pôr os valores só nas colunas de código no texto buscado vem de um
+experimento que compara três versões do texto indexado. Ele mostrou que os valores
+dobram o recall nas colunas de código e atrapalham nas booleanas. Detalhes, como rodar
+e resultados em [`../testes/rag_categorias/`](../testes/rag_categorias).
 
 TODO
 
 - **Hierarquia e não permitir repetição de consultas**
-- **Camada A**: Adicionar categorização das propriedades junto das descrições
 - **Camada B** (value grounding) para os filtros `WHERE` — opcional/plugável (ablação).
-- **Descrições e valores das propriedades fixas** (`location`, `geometry`, `tp_*`) — junto da questão das categorias.
 - **Avaliação** por EX / CM / AST, tentativas até acertar e cobertura do RAG.
+- **Recall baixo das `v*`**: só 19% das necessárias aparecem no top-20.
 
 <a name="refs"></a>
 ## Referências

@@ -30,9 +30,12 @@ CHROMA_COLLECTION = "variaveis_v"
 
 # --- Modelo de embedding --------------------------------------------------
 # Multilíngue (as descrições estão em PT-BR).
-EMBEDDING_MODEL = os.getenv(
-    "EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-)
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-base")
+
+# O E5 foi treinado com esses prefixos na pergunta e no texto; se trocar de modelo,
+# confira na página dele no Hugging Face quais prefixos usar
+PREFIXO_PERGUNTA = "query: "
+PREFIXO_TEXTO = "passage: "
 
 # Nº de propriedades recuperadas por pergunta no retriever
 TOP_K = int(os.getenv("TOP_K", "20"))
@@ -54,6 +57,41 @@ EQUIPAMENTOS = [
      "colunas": os.path.join(AUXILIARES_ETL, "colunas_educacao.txt")},
     {"no_label": "EquipamentoSaude", "tabela": "microdados_saude_2025_atendimentos",
      "colunas": os.path.join(AUXILIARES_ETL, "colunas_saude.txt")},
+]
+
+# Propriedades que o ETL grava fora das listas de colunas: aparecem sempre no esquema,
+# sem passar pela busca. As descrições e valores foram copiados do metadata.attribute
+# do PG, da coluna original (o ETL mudou o nome: id_aparelho era co_entidade/co_unidade,
+# nm_aparelho era no_entidade/no_fantasia, tp_gestao era tp_gestao2). location e geometry
+# foram criadas pelo ETL e não existem no PG.
+DESCRICAO_LOCATION = "Localização (latitude/longitude); usar com point.distance"
+
+PROPRIEDADES_FIXAS = [
+    {"no_label": "Escola", "propriedade": "id_aparelho", "tipo": "STRING",
+     "descricao": "Código da Escola"},
+    {"no_label": "Escola", "propriedade": "nm_aparelho", "tipo": "STRING",
+     "descricao": "Nome da Escola"},
+    {"no_label": "Escola", "propriedade": "location", "tipo": "POINT",
+     "descricao": DESCRICAO_LOCATION},
+    {"no_label": "EquipamentoSaude", "propriedade": "id_aparelho", "tipo": "STRING",
+     "descricao": "Código do Estabelecimento"},
+    {"no_label": "EquipamentoSaude", "propriedade": "nm_aparelho", "tipo": "STRING",
+     "descricao": "Nome Fantasia"},
+    {"no_label": "EquipamentoSaude", "propriedade": "tp_gestao", "tipo": "STRING",
+     "descricao": "Tipo de Gestão",
+     "valores": "'1' = Municipal, '2' = Estadual, '3' = Dupla, '4' = Sem Gestão"},
+    {"no_label": "EquipamentoSaude", "propriedade": "location", "tipo": "POINT",
+     "descricao": DESCRICAO_LOCATION},
+    {"no_label": "SetorCensitario", "propriedade": "situacao", "tipo": "STRING",
+     "descricao": "Situação do Setor Censitário"},
+    {"no_label": "SetorCensitario", "propriedade": "geometry", "tipo": "STRING",
+     "descricao": "Polígono do setor em texto WKT; não usar em consultas"},
+]
+
+# Descrições que faltam no PG e na planilha de metadados, inferidas pelas colunas irmãs
+DESCRICOES_INFERIDAS = [
+    {"no_label": "Escola", "propriedade": "qt_mat_prof_tec",
+     "descricao": "Número de Matrículas da Educação Profissional Técnica"},
 ]
 
 # Colunas internas do PG que nunca viram documento

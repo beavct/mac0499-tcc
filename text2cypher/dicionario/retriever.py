@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import chromadb
 from sentence_transformers import SentenceTransformer
-from config import VECTORSTORE_DIR, CHROMA_COLLECTION, EMBEDDING_MODEL, TOP_K
+from config import VECTORSTORE_DIR, CHROMA_COLLECTION, EMBEDDING_MODEL, TOP_K, PREFIXO_PERGUNTA
 
 _model = None
 _collection = None
@@ -40,7 +40,7 @@ def _get_collection():
 
 def buscar(pergunta, k=TOP_K):
     """Retorna as top-k propriedades mais similares à pergunta (por cosseno)."""
-    emb = _get_model().encode([pergunta], normalize_embeddings=True).tolist()
+    emb = _get_model().encode([PREFIXO_PERGUNTA + pergunta], normalize_embeddings=True).tolist()
     res = _get_collection().query(query_embeddings=emb, n_results=k)
 
     variaveis = []
@@ -52,9 +52,18 @@ def buscar(pergunta, k=TOP_K):
             "no_label": meta["no_label"],
             "tema": meta["tema"],
             "descricao": meta["descricao"],
+            "tipo": meta.get("tipo", ""),
+            "valores": meta.get("valores", ""),
             "score": round(1 - dist, 4),  # distância de cosseno -> similaridade
         })
     return variaveis
+
+
+def descrever(descricao, tipo, valores):
+    """Descrição para o prompt, ex.: 'Dependência Administrativa (INTEGER: 1 = Federal, ...)'."""
+    if not tipo:
+        return descricao
+    return f"{descricao} ({tipo}: {valores})" if valores else f"{descricao} ({tipo})"
 
 
 def agrupar_por_no(variaveis):
@@ -95,7 +104,8 @@ def montar_fragmento_schema(pergunta, k=TOP_K):
         aresta = _aresta(label)
         linhas.append(f"{label}  // ligado por {aresta}" if aresta else f"{label}:")
         for v in vs:
-            linhas.append(f"    {v['variavel']}  // {v['descricao']}")
+            desc = descrever(v["descricao"], v["tipo"], v["valores"])
+            linhas.append(f"    {v['variavel']}  // {desc}")
     return "\n".join(linhas), variaveis
 
 

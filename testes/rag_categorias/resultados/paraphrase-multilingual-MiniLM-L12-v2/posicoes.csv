@@ -1,0 +1,145 @@
+consulta,propriedade,grupo,cita_categoria,pos_A,pos_B,pos_C
+ed_basica/2,tp_dependencia,código (tp_*),True,17,2,2
+ed_basica/3,in_esgoto_fossa_septica,booleana,False,,,
+ed_basica/3,in_esgoto_rede_publica,booleana,False,1,1,1
+ed_basica/3,tp_dependencia,código (tp_*),False,,,
+ed_basica/4,in_quadra_esportes,booleana,False,2,2,5
+ed_basica/5,qt_tur_inf_cre,outras (qt_* etc.),False,,,
+ed_basica/5,qt_tur_med,outras (qt_* etc.),False,2,2,1
+ed_basica/6,v00901,v* (Censo),False,,,
+ed_basica/7,qt_tur_bas_d,outras (qt_* etc.),False,,,
+ed_basica/7,qt_tur_med,outras (qt_* etc.),False,,,15
+ed_basica/7,tp_dependencia,código (tp_*),False,,,
+ed_basica/7,v00094,v* (Censo),False,,,
+ed_basica/8,qt_tur_inf_int,outras (qt_* etc.),False,3,3,3
+ed_basica/8,v01211,v* (Censo),False,,,
+ed_basica/9,qt_tur_fund,outras (qt_* etc.),False,13,12,8
+ed_basica/9,v00006,v* (Censo),False,,,
+ed_basica/10,qt_tur_fund,outras (qt_* etc.),False,11,10,10
+ed_basica/10,qt_tur_med,outras (qt_* etc.),False,1,1,1
+ed_basica/11,qt_tur_bas_n,outras (qt_* etc.),False,7,7,6
+ed_basica/11,qt_tur_med,outras (qt_* etc.),False,8,8,7
+ed_basica/11,v00644,v* (Censo),False,,,
+ed_basica/11,v00748,v* (Censo),False,,,
+ed_basica/12,qt_tur_inf_cre,outras (qt_* etc.),False,2,2,2
+ed_basica/12,v01031,v* (Censo),False,,,
+ed_basica/13,qt_tur_bas_ead,outras (qt_* etc.),False,1,1,1
+ed_basica/13,v00078,v* (Censo),False,,,
+ed_basica/14,qt_tur_inf,outras (qt_* etc.),False,2,2,2
+ed_basica/14,tp_dependencia,código (tp_*),True,,,
+ed_basica/14,v01031,v* (Censo),False,,,
+ed_basica/15,qt_tur_inf_cre_int,outras (qt_* etc.),False,,,
+ed_basica/15,v01215,v* (Censo),False,,,
+ed_basica/16,qt_tur_esp_cc,outras (qt_* etc.),False,2,2,2
+ed_basica/16,v01034,v* (Censo),False,,,
+ed_basica/17,qt_tur_med,outras (qt_* etc.),False,5,6,6
+ed_basica/17,v00085,v* (Censo),False,,,
+ed_basica/18,qt_tur_eja_med,outras (qt_* etc.),False,1,1,1
+ed_basica/18,v00644,v* (Censo),False,,,
+ed_basica/18,v00748,v* (Censo),False,,,
+ed_basica/19,qt_tur_inf,outras (qt_* etc.),False,6,6,3
+ed_basica/20,qt_tur_esp_cc,outras (qt_* etc.),False,3,4,2
+ed_basica/20,v00004,v* (Censo),False,,,
+ed_basica/21,qt_tur_eja_fund,outras (qt_* etc.),False,15,14,5
+ed_basica/21,tp_dependencia,código (tp_*),True,19,,
+ed_basica/21,v00050,v* (Censo),False,,,
+ed_basica/22,qt_tur_bas_d,outras (qt_* etc.),False,16,15,11
+ed_basica/22,v01320,v* (Censo),False,,,
+ed_basica/23,tp_dependencia,código (tp_*),False,,,
+ed_basica/23,v00495,v* (Censo),False,,,
+ed_basica/24,in_laboratorio_ciencias,booleana,False,1,1,3
+ed_basica/25,qt_tur_med,outras (qt_* etc.),False,5,5,5
+ed_basica/26,qt_tur_inf_cre,outras (qt_* etc.),False,16,15,8
+ed_basica/27,qt_tur_inf,outras (qt_* etc.),False,2,2,2
+ed_basica/27,v01031,v* (Censo),False,,,
+intersetorial/1,at_02_conv_01,booleana,False,,,
+intersetorial/1,tp_dependencia,código (tp_*),False,,,
+intersetorial/2,v00006,v* (Censo),False,4,4,4
+intersetorial/3,at_04_conv_01,booleana,False,,,
+intersetorial/3,qt_tur_fund,outras (qt_* etc.),False,,,
+intersetorial/3,tp_dependencia,código (tp_*),False,,1,1
+intersetorial/3,v05007,v* (Censo),False,,,
+intersetorial/3,v05022,v* (Censo),False,,,
+intersetorial/4,at_02_conv_01,booleana,False,1,1,12
+intersetorial/4,qt_tur_inf_cre,outras (qt_* etc.),False,,,
+intersetorial/5,at_02_conv_01,booleana,False,,,
+intersetorial/5,tp_dependencia,código (tp_*),True,,5,5
+intersetorial/5,v01040,v* (Censo),False,,,
+intersetorial/5,v01041,v* (Censo),False,6,11,11
+intersetorial/6,at_04_conv_01,booleana,False,,,
+intersetorial/6,qt_tur_eja_fund,outras (qt_* etc.),False,14,14,10
+intersetorial/6,qt_tur_eja_med,outras (qt_* etc.),False,3,3,2
+intersetorial/6,v01041,v* (Censo),False,,,
+intersetorial/7,at_04_conv_01,booleana,False,,,
+intersetorial/7,qt_tur_eja_fund,outras (qt_* etc.),False,,,
+intersetorial/7,qt_tur_eja_med,outras (qt_* etc.),False,,,
+intersetorial/7,v05013,v* (Censo),False,6,6,1
+intersetorial/8,at_01_conv_01,booleana,False,,,
+intersetorial/8,qt_tur_inf_cre,outras (qt_* etc.),False,,,
+intersetorial/8,v00009,v* (Censo),False,13,13,13
+intersetorial/9,v0001,v* (Censo),False,,,18
+intersetorial/10,at_06_conv_01,booleana,False,,,
+intersetorial/10,qt_tur_fund_af,outras (qt_* etc.),False,,,
+intersetorial/10,qt_tur_fund_ai,outras (qt_* etc.),False,,,
+intersetorial/10,tp_dependencia,código (tp_*),False,,5,2
+intersetorial/10,v00094,v* (Censo),False,,,
+intersetorial/11,at_06_conv_01,booleana,False,,,
+intersetorial/12,at_06_conv_01,booleana,False,,,
+intersetorial/12,tp_dependencia,código (tp_*),False,,,
+intersetorial/12,v00401,v* (Censo),False,,,12
+saude/1,at_01_conv_01,booleana,False,,,
+saude/1,v00002,v* (Censo),False,,,
+saude/2,at_02_conv_01,booleana,False,,,
+saude/2,v00644,v* (Censo),False,,,
+saude/2,v00748,v* (Censo),False,,,
+saude/3,v0001,v* (Censo),False,,,
+saude/4,at_04_conv_06,booleana,False,,,
+saude/4,v01020,v* (Censo),False,,,
+saude/5,at_06_conv_01,booleana,False,,,
+saude/5,v00591,v* (Censo),False,2,2,2
+saude/6,at_04_conv_01,booleana,False,5,5,12
+saude/6,v01040,v* (Censo),False,2,2,2
+saude/6,v01041,v* (Censo),False,3,3,3
+saude/7,at_01_conv_01,booleana,False,,,
+saude/7,v00001,v* (Censo),False,,,
+saude/8,at_01_conv_07,booleana,False,,,
+saude/8,v01188,v* (Censo),False,,,
+saude/9,at_06_conv_01,booleana,False,3,3,15
+saude/9,v01019,v* (Censo),False,,,
+saude/9,v01030,v* (Censo),False,,,
+saude/10,at_02_conv_01,booleana,False,,,
+saude/10,v0001,v* (Censo),False,,,
+saude/11,at_04_conv_01,booleana,False,5,5,
+saude/11,v01040,v* (Censo),False,3,3,3
+saude/11,v01041,v* (Censo),False,1,1,1
+saude/12,at_03_conv_01,booleana,False,10,10,7
+saude/12,v01318,v* (Censo),False,,,
+saude/13,at_01_conv_06,booleana,False,,,
+saude/13,v00498,v* (Censo),False,6,6,6
+saude/14,at_02_conv_05,booleana,False,,,
+saude/14,v00111,v* (Censo),False,,,
+saude/15,at_04_conv_06,booleana,False,,,
+saude/15,v00092,v* (Censo),False,,,
+saude/16,v0001,v* (Censo),False,,,
+saude/16,v00312,v* (Censo),False,,,
+saude/17,at_04_conv_05,booleana,False,,,
+saude/17,v01320,v* (Censo),False,,,
+saude/18,at_06_conv_01,booleana,False,,,
+saude/18,v00238,v* (Censo),False,19,19,19
+saude/19,at_04_conv_01,booleana,False,7,7,
+saude/19,v0001,v* (Censo),False,,,
+saude/20,at_01_conv_01,booleana,False,6,6,
+saude/20,at_02_conv_01,booleana,False,5,5,
+saude/21,at_06_conv_05,booleana,False,1,1,20
+saude/21,v00901,v* (Censo),False,,,
+saude/22,at_01_conv_01,booleana,False,,,
+saude/23,at_01_conv_07,booleana,False,,,
+saude/23,v01389,v* (Censo),False,,,
+saude/24,at_06_conv_01,booleana,False,6,6,2
+saude/24,v00316,v* (Censo),False,,,
+saude/25,at_02_conv_01,booleana,False,3,3,14
+saude/25,v0001,v* (Censo),False,,,2
+saude/26,at_03_conv_01,booleana,False,4,4,3
+saude/26,at_04_conv_01,booleana,False,1,1,1
+saude/27,at_04_conv_01,booleana,False,,,
+saude/27,v01068,v* (Censo),False,,,

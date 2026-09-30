@@ -173,7 +173,9 @@ mac0499-tcc/
 │
 ├── testes/
 │   ├── validacao/            ← script que roda SQL e Cypher e compara resultados
-│   └── performance/          ← benchmarks de tempo de resposta
+│   ├── performance/          ← benchmarks de tempo de resposta
+│   ├── rag_categorias/       ← valores das colunas no texto indexado do RAG
+│   └── rag_modelos/          ← comparação de modelos de embedding pro RAG
 │
 └── docs/
     └── Proposta_de_TCC.pdf

@@ -1,9 +1,10 @@
 """
-Etapa 1: Extrai do PostgreSQL a descrição das propriedades do grafo (COMMENT ON COLUMN)
+Etapa 1: Extrai do PostgreSQL a descrição, o tipo e os valores das propriedades do grafo
 e monta o corpus do RAG em corpus/variaveis.json.
 
 Só entram as propriedades que existem no grafo, então o Neo4j precisa estar carregado.
 """
+import ast
 import json
 import os
 import re
@@ -15,7 +16,7 @@ import psycopg2
 from neo4j import GraphDatabase
 from config import (
     PG_CONFIG, PG_SCHEMA, NEO4J_CONFIG, CORPUS_DIR, CORPUS_JSON, GEOGRAFIA, EQUIPAMENTOS,
-    COLUNAS_IGNORAR, TEMA_POR_LABEL, load_perfis_config, load_colunas,
+    DESCRICOES_INFERIDAS, COLUNAS_IGNORAR, TEMA_POR_LABEL, load_perfis_config, load_colunas,
 )
 
 # ---------------------------------------------------------------------------
@@ -24,6 +25,43 @@ from config import (
 
 # Regex que identifica variáveis do Censo ("v" + dígitos)
 RE_VARIAVEL = re.compile(r"^v\d+$")
+
+# Descrições inferidas, para quando o PG não tem nenhuma
+INFERIDAS = {(d["no_label"], d["propriedade"]): d["descricao"] for d in DESCRICOES_INFERIDAS}
+
+
+# ---------------------------------------------------------------------------
+# TIPO E VALORES
+# ---------------------------------------------------------------------------
+
+
+def metadados_da_tabela(cur, tabela):
+    """{coluna: (descrição, tipo no PG, categorias)} da tabela, lidos de metadata.attribute."""
+    cur.execute(
+        """
+        SELECT a.name, a.description, a.type, a.categories
+        FROM metadata.attribute a
+        JOIN metadata.section s ON s.id = a.section_id
+        WHERE s.table_name = %s OR s.table_name LIKE %s
+        """,
+        (tabela, f"%.{tabela}"),
+    )
+    metadados = {}
+    for nome, descricao, tipo, categorias in cur.fetchall():
+        if isinstance(categorias, str):
+            categorias = ast.literal_eval(categorias)
+        metadados[nome] = (descricao, tipo, categorias or {})
+    return metadados
+
+
+def texto_valores(tipo, categorias):
+    """Valores escritos como o modelo deve usá-los na consulta (ex.: 1 = Federal)."""
+    if not categorias:
+        return ""
+    if tipo == "BOOLEAN":
+        return "true = Sim, false = Não"
+    formato = "'{}' = {}" if tipo == "STRING" else "{} = {}"
+    return ", ".join(formato.format(k, v) for k, v in categorias.items() if str(k).strip())
 
 
 # ---------------------------------------------------------------------------
@@ -48,8 +86,8 @@ def comentarios_da_tabela(cur, tabela):
     return cur.fetchall()
 
 
-def docs_de_uma_fonte(cur, no_label, tabela, colunas=None):
-    """Monta os documentos de uma tabela do PG (só v*, ou só as `colunas` informadas)."""
+def docs_de_uma_fonte(cur, no_label, tabela, tipos, colunas=None):
+    """Monta os documentos de uma tabela do PG, só com as propriedades que estão em `tipos`."""
     tema = TEMA_POR_LABEL.get(no_label, no_label)
     docs, sem_comentario = [], []
     for coluna, comentario in comentarios_da_tabela(cur, tabela):
@@ -59,10 +97,20 @@ def docs_de_uma_fonte(cur, no_label, tabela, colunas=None):
             continue
         if colunas is not None and coluna not in colunas:
             continue
-        descricao = (comentario or "").strip()
+        descricao = (comentario or "").strip() or INFERIDAS.get((no_label, coluna), "")
+        if coluna not in tipos:
+            fora_do_grafo.append(f"{coluna} ({descricao})")
+            continue
         if not descricao:
             sem_comentario.append(coluna)
             continue
+        _, _, categorias = metadados.get(coluna, (None, None, {}))
+        tipo = tipos[coluna]
+        valores = texto_valores(tipo, categorias)
+        # No texto buscado, os valores só entram nas colunas de código
+        texto = f"{tema}: {descricao}"
+        if valores and tipo != "BOOLEAN":
+            texto += f". valores: {valores}"
         docs.append({
             "id": f"{no_label}:{coluna}",
             "variavel": coluna,
@@ -70,22 +118,26 @@ def docs_de_uma_fonte(cur, no_label, tabela, colunas=None):
             "tema": tema,
             "tabela_pg": tabela,
             "descricao": descricao,
-            "texto": f"{tema}: {descricao}",
+            "tipo": tipo,
+            "valores": valores,
+            "texto": texto,
         })
-    return docs, sem_comentario
+    return docs, sem_comentario, fora_do_grafo
 
 
 def propriedades_no_grafo(labels):
-    """{rótulo: set(propriedades)} realmente presentes nos nós do grafo."""
+    """{rótulo: {propriedade: tipo no Neo4j}} das propriedades presentes nos nós do grafo."""
     driver = GraphDatabase.driver(
         NEO4J_CONFIG["uri"], auth=(NEO4J_CONFIG["user"], NEO4J_CONFIG["password"])
     )
     por_no = {}
     for label in labels:
         reg, _, _ = driver.execute_query(
-            f"MATCH (n:`{label}`) UNWIND keys(n) AS k RETURN DISTINCT k"
+            f"MATCH (n:`{label}`) UNWIND keys(n) AS k "
+            "RETURN k, collect(DISTINCT valueType(n[k])) AS tipos"
         )
-        por_no[label] = {r["k"] for r in reg}
+        # valueType devolve, por exemplo, "INTEGER NOT NULL"
+        por_no[label] = {r["k"]: r["tipos"][0].replace(" NOT NULL", "") for r in reg}
     driver.close()
     return por_no
 
@@ -104,33 +156,37 @@ def main():
     fontes += load_perfis_config()
     fontes += [{**eq, "colunas": load_colunas(eq["colunas"])} for eq in EQUIPAMENTOS]
 
+    # Primeiro o grafo: quais propriedades existem e com que tipo
+    print("[Neo4j] Lendo as propriedades e os tipos do grafo...")
+    no_grafo = propriedades_no_grafo({f["no_label"] for f in fontes})
+
     conn = psycopg2.connect(**PG_CONFIG)
     cur = conn.cursor()
 
-    todos, faltando = [], {}
+    todos, faltando, fora_do_grafo = [], {}, []
     for fonte in fontes:
-        docs, sem = docs_de_uma_fonte(cur, fonte["no_label"], fonte["tabela"], fonte.get("colunas"))
+        label = fonte["no_label"]
+        docs, sem, fora = docs_de_uma_fonte(
+            cur, label, fonte["tabela"], no_grafo[label], fonte.get("colunas")
+        )
         todos.extend(docs)
         if sem:
-            faltando[fonte["no_label"]] = sem
-        print(f"  {fonte['no_label']:26} ({fonte['tabela']}): {len(docs)} propriedades")
+            faltando[label] = sem
+        fora_do_grafo += [f"{label}.{x}" for x in fora]
+        print(f"  {label:26} ({fonte['tabela']}): {len(docs)} propriedades")
     conn.close()
 
-    # Mantém só o que existe no grafo
-    print("\n[Neo4j] Conferindo quais propriedades existem no grafo...")
-    no_grafo = propriedades_no_grafo({f["no_label"] for f in fontes})
-    fora_do_grafo = [d for d in todos if d["variavel"] not in no_grafo[d["no_label"]]]
-    todos = [d for d in todos if d["variavel"] in no_grafo[d["no_label"]]]
     if fora_do_grafo:
         print(f"[aviso] {len(fora_do_grafo)} propriedades não existem no grafo (ignoradas):")
-        for d in fora_do_grafo:
-            print(f"        {d['no_label']}.{d['variavel']}  ({d['descricao']})")
+        for x in fora_do_grafo:
+            print(f"        {x}")
 
     os.makedirs(CORPUS_DIR, exist_ok=True)
     with open(CORPUS_JSON, "w", encoding="utf-8") as f:
         json.dump(todos, f, ensure_ascii=False, indent=2)
 
-    print(f"\n[OK] {len(todos)} propriedades salvas em {CORPUS_JSON}")
+    com_valores = sum(1 for d in todos if d["valores"])
+    print(f"\n[OK] {len(todos)} propriedades salvas em {CORPUS_JSON} ({com_valores} com valores)")
     if faltando:
         total = sum(len(v) for v in faltando.values())
         print(f"[aviso] {total} propriedades sem comentário no PG (ignoradas):")

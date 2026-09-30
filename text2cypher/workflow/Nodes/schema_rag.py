@@ -14,8 +14,8 @@ from Nodes.States.states import InputState, OverallState
 # sobe até text2cypher/ para importar o retriever e o config
 TEXT2CYPHER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, TEXT2CYPHER_DIR)
-from config import TOP_K
-from dicionario.retriever import montar_fragmento_schema, propriedades_indexadas
+from config import TOP_K, PROPRIEDADES_FIXAS
+from dicionario.retriever import montar_fragmento_schema, propriedades_indexadas, descrever
 
 # nº de nós amostrados por rótulo para descobrir as propriedades
 AMOSTRA_PROPRIEDADES = 10
@@ -74,11 +74,22 @@ def montar_backbone(driver, database_name):
         for label in _labels(driver, database_name):
             ocultas = no_dicionario.get(label, set())
             visiveis = [p for p in _propriedades(driver, database_name, label) if p not in ocultas]
-            props = ", ".join(visiveis)
             aviso = ""
             if ocultas:
                 aviso = "  // demais propriedades: só as relevantes, listadas abaixo"
-            linhas_nos.append(f"- {label} {{{props}}}{aviso}")
+            descritas = {d["propriedade"]: d for d in PROPRIEDADES_FIXAS if d["no_label"] == label}
+            if descritas:
+                # uma por linha, com a descrição de quem tem
+                linhas_nos.append(f"- {label}{aviso}")
+                for p in visiveis:
+                    if p in descritas:
+                        d = descritas[p]
+                        desc = descrever(d["descricao"], d["tipo"], d.get("valores", ""))
+                        linhas_nos.append(f"    {p}  // {desc}")
+                    else:
+                        linhas_nos.append(f"    {p}")
+            else:
+                linhas_nos.append(f"- {label} {{{', '.join(visiveis)}}}{aviso}")
 
         linhas_rels = [f"(:{s})-[:{rel}]->(:{e})" for s, rel, e in _relacoes(driver, database_name)]
         _backbone = ("\n".join(linhas_nos), "\n".join(linhas_rels))

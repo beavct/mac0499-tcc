@@ -10,7 +10,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import chromadb
 from sentence_transformers import SentenceTransformer
-from config import CORPUS_JSON, VECTORSTORE_DIR, CHROMA_COLLECTION, EMBEDDING_MODEL
+from config import (CORPUS_JSON, VECTORSTORE_DIR, CHROMA_COLLECTION, EMBEDDING_MODEL,
+                    PREFIXO_TEXTO)
 
 # ---------------------------------------------------------------------------
 # CARGA
@@ -32,11 +33,13 @@ def indexar(docs, batch_size=256):
         client.delete_collection(CHROMA_COLLECTION)
     col = client.create_collection(CHROMA_COLLECTION, metadata={"hnsw:space": "cosine"})
 
-    metadados = ["variavel", "no_label", "tema", "tabela_pg", "descricao"]
+    # guardados junto, mas fora da busca (só o "texto" é embeddado)
+    metadados = ["variavel", "no_label", "tema", "tabela_pg", "descricao", "tipo", "valores"]
     for i in range(0, len(docs), batch_size):
         lote = docs[i : i + batch_size]
         textos = [d["texto"] for d in lote]
-        embeddings = model.encode(textos, normalize_embeddings=True).tolist()
+        embeddings = model.encode([PREFIXO_TEXTO + t for t in textos],
+                                  normalize_embeddings=True).tolist()
         col.add(
             ids=[d["id"] for d in lote],
             embeddings=embeddings,
