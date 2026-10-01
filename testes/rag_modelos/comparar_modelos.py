@@ -13,7 +13,6 @@ import json
 import os
 import shutil
 import sys
-import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "rag_categorias"))
 
@@ -94,13 +93,11 @@ def testar_modelo(m, docs, consultas, por_nome):
     print(f"\n[modelo] {nome}")
     model = SentenceTransformer(m["nome"])
 
-    inicio = time.time()
     ranking = ranking_da_versao(model, docs, consultas, "B", (m["pergunta"], m["texto"]))
-    segundos = round(time.time() - inicio, 1)
 
     posicoes = posicoes_do_gabarito(nome, consultas, ranking, por_nome)
     linha = {"modelo": nome, "dimensao": model.get_embedding_dimension(),
-             "segundos": segundos, "completas": perguntas_completas(consultas, ranking)}
+             "completas": perguntas_completas(consultas, ranking)}
     for g in GRUPOS:
         for k in KS:
             linha[f"{g}@{k}"] = round(recall(posicoes, g, k), 4)

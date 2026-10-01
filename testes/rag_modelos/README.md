@@ -35,26 +35,24 @@ python comparar_modelos.py --limpar-cache  # apaga cada modelo do cache depois d
 Os modelos juntos ocupam uns 9 GB no cache do Hugging Face (`~/.cache/huggingface/hub`). Se o disco estiver muito cheio, use o `--limpar-cache`: ele apaga cada modelo depois do teste, menos o que está no `config.py`.
 
 Ele imprime a tabela e grava em `output/`:
-- `recall.csv`: recall por modelo, grupo e `k`, as perguntas completas e o tempo pra gerar os vetores;
+- `recall.csv`: recall por modelo, grupo e `k` e as perguntas completas;
 - `posicoes.csv`: a posição de cada propriedade do gabarito em cada modelo (vazio = fora do top-20).
 
 ## Resultados
 
-A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de propriedade, e o tempo pra gerar os vetores das 1.800 propriedades e das 65 perguntas num notebook sem GPU:
+A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de propriedade:
 
-| Modelo | todas | `v*` (Censo) | código | booleana | outras | completas | tempo |
-|--------|------:|-------------:|-------:|---------:|-------:|----------:|------:|
-| MiniLM | 0,37 | 0,19 | 0,36 | 0,39 | 0,67 | 12/65 | 6 s |
-| mpnet | 0,41 | 0,32 | 0,09 | 0,44 | 0,64 | 15/65 | 8 s |
-| e5-small | 0,58 | 0,59 | 0,09 | 0,78 | 0,45 | 24/65 | 4 s |
-| **e5-base** | 0,65 | 0,51 | 0,64 | 0,76 | 0,76 | 30/65 | 10 s |
-| e5-large | 0,65 | 0,69 | 0,27 | 0,68 | 0,67 | 31/65 | 28 s |
-| bge-m3 | 0,49 | 0,53 | 0,18 | 0,46 | 0,55 | 20/65 | 39 s |
-| Qwen3 | **0,67** | 0,53 | 0,64 | **0,88** | 0,70 | **32/65** | 71 s |
+| Modelo | todas | `v*` (Censo) | código | booleana | outras | completas |
+|--------|------:|-------------:|-------:|---------:|-------:|----------:|
+| MiniLM | 0,37 | 0,19 | 0,36 | 0,39 | 0,67 | 12/65 |
+| mpnet | 0,41 | 0,32 | 0,09 | 0,44 | 0,64 | 15/65 |
+| e5-small | 0,58 | 0,59 | 0,09 | 0,78 | 0,45 | 24/65 |
+| **e5-base** | 0,65 | 0,51 | 0,64 | 0,76 | 0,76 | 30/65 |
+| e5-large | 0,65 | 0,69 | 0,27 | 0,68 | 0,67 | 31/65 |
+| bge-m3 | 0,49 | 0,53 | 0,18 | 0,46 | 0,55 | 20/65 |
+| Qwen3 | **0,67** | 0,53 | 0,64 | **0,88** | 0,70 | **32/65** |
 
-O tempo é o de gerar os vetores das 1.800 propriedades e das perguntas.
-
-O Qwen3 tem o maior recall, mas o `multilingual-e5-base` fica praticamente empatado (duas perguntas completas a menos), é sete vezes mais rápido e não depende de uma instrução escrita por nós. Os dois sobem o recall de 0,37 pra perto de 0,65 e mais que dobram as perguntas completas. 
+O Qwen3 tem o maior recall, mas o `multilingual-e5-base` fica praticamente empatado (duas perguntas completas a menos), é menor e não depende de uma instrução escrita por nós. Os dois sobem o recall de 0,37 pra perto de 0,65 e mais que dobram as perguntas completas. 
 
 ## Estrutura
 
