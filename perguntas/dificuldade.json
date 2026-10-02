@@ -1,0 +1,1712 @@
+{
+  "_descricao": "Nível de dificuldade de cada consulta Cypher, pelos critérios do Spider adaptados. Gerado por classificar_dificuldade.py.",
+  "niveis": {
+    "facil": [
+      "ed_basica/1",
+      "ed_basica/3",
+      "ed_basica/4",
+      "ed_basica/5",
+      "saude/25"
+    ],
+    "media": [
+      "ed_basica/7",
+      "ed_basica/9",
+      "ed_basica/11",
+      "ed_basica/13",
+      "ed_basica/17",
+      "ed_basica/18",
+      "ed_basica/19",
+      "ed_basica/21",
+      "ed_basica/22",
+      "ed_basica/23",
+      "ed_basica/25",
+      "saude/2",
+      "saude/4",
+      "saude/5",
+      "saude/9",
+      "saude/11",
+      "saude/13",
+      "saude/16",
+      "saude/17",
+      "saude/18",
+      "saude/22",
+      "saude/24"
+    ],
+    "dificil": [
+      "ed_basica/2",
+      "ed_basica/8",
+      "ed_basica/10",
+      "ed_basica/12",
+      "ed_basica/14",
+      "ed_basica/15",
+      "ed_basica/16",
+      "ed_basica/20",
+      "ed_basica/24",
+      "ed_basica/26",
+      "saude/1",
+      "saude/3",
+      "saude/6",
+      "saude/7",
+      "saude/8",
+      "saude/10",
+      "saude/12",
+      "saude/14",
+      "saude/15",
+      "saude/19",
+      "saude/20",
+      "saude/21",
+      "saude/23",
+      "saude/26",
+      "intersetorial/1",
+      "intersetorial/4",
+      "intersetorial/9",
+      "intersetorial/11"
+    ],
+    "extra": [
+      "ed_basica/6",
+      "ed_basica/27",
+      "saude/27",
+      "intersetorial/2",
+      "intersetorial/3",
+      "intersetorial/5",
+      "intersetorial/6",
+      "intersetorial/7",
+      "intersetorial/8",
+      "intersetorial/10",
+      "intersetorial/12"
+    ]
+  },
+  "detalhe": {
+    "ed_basica/1": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": true,
+      "grupos": [
+        0,
+        0,
+        0
+      ],
+      "nivel": "facil"
+    },
+    "ed_basica/2": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        0,
+        0,
+        3
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/3": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": true,
+      "grupos": [
+        1,
+        0,
+        1
+      ],
+      "nivel": "facil"
+    },
+    "ed_basica/4": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": true,
+      "grupos": [
+        1,
+        0,
+        0
+      ],
+      "nivel": "facil"
+    },
+    "ed_basica/5": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": true,
+      "grupos": [
+        1,
+        0,
+        1
+      ],
+      "nivel": "facil"
+    },
+    "ed_basica/6": {
+      "where": 1,
+      "limit": 1,
+      "nos_de_dados": [
+        "p:PerfilAlfabetizacao"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        1,
+        0
+      ],
+      "nivel": "extra"
+    },
+    "ed_basica/7": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilDomiciliosParte2"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 4,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/8": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilParentesco"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/9": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilDomiciliosParte1"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/10": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "ef:Escola",
+        "em:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/11": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "a:PerfilAlfabetizacao",
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 3,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/12": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "demo:PerfilDemografia",
+        "e:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/13": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        0
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/14": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "demo:PerfilDemografia",
+        "e:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/15": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilParentesco"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 0,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        0,
+        3
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/16": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilDemografia"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/17": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        0
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/18": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "a:PerfilAlfabetizacao",
+        "e:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 0,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        0,
+        2
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/19": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        0,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/20": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "e:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/21": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 3,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/22": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "r:PerfilRacaCor"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 0,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        0,
+        2
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/23": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilDomiciliosParte2"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/24": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "com:Escola",
+        "sem:Escola"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/25": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        0
+      ],
+      "nivel": "media"
+    },
+    "ed_basica/26": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "sem:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "ed_basica/27": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "demo:PerfilDemografia",
+        "esc:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        1,
+        1
+      ],
+      "nivel": "extra"
+    },
+    "saude/1": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/2": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "a:PerfilAlfabetizacao",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/3": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "saude/4": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDemografia",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/5": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte3",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/6": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "demo:PerfilDemografia"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "saude/7": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/8": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilParentesco",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        3
+      ],
+      "nivel": "dificil"
+    },
+    "saude/9": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDemografia",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/10": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/11": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDemografia",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/12": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "r:PerfilRacaCor",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/13": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDomiciliosParte3",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/14": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDomiciliosParte2",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        0,
+        1
+      ],
+      "nivel": "dificil"
+    },
+    "saude/15": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDomiciliosParte2",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 4,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/16": {
+      "where": 0,
+      "limit": 0,
+      "nos_de_dados": [
+        "dom2:PerfilDomiciliosParte2"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        0,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/17": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "r:PerfilRacaCor",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        0
+      ],
+      "nivel": "media"
+    },
+    "saude/18": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDomiciliosParte2",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/19": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 2,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        0,
+        3
+      ],
+      "nivel": "dificil"
+    },
+    "saude/20": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "amb:EquipamentoSaude",
+        "internacao:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/21": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "a:PerfilAlfabetizacao",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/22": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/23": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "r:PerfilRacaCor",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 1,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 2,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        2
+      ],
+      "nivel": "dificil"
+    },
+    "saude/24": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "p:PerfilDomiciliosParte2",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        0,
+        1
+      ],
+      "nivel": "media"
+    },
+    "saude/25": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 1,
+      "condicoes": 2,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": true,
+      "grupos": [
+        1,
+        0,
+        1
+      ],
+      "nivel": "facil"
+    },
+    "saude/26": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "diag:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "saude/27": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "par:PerfilParentesco",
+        "urg:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        1,
+        1
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/1": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 1,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "intersetorial/2": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 2,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        2,
+        0
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/3": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "ent:PerfilEntornoDomicilios",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 4,
+      "condicoes": 3,
+      "cruzamentos": 2,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        4,
+        0,
+        4
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/4": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 1,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "intersetorial/5": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "demo:PerfilDemografia",
+        "e:Escola",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 2,
+      "cruzamentos": 2,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        4,
+        0,
+        4
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/6": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "p:PerfilDemografia"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 1,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        1,
+        1
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/7": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "e:Escola",
+        "ent:PerfilEntornoDomicilios"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 1,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        1,
+        1
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/8": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "c:PerfilDomiciliosParte1",
+        "e:Escola",
+        "es:EquipamentoSaude"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 1,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 2,
+      "cruzamentos": 2,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        4,
+        0,
+        4
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/9": {
+      "where": 1,
+      "limit": 1,
+      "nos_de_dados": [
+        "e:Escola",
+        "es:EquipamentoSaude"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 4,
+      "condicoes": 1,
+      "cruzamentos": 1,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        3,
+        0,
+        1
+      ],
+      "nivel": "dificil"
+    },
+    "intersetorial/10": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "dom2:PerfilDomiciliosParte2",
+        "e:Escola",
+        "saude:EquipamentoSaude"
+      ],
+      "etapas_with": 2,
+      "filtro_agregacao": 0,
+      "or": 1,
+      "like": 0,
+      "subconsultas": 0,
+      "agregacoes": 3,
+      "condicoes": 3,
+      "cruzamentos": 2,
+      "varias_agregacoes": 1,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        4,
+        0,
+        4
+      ],
+      "nivel": "extra"
+    },
+    "intersetorial/11": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "esc:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 0,
+      "cruzamentos": 0,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 0,
+      "consulta_direta": false,
+      "grupos": [
+        1,
+        1,
+        0
+      ],
+      "nivel": "dificil"
+    },
+    "intersetorial/12": {
+      "where": 1,
+      "limit": 0,
+      "nos_de_dados": [
+        "dom2:PerfilDomiciliosParte2",
+        "esc:Escola"
+      ],
+      "etapas_with": 0,
+      "filtro_agregacao": 0,
+      "or": 0,
+      "like": 0,
+      "subconsultas": 1,
+      "agregacoes": 0,
+      "condicoes": 2,
+      "cruzamentos": 1,
+      "varias_agregacoes": 0,
+      "varias_condicoes": 1,
+      "consulta_direta": false,
+      "grupos": [
+        2,
+        1,
+        1
+      ],
+      "nivel": "extra"
+    }
+  }
+}

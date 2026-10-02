@@ -19,6 +19,22 @@ Além dos três eixos temáticos (educação, saúde e intersetorial), cada cons
 | **multi_hop** | travessia lateral, auto-relação ou cruzamento educação × saúde | 10 |
 | **espacial** | distância/raio/KNN (`point.distance` / `ST_DWithin`) | 6 |
 
+## Dificuldade das consultas
+
+Cada consulta Cypher também tem um **nível de dificuldade** (fácil, média, difícil ou extra), usado para avaliar o Text-to-Cypher por nível. O critério é o do [Spider](https://yale-lily.github.io/spider), que conta os componentes de cada consulta, adaptado para Cypher e para o benchmark. Os níveis ficam em [`dificuldade.json`](dificuldade.json), gerado pelo `classificar_dificuldade.py`:
+
+```bash
+cd perguntas
+python classificar_dificuldade.py
+```
+
+| Nível | Nº de consultas |
+|-------|-----------------|
+| fácil | 5 |
+| média | 22 |
+| difícil | 28 |
+| extra | 11 |
+
 ## Níveis de agregação territorial
 
 As consultas foram propositalmente distribuídas entre diferentes níveis de agregação territorial, para exercitar a hierarquia do grafo (`UF → Município → Distrito → Subdistrito → [Bairro] → SetorCensitário`) em diversas profundidades. Toda consulta que retorna um nível abaixo do município também retorna o município correspondente, para tornar o resultado autoexplicativo.
