@@ -3,8 +3,15 @@ neo4j
 python-dotenv
 matplotlib
 
+# Busca híbrida da Camada A (text2cypher e testes/rag_buscas), versões fixadas
+rank-bm25==0.2.2
+snowballstemmer==3.1.1
+langchain-community==0.4.2
+langchain-classic==1.0.8
+langchain-chroma==1.1.0
+
 # Text-to-Cypher: versões fixadas para que todas as máquinas instalem o mesmo
-# (conferidas para Python 3.12 e 3.14)
+# (p/ Python 3.12 e 3.14)
 chromadb==1.5.9
 sentence-transformers==6.0.1
 langgraph==1.2.12

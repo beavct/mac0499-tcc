@@ -94,6 +94,25 @@ DESCRICOES_INFERIDAS = [
      "descricao": "Número de Matrículas da Educação Profissional Técnica"},
 ]
 
+# Complementos que entram no texto buscado logo depois da descrição, com as palavras que as
+# perguntas usam e a descrição do PG não usa. Só o da tp_dependencia foi medido (é a única
+# categórica do gabarito); os outros foram escritos para as categóricas de termo técnico.
+# Ver testes/rag_buscas/.
+COMPLEMENTOS_DESCRICAO = [
+    {"no_label": "Escola", "propriedade": "tp_dependencia",
+     "complemento": "rede pública ou privada"},
+    {"no_label": "Escola", "propriedade": "tp_situacao_funcionamento",
+     "complemento": "escolas ativas, fechadas ou desativadas"},
+    {"no_label": "Escola", "propriedade": "tp_aee",
+     "complemento": "educação especial, alunos com deficiência"},
+    {"no_label": "Escola", "propriedade": "tp_localizacao",
+     "complemento": "zona urbana ou rural"},
+    {"no_label": "Escola", "propriedade": "tp_rede_local",
+     "complemento": "internet, wi-fi"},
+    {"no_label": "Escola", "propriedade": "tp_atividade_complementar",
+     "complemento": "contraturno, atividades extracurriculares"},
+]
+
 # Colunas internas do PG que nunca viram documento
 COLUNAS_IGNORAR = {
     "_id", "_data_ingestion_id", "_created_at", "_updated_at",

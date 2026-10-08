@@ -2,7 +2,7 @@
 Experimento: colocar os valores das colunas (ex.: 1 = Federal) no texto indexado ajuda
 ou atrapalha o RAG a recuperar as propriedades? Compara três versões do texto:
   A: "tema: descrição"
-  B: A + valores das colunas que não são booleanas (o que o workflow usa)
+  B: A + valores das colunas que não são booleanas (como a etapa 01 monta o texto)
   C: A + valores de todas as colunas, inclusive as booleanas
 
 A busca é exata (similaridade de cosseno com todos os textos), para o resultado não
@@ -128,8 +128,11 @@ def texto_da_versao(doc, versao):
     base = f"{doc['tema']}: {doc['descricao']}"
     if versao == "A":
         return base
+    # as versões não usam os complementos da etapa 01, que o teste das buscas mede à parte
+    if versao == "B" and doc["valores"] and doc["tipo"] != "BOOLEAN":
+        return f"{base}. valores: {doc['valores']}"
     if versao == "B":
-        return doc["texto"]  # o corpus já traz os valores das colunas que não são booleanas
+        return base
     if doc["valores"]:
         return f"{base}. valores: {doc['valores']}"
     return base
@@ -199,7 +202,7 @@ def salvar_csv(pasta, arquivo, linhas):
 
 def rodar_modelo(modelo, docs, consultas, por_nome):
     """Roda as três versões com um modelo e grava os CSVs em output/<modelo>/."""
-    print(f"\n--- modelo: {modelo}")
+    print(f"\n--- {modelo} ---")
     model = SentenceTransformer(modelo)
     rankings = {}
     for v in VERSOES:
@@ -241,10 +244,11 @@ def main():
     por_nome = {d["variavel"]: d for d in docs}
     consultas = carregar_consultas(set(por_nome))
     total = sum(len(c[2]) for c in consultas)
-    print(f"[gabarito] {len(consultas)} consultas, {total} propriedades")
+    print(f"\n[Gabarito] {len(consultas)} consultas, {total} propriedades")
 
     for modelo in modelos:
         rodar_modelo(modelo, docs, consultas, por_nome)
+    print("\n[OK] Experimento concluído!")
 
 
 if __name__ == "__main__":

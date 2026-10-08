@@ -16,7 +16,8 @@ import psycopg2
 from neo4j import GraphDatabase
 from config import (
     PG_CONFIG, PG_SCHEMA, NEO4J_CONFIG, CORPUS_DIR, CORPUS_JSON, GEOGRAFIA, EQUIPAMENTOS,
-    DESCRICOES_INFERIDAS, COLUNAS_IGNORAR, TEMA_POR_LABEL, load_perfis_config, load_colunas,
+    DESCRICOES_INFERIDAS, COMPLEMENTOS_DESCRICAO, COLUNAS_IGNORAR, TEMA_POR_LABEL,
+    load_perfis_config, load_colunas,
 )
 
 # ---------------------------------------------------------------------------
@@ -28,6 +29,10 @@ RE_VARIAVEL = re.compile(r"^v\d+$")
 
 # Descrições inferidas, para quando o PG não tem nenhuma
 INFERIDAS = {(d["no_label"], d["propriedade"]): d["descricao"] for d in DESCRICOES_INFERIDAS}
+
+# Complementos da descrição no texto buscado: "Dependência Administrativa (rede pública...)"
+COMPLEMENTOS = {(d["no_label"], d["propriedade"]): d["complemento"]
+                for d in COMPLEMENTOS_DESCRICAO}
 
 
 # ---------------------------------------------------------------------------
@@ -89,7 +94,8 @@ def comentarios_da_tabela(cur, tabela):
 def docs_de_uma_fonte(cur, no_label, tabela, tipos, colunas=None):
     """Monta os documentos de uma tabela do PG, só com as propriedades que estão em `tipos`."""
     tema = TEMA_POR_LABEL.get(no_label, no_label)
-    docs, sem_comentario = [], []
+    metadados = metadados_da_tabela(cur, tabela)
+    docs, sem_comentario, fora_do_grafo = [], [], []
     for coluna, comentario in comentarios_da_tabela(cur, tabela):
         if coluna in COLUNAS_IGNORAR:
             continue
@@ -107,8 +113,11 @@ def docs_de_uma_fonte(cur, no_label, tabela, tipos, colunas=None):
         _, _, categorias = metadados.get(coluna, (None, None, {}))
         tipo = tipos[coluna]
         valores = texto_valores(tipo, categorias)
-        # No texto buscado, os valores só entram nas colunas de código
+        complemento = COMPLEMENTOS.get((no_label, coluna), "")
         texto = f"{tema}: {descricao}"
+        if complemento:
+            texto += f" ({complemento})"
+        # No texto buscado, os valores só entram nas colunas que não são booleanas
         if valores and tipo != "BOOLEAN":
             texto += f". valores: {valores}"
         docs.append({
@@ -120,6 +129,7 @@ def docs_de_uma_fonte(cur, no_label, tabela, tipos, colunas=None):
             "descricao": descricao,
             "tipo": tipo,
             "valores": valores,
+            "complemento": complemento,
             "texto": texto,
         })
     return docs, sem_comentario, fora_do_grafo

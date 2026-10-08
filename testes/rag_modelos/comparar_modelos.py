@@ -90,7 +90,7 @@ def perguntas_completas(consultas, ranking):
 def testar_modelo(m, docs, consultas, por_nome):
     """Roda a busca com um modelo e devolve a linha do resumo e as posições."""
     nome = m["nome"].split("/")[-1]
-    print(f"\n[modelo] {nome}")
+    print(f"\n--- {nome} ---")
     model = SentenceTransformer(m["nome"])
 
     ranking = ranking_da_versao(model, docs, consultas, "B", (m["pergunta"], m["texto"]))
@@ -124,7 +124,7 @@ def main():
     docs = json.load(open(CORPUS_JSON, encoding="utf-8"))
     por_nome = {d["variavel"]: d for d in docs}
     consultas = carregar_consultas(set(por_nome))
-    print(f"[gabarito] {len(consultas)} consultas")
+    print(f"\n[Gabarito] {len(consultas)} consultas")
 
     resumo = []
     todas_posicoes = []
@@ -144,6 +144,7 @@ def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     salvar_csv("recall.csv", resumo)
     salvar_csv("posicoes.csv", todas_posicoes)
+    print("\n[OK] Experimento concluído!")
 
 
 if __name__ == "__main__":

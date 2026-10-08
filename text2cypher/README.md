@@ -81,12 +81,18 @@ e `true = Sim` pras booleanas. Cada documento guarda o tipo e os valores, mas o 
 é buscado só recebe os valores das colunas de código. Nas booleanas, o mesmo
 `true = Sim, false = Não` em centenas de textos atrapalha a busca (ver [Avaliação](#avaliacao)).
 
-Duas coisas ficam no `config.py` em vez de virem do PG:
+Três coisas ficam no `config.py` em vez de virem do PG:
 - `PROPRIEDADES_FIXAS`: as propriedades que aparecem sempre no esquema (código, nome,
   `location`, `geometry`, `tp_gestao`, `situacao`), com a descrição copiada do PG ou,
   quando o ETL criou a propriedade, escrita à mão;
 - `DESCRICOES_INFERIDAS`: o `qt_mat_prof_tec`, que está sem descrição no PG e na planilha
-  de metadados; a descrição foi inferida pelas colunas irmãs.
+  de metadados; a descrição foi inferida pelas colunas irmãs;
+- `COMPLEMENTOS_DESCRICAO`: palavras que as perguntas usam e a descrição do PG não, que
+  entram no texto buscado logo depois da descrição, como em "Dependência Administrativa
+  (rede pública ou privada)", porque as perguntas falam em "escolas públicas". São seis
+  colunas categóricas de termo técnico; o ganho foi medido em
+  [`testes/rag_buscas/`](../testes/rag_buscas), mas só na `tp_dependencia`, a única delas
+  que está no gabarito.
 
 As listas de origem vêm dos arquivos do ETL (`../etl/auxiliares/config_perfis.txt`,
 `colunas_educacao.txt` e `colunas_saude.txt`), pra ficar em sincronia com ele. A saída é

@@ -1,0 +1,865 @@
+variante,consulta,propriedade,grupo,pos
+vetorial,ed_basica/2,tp_dependencia,categórica,1
+vetorial,ed_basica/3,in_esgoto_fossa_septica,booleana,3
+vetorial,ed_basica/3,in_esgoto_rede_publica,booleana,1
+vetorial,ed_basica/3,tp_dependencia,categórica,140
+vetorial,ed_basica/4,in_quadra_esportes,booleana,1
+vetorial,ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,5
+vetorial,ed_basica/5,qt_tur_med,outras dos equipamentos,9
+vetorial,ed_basica/6,v00901,v* (Censo),76
+vetorial,ed_basica/7,qt_tur_bas_d,outras dos equipamentos,14
+vetorial,ed_basica/7,qt_tur_med,outras dos equipamentos,30
+vetorial,ed_basica/7,tp_dependencia,categórica,48
+vetorial,ed_basica/7,v00094,v* (Censo),72
+vetorial,ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+vetorial,ed_basica/8,v01211,v* (Censo),365
+vetorial,ed_basica/9,qt_tur_fund,outras dos equipamentos,4
+vetorial,ed_basica/9,v00006,v* (Censo),6
+vetorial,ed_basica/10,qt_tur_fund,outras dos equipamentos,6
+vetorial,ed_basica/10,qt_tur_med,outras dos equipamentos,5
+vetorial,ed_basica/11,qt_tur_bas_n,outras dos equipamentos,6
+vetorial,ed_basica/11,qt_tur_med,outras dos equipamentos,32
+vetorial,ed_basica/11,v00644,v* (Censo),24
+vetorial,ed_basica/11,v00748,v* (Censo),14
+vetorial,ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,9
+vetorial,ed_basica/12,v01031,v* (Censo),1
+vetorial,ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,1
+vetorial,ed_basica/13,v00078,v* (Censo),3
+vetorial,ed_basica/14,qt_tur_inf,outras dos equipamentos,8
+vetorial,ed_basica/14,tp_dependencia,categórica,2
+vetorial,ed_basica/14,v01031,v* (Censo),3
+vetorial,ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+vetorial,ed_basica/15,v01215,v* (Censo),199
+vetorial,ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,1
+vetorial,ed_basica/16,v01034,v* (Censo),3
+vetorial,ed_basica/17,qt_tur_med,outras dos equipamentos,1
+vetorial,ed_basica/17,v00085,v* (Censo),33
+vetorial,ed_basica/18,qt_tur_eja_med,outras dos equipamentos,4
+vetorial,ed_basica/18,v00644,v* (Censo),6
+vetorial,ed_basica/18,v00748,v* (Censo),9
+vetorial,ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+vetorial,ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,3
+vetorial,ed_basica/20,v00004,v* (Censo),16
+vetorial,ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+vetorial,ed_basica/21,tp_dependencia,categórica,206
+vetorial,ed_basica/21,v00050,v* (Censo),100
+vetorial,ed_basica/22,qt_tur_bas_d,outras dos equipamentos,1
+vetorial,ed_basica/22,v01320,v* (Censo),575
+vetorial,ed_basica/23,tp_dependencia,categórica,204
+vetorial,ed_basica/23,v00495,v* (Censo),156
+vetorial,ed_basica/24,in_laboratorio_ciencias,booleana,2
+vetorial,ed_basica/25,qt_tur_med,outras dos equipamentos,3
+vetorial,ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,17
+vetorial,ed_basica/27,qt_tur_inf,outras dos equipamentos,2
+vetorial,ed_basica/27,v01031,v* (Censo),7
+vetorial,intersetorial/1,at_02_conv_01,booleana,9
+vetorial,intersetorial/1,tp_dependencia,categórica,12
+vetorial,intersetorial/2,v00006,v* (Censo),8
+vetorial,intersetorial/3,at_04_conv_01,booleana,23
+vetorial,intersetorial/3,qt_tur_fund,outras dos equipamentos,6
+vetorial,intersetorial/3,tp_dependencia,categórica,1
+vetorial,intersetorial/3,v05007,v* (Censo),34
+vetorial,intersetorial/3,v05022,v* (Censo),30
+vetorial,intersetorial/4,at_02_conv_01,booleana,2
+vetorial,intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,35
+vetorial,intersetorial/5,at_02_conv_01,booleana,1
+vetorial,intersetorial/5,tp_dependencia,categórica,16
+vetorial,intersetorial/5,v01040,v* (Censo),2
+vetorial,intersetorial/5,v01041,v* (Censo),26
+vetorial,intersetorial/6,at_04_conv_01,booleana,1
+vetorial,intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,18
+vetorial,intersetorial/6,qt_tur_eja_med,outras dos equipamentos,21
+vetorial,intersetorial/6,v01041,v* (Censo),884
+vetorial,intersetorial/7,at_04_conv_01,booleana,1
+vetorial,intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,19
+vetorial,intersetorial/7,qt_tur_eja_med,outras dos equipamentos,27
+vetorial,intersetorial/7,v05013,v* (Censo),41
+vetorial,intersetorial/8,at_01_conv_01,booleana,179
+vetorial,intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,140
+vetorial,intersetorial/8,v00009,v* (Censo),5
+vetorial,intersetorial/9,v0001,v* (Censo),25
+vetorial,intersetorial/10,at_06_conv_01,booleana,87
+vetorial,intersetorial/10,qt_tur_fund_af,outras dos equipamentos,492
+vetorial,intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,482
+vetorial,intersetorial/10,tp_dependencia,categórica,3
+vetorial,intersetorial/10,v00094,v* (Censo),120
+vetorial,intersetorial/11,at_06_conv_01,booleana,5
+vetorial,intersetorial/12,at_06_conv_01,booleana,22
+vetorial,intersetorial/12,tp_dependencia,categórica,2
+vetorial,intersetorial/12,v00401,v* (Censo),14
+vetorial,saude/1,at_01_conv_01,booleana,14
+vetorial,saude/1,v00002,v* (Censo),5
+vetorial,saude/2,at_02_conv_01,booleana,7
+vetorial,saude/2,v00644,v* (Censo),3
+vetorial,saude/2,v00748,v* (Censo),2
+vetorial,saude/3,v0001,v* (Censo),34
+vetorial,saude/4,at_04_conv_06,booleana,1
+vetorial,saude/4,v01020,v* (Censo),2
+vetorial,saude/5,at_06_conv_01,booleana,93
+vetorial,saude/5,v00591,v* (Censo),1
+vetorial,saude/6,at_04_conv_01,booleana,1
+vetorial,saude/6,v01040,v* (Censo),5
+vetorial,saude/6,v01041,v* (Censo),12
+vetorial,saude/7,at_01_conv_01,booleana,94
+vetorial,saude/7,v00001,v* (Censo),8
+vetorial,saude/8,at_01_conv_07,booleana,159
+vetorial,saude/8,v01188,v* (Censo),85
+vetorial,saude/9,at_06_conv_01,booleana,4
+vetorial,saude/9,v01019,v* (Censo),26
+vetorial,saude/9,v01030,v* (Censo),13
+vetorial,saude/10,at_02_conv_01,booleana,1
+vetorial,saude/10,v0001,v* (Censo),859
+vetorial,saude/11,at_04_conv_01,booleana,1
+vetorial,saude/11,v01040,v* (Censo),5
+vetorial,saude/11,v01041,v* (Censo),14
+vetorial,saude/12,at_03_conv_01,booleana,24
+vetorial,saude/12,v01318,v* (Censo),943
+vetorial,saude/13,at_01_conv_06,booleana,14
+vetorial,saude/13,v00498,v* (Censo),15
+vetorial,saude/14,at_02_conv_05,booleana,1
+vetorial,saude/14,v00111,v* (Censo),278
+vetorial,saude/15,at_04_conv_06,booleana,71
+vetorial,saude/15,v00092,v* (Censo),12
+vetorial,saude/16,v0001,v* (Censo),936
+vetorial,saude/16,v00312,v* (Censo),4
+vetorial,saude/17,at_04_conv_05,booleana,1
+vetorial,saude/17,v01320,v* (Censo),306
+vetorial,saude/18,at_06_conv_01,booleana,327
+vetorial,saude/18,v00238,v* (Censo),111
+vetorial,saude/19,at_04_conv_01,booleana,1
+vetorial,saude/19,v0001,v* (Censo),13
+vetorial,saude/20,at_01_conv_01,booleana,2
+vetorial,saude/20,at_02_conv_01,booleana,1
+vetorial,saude/21,at_06_conv_05,booleana,15
+vetorial,saude/21,v00901,v* (Censo),269
+vetorial,saude/22,at_01_conv_01,booleana,1
+vetorial,saude/23,at_01_conv_07,booleana,4
+vetorial,saude/23,v01389,v* (Censo),5
+vetorial,saude/24,at_06_conv_01,booleana,1
+vetorial,saude/24,v00316,v* (Censo),46
+vetorial,saude/25,at_02_conv_01,booleana,1
+vetorial,saude/25,v0001,v* (Censo),117
+vetorial,saude/26,at_03_conv_01,booleana,2
+vetorial,saude/26,at_04_conv_01,booleana,1
+vetorial,saude/27,at_04_conv_01,booleana,1
+vetorial,saude/27,v01068,v* (Censo),85
+BM25,ed_basica/2,tp_dependencia,categórica,27
+BM25,ed_basica/3,in_esgoto_fossa_septica,booleana,5
+BM25,ed_basica/3,in_esgoto_rede_publica,booleana,32
+BM25,ed_basica/3,tp_dependencia,categórica,565
+BM25,ed_basica/4,in_quadra_esportes,booleana,1
+BM25,ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,4
+BM25,ed_basica/5,qt_tur_med,outras dos equipamentos,2
+BM25,ed_basica/6,v00901,v* (Censo),441
+BM25,ed_basica/7,qt_tur_bas_d,outras dos equipamentos,16
+BM25,ed_basica/7,qt_tur_med,outras dos equipamentos,4
+BM25,ed_basica/7,tp_dependencia,categórica,1416
+BM25,ed_basica/7,v00094,v* (Censo),110
+BM25,ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+BM25,ed_basica/8,v01211,v* (Censo),47
+BM25,ed_basica/9,qt_tur_fund,outras dos equipamentos,4
+BM25,ed_basica/9,v00006,v* (Censo),7
+BM25,ed_basica/10,qt_tur_fund,outras dos equipamentos,6
+BM25,ed_basica/10,qt_tur_med,outras dos equipamentos,7
+BM25,ed_basica/11,qt_tur_bas_n,outras dos equipamentos,57
+BM25,ed_basica/11,qt_tur_med,outras dos equipamentos,40
+BM25,ed_basica/11,v00644,v* (Censo),17
+BM25,ed_basica/11,v00748,v* (Censo),18
+BM25,ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,2
+BM25,ed_basica/12,v01031,v* (Censo),1
+BM25,ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,16
+BM25,ed_basica/13,v00078,v* (Censo),4
+BM25,ed_basica/14,qt_tur_inf,outras dos equipamentos,14
+BM25,ed_basica/14,tp_dependencia,categórica,8
+BM25,ed_basica/14,v01031,v* (Censo),1
+BM25,ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+BM25,ed_basica/15,v01215,v* (Censo),104
+BM25,ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,3
+BM25,ed_basica/16,v01034,v* (Censo),8
+BM25,ed_basica/17,qt_tur_med,outras dos equipamentos,6
+BM25,ed_basica/17,v00085,v* (Censo),1
+BM25,ed_basica/18,qt_tur_eja_med,outras dos equipamentos,1
+BM25,ed_basica/18,v00644,v* (Censo),13
+BM25,ed_basica/18,v00748,v* (Censo),20
+BM25,ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+BM25,ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,2
+BM25,ed_basica/20,v00004,v* (Censo),23
+BM25,ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+BM25,ed_basica/21,tp_dependencia,categórica,658
+BM25,ed_basica/21,v00050,v* (Censo),23
+BM25,ed_basica/22,qt_tur_bas_d,outras dos equipamentos,1
+BM25,ed_basica/22,v01320,v* (Censo),93
+BM25,ed_basica/23,tp_dependencia,categórica,1357
+BM25,ed_basica/23,v00495,v* (Censo),3
+BM25,ed_basica/24,in_laboratorio_ciencias,booleana,1
+BM25,ed_basica/25,qt_tur_med,outras dos equipamentos,4
+BM25,ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,5
+BM25,ed_basica/27,qt_tur_inf,outras dos equipamentos,2
+BM25,ed_basica/27,v01031,v* (Censo),27
+BM25,intersetorial/1,at_02_conv_01,booleana,1
+BM25,intersetorial/1,tp_dependencia,categórica,476
+BM25,intersetorial/2,v00006,v* (Censo),53
+BM25,intersetorial/3,at_04_conv_01,booleana,1
+BM25,intersetorial/3,qt_tur_fund,outras dos equipamentos,8
+BM25,intersetorial/3,tp_dependencia,categórica,391
+BM25,intersetorial/3,v05007,v* (Censo),3
+BM25,intersetorial/3,v05022,v* (Censo),4
+BM25,intersetorial/4,at_02_conv_01,booleana,1
+BM25,intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,44
+BM25,intersetorial/5,at_02_conv_01,booleana,1
+BM25,intersetorial/5,tp_dependencia,categórica,527
+BM25,intersetorial/5,v01040,v* (Censo),163
+BM25,intersetorial/5,v01041,v* (Censo),538
+BM25,intersetorial/6,at_04_conv_01,booleana,1
+BM25,intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,57
+BM25,intersetorial/6,qt_tur_eja_med,outras dos equipamentos,58
+BM25,intersetorial/6,v01041,v* (Censo),613
+BM25,intersetorial/7,at_04_conv_01,booleana,4
+BM25,intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,115
+BM25,intersetorial/7,qt_tur_eja_med,outras dos equipamentos,116
+BM25,intersetorial/7,v05013,v* (Censo),1
+BM25,intersetorial/8,at_01_conv_01,booleana,1
+BM25,intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,32
+BM25,intersetorial/8,v00009,v* (Censo),2
+BM25,intersetorial/9,v0001,v* (Censo),1
+BM25,intersetorial/10,at_06_conv_01,booleana,1
+BM25,intersetorial/10,qt_tur_fund_af,outras dos equipamentos,24
+BM25,intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,26
+BM25,intersetorial/10,tp_dependencia,categórica,1451
+BM25,intersetorial/10,v00094,v* (Censo),137
+BM25,intersetorial/11,at_06_conv_01,booleana,1
+BM25,intersetorial/12,at_06_conv_01,booleana,24
+BM25,intersetorial/12,tp_dependencia,categórica,275
+BM25,intersetorial/12,v00401,v* (Censo),1
+BM25,saude/1,at_01_conv_01,booleana,1
+BM25,saude/1,v00002,v* (Censo),3
+BM25,saude/2,at_02_conv_01,booleana,1
+BM25,saude/2,v00644,v* (Censo),12
+BM25,saude/2,v00748,v* (Censo),13
+BM25,saude/3,v0001,v* (Censo),3
+BM25,saude/4,at_04_conv_06,booleana,1
+BM25,saude/4,v01020,v* (Censo),9
+BM25,saude/5,at_06_conv_01,booleana,16
+BM25,saude/5,v00591,v* (Censo),3
+BM25,saude/6,at_04_conv_01,booleana,1
+BM25,saude/6,v01040,v* (Censo),22
+BM25,saude/6,v01041,v* (Censo),171
+BM25,saude/7,at_01_conv_01,booleana,1
+BM25,saude/7,v00001,v* (Censo),71
+BM25,saude/8,at_01_conv_07,booleana,1
+BM25,saude/8,v01188,v* (Censo),17
+BM25,saude/9,at_06_conv_01,booleana,1
+BM25,saude/9,v01019,v* (Censo),15
+BM25,saude/9,v01030,v* (Censo),16
+BM25,saude/10,at_02_conv_01,booleana,3
+BM25,saude/10,v0001,v* (Censo),1800
+BM25,saude/11,at_04_conv_01,booleana,1
+BM25,saude/11,v01040,v* (Censo),21
+BM25,saude/11,v01041,v* (Censo),113
+BM25,saude/12,at_03_conv_01,booleana,2
+BM25,saude/12,v01318,v* (Censo),11
+BM25,saude/13,at_01_conv_06,booleana,1
+BM25,saude/13,v00498,v* (Censo),32
+BM25,saude/14,at_02_conv_05,booleana,1
+BM25,saude/14,v00111,v* (Censo),53
+BM25,saude/15,at_04_conv_06,booleana,1
+BM25,saude/15,v00092,v* (Censo),40
+BM25,saude/16,v0001,v* (Censo),1800
+BM25,saude/16,v00312,v* (Censo),2
+BM25,saude/17,at_04_conv_05,booleana,1
+BM25,saude/17,v01320,v* (Censo),66
+BM25,saude/18,at_06_conv_01,booleana,1
+BM25,saude/18,v00238,v* (Censo),130
+BM25,saude/19,at_04_conv_01,booleana,1
+BM25,saude/19,v0001,v* (Censo),11
+BM25,saude/20,at_01_conv_01,booleana,2
+BM25,saude/20,at_02_conv_01,booleana,1
+BM25,saude/21,at_06_conv_05,booleana,1
+BM25,saude/21,v00901,v* (Censo),72
+BM25,saude/22,at_01_conv_01,booleana,1
+BM25,saude/23,at_01_conv_07,booleana,1
+BM25,saude/23,v01389,v* (Censo),2
+BM25,saude/24,at_06_conv_01,booleana,1
+BM25,saude/24,v00316,v* (Censo),8
+BM25,saude/25,at_02_conv_01,booleana,1
+BM25,saude/25,v0001,v* (Censo),4
+BM25,saude/26,at_03_conv_01,booleana,3
+BM25,saude/26,at_04_conv_01,booleana,1
+BM25,saude/27,at_04_conv_01,booleana,1
+BM25,saude/27,v01068,v* (Censo),40
+híbrida,ed_basica/2,tp_dependencia,categórica,6
+híbrida,ed_basica/3,in_esgoto_fossa_septica,booleana,1
+híbrida,ed_basica/3,in_esgoto_rede_publica,booleana,7
+híbrida,ed_basica/3,tp_dependencia,categórica,266
+híbrida,ed_basica/4,in_quadra_esportes,booleana,1
+híbrida,ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,2
+híbrida,ed_basica/5,qt_tur_med,outras dos equipamentos,4
+híbrida,ed_basica/6,v00901,v* (Censo),148
+híbrida,ed_basica/7,qt_tur_bas_d,outras dos equipamentos,7
+híbrida,ed_basica/7,qt_tur_med,outras dos equipamentos,6
+híbrida,ed_basica/7,tp_dependencia,categórica,145
+híbrida,ed_basica/7,v00094,v* (Censo),82
+híbrida,ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+híbrida,ed_basica/8,v01211,v* (Censo),93
+híbrida,ed_basica/9,qt_tur_fund,outras dos equipamentos,1
+híbrida,ed_basica/9,v00006,v* (Censo),3
+híbrida,ed_basica/10,qt_tur_fund,outras dos equipamentos,5
+híbrida,ed_basica/10,qt_tur_med,outras dos equipamentos,4
+híbrida,ed_basica/11,qt_tur_bas_n,outras dos equipamentos,24
+híbrida,ed_basica/11,qt_tur_med,outras dos equipamentos,29
+híbrida,ed_basica/11,v00644,v* (Censo),20
+híbrida,ed_basica/11,v00748,v* (Censo),17
+híbrida,ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,4
+híbrida,ed_basica/12,v01031,v* (Censo),1
+híbrida,ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,5
+híbrida,ed_basica/13,v00078,v* (Censo),2
+híbrida,ed_basica/14,qt_tur_inf,outras dos equipamentos,6
+híbrida,ed_basica/14,tp_dependencia,categórica,3
+híbrida,ed_basica/14,v01031,v* (Censo),1
+híbrida,ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+híbrida,ed_basica/15,v01215,v* (Censo),112
+híbrida,ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,1
+híbrida,ed_basica/16,v01034,v* (Censo),6
+híbrida,ed_basica/17,qt_tur_med,outras dos equipamentos,1
+híbrida,ed_basica/17,v00085,v* (Censo),5
+híbrida,ed_basica/18,qt_tur_eja_med,outras dos equipamentos,1
+híbrida,ed_basica/18,v00644,v* (Censo),5
+híbrida,ed_basica/18,v00748,v* (Censo),12
+híbrida,ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+híbrida,ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,3
+híbrida,ed_basica/20,v00004,v* (Censo),13
+híbrida,ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+híbrida,ed_basica/21,tp_dependencia,categórica,359
+híbrida,ed_basica/21,v00050,v* (Censo),35
+híbrida,ed_basica/22,qt_tur_bas_d,outras dos equipamentos,1
+híbrida,ed_basica/22,v01320,v* (Censo),173
+híbrida,ed_basica/23,tp_dependencia,categórica,374
+híbrida,ed_basica/23,v00495,v* (Censo),24
+híbrida,ed_basica/24,in_laboratorio_ciencias,booleana,1
+híbrida,ed_basica/25,qt_tur_med,outras dos equipamentos,3
+híbrida,ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,6
+híbrida,ed_basica/27,qt_tur_inf,outras dos equipamentos,2
+híbrida,ed_basica/27,v01031,v* (Censo),15
+híbrida,intersetorial/1,at_02_conv_01,booleana,2
+híbrida,intersetorial/1,tp_dependencia,categórica,52
+híbrida,intersetorial/2,v00006,v* (Censo),13
+híbrida,intersetorial/3,at_04_conv_01,booleana,2
+híbrida,intersetorial/3,qt_tur_fund,outras dos equipamentos,1
+híbrida,intersetorial/3,tp_dependencia,categórica,23
+híbrida,intersetorial/3,v05007,v* (Censo),8
+híbrida,intersetorial/3,v05022,v* (Censo),7
+híbrida,intersetorial/4,at_02_conv_01,booleana,1
+híbrida,intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,17
+híbrida,intersetorial/5,at_02_conv_01,booleana,1
+híbrida,intersetorial/5,tp_dependencia,categórica,78
+híbrida,intersetorial/5,v01040,v* (Censo),22
+híbrida,intersetorial/5,v01041,v* (Censo),91
+híbrida,intersetorial/6,at_04_conv_01,booleana,1
+híbrida,intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,21
+híbrida,intersetorial/6,qt_tur_eja_med,outras dos equipamentos,27
+híbrida,intersetorial/6,v01041,v* (Censo),682
+híbrida,intersetorial/7,at_04_conv_01,booleana,1
+híbrida,intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,28
+híbrida,intersetorial/7,qt_tur_eja_med,outras dos equipamentos,29
+híbrida,intersetorial/7,v05013,v* (Censo),7
+híbrida,intersetorial/8,at_01_conv_01,booleana,20
+híbrida,intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,58
+híbrida,intersetorial/8,v00009,v* (Censo),1
+híbrida,intersetorial/9,v0001,v* (Censo),6
+híbrida,intersetorial/10,at_06_conv_01,booleana,7
+híbrida,intersetorial/10,qt_tur_fund_af,outras dos equipamentos,67
+híbrida,intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,69
+híbrida,intersetorial/10,tp_dependencia,categórica,42
+híbrida,intersetorial/10,v00094,v* (Censo),116
+híbrida,intersetorial/11,at_06_conv_01,booleana,1
+híbrida,intersetorial/12,at_06_conv_01,booleana,14
+híbrida,intersetorial/12,tp_dependencia,categórica,25
+híbrida,intersetorial/12,v00401,v* (Censo),2
+híbrida,saude/1,at_01_conv_01,booleana,4
+híbrida,saude/1,v00002,v* (Censo),2
+híbrida,saude/2,at_02_conv_01,booleana,1
+híbrida,saude/2,v00644,v* (Censo),3
+híbrida,saude/2,v00748,v* (Censo),2
+híbrida,saude/3,v0001,v* (Censo),7
+híbrida,saude/4,at_04_conv_06,booleana,1
+híbrida,saude/4,v01020,v* (Censo),5
+híbrida,saude/5,at_06_conv_01,booleana,42
+híbrida,saude/5,v00591,v* (Censo),1
+híbrida,saude/6,at_04_conv_01,booleana,1
+híbrida,saude/6,v01040,v* (Censo),12
+híbrida,saude/6,v01041,v* (Censo),22
+híbrida,saude/7,at_01_conv_01,booleana,9
+híbrida,saude/7,v00001,v* (Censo),12
+híbrida,saude/8,at_01_conv_07,booleana,1
+híbrida,saude/8,v01188,v* (Censo),6
+híbrida,saude/9,at_06_conv_01,booleana,2
+híbrida,saude/9,v01019,v* (Censo),17
+híbrida,saude/9,v01030,v* (Censo),10
+híbrida,saude/10,at_02_conv_01,booleana,1
+híbrida,saude/10,v0001,v* (Censo),1402
+híbrida,saude/11,at_04_conv_01,booleana,1
+híbrida,saude/11,v01040,v* (Censo),12
+híbrida,saude/11,v01041,v* (Censo),20
+híbrida,saude/12,at_03_conv_01,booleana,2
+híbrida,saude/12,v01318,v* (Censo),65
+híbrida,saude/13,at_01_conv_06,booleana,1
+híbrida,saude/13,v00498,v* (Censo),8
+híbrida,saude/14,at_02_conv_05,booleana,1
+híbrida,saude/14,v00111,v* (Censo),77
+híbrida,saude/15,at_04_conv_06,booleana,6
+híbrida,saude/15,v00092,v* (Censo),7
+híbrida,saude/16,v0001,v* (Censo),1196
+híbrida,saude/16,v00312,v* (Censo),2
+híbrida,saude/17,at_04_conv_05,booleana,1
+híbrida,saude/17,v01320,v* (Censo),124
+híbrida,saude/18,at_06_conv_01,booleana,40
+híbrida,saude/18,v00238,v* (Censo),106
+híbrida,saude/19,at_04_conv_01,booleana,1
+híbrida,saude/19,v0001,v* (Censo),11
+híbrida,saude/20,at_01_conv_01,booleana,2
+híbrida,saude/20,at_02_conv_01,booleana,1
+híbrida,saude/21,at_06_conv_05,booleana,4
+híbrida,saude/21,v00901,v* (Censo),134
+híbrida,saude/22,at_01_conv_01,booleana,1
+híbrida,saude/23,at_01_conv_07,booleana,1
+híbrida,saude/23,v01389,v* (Censo),2
+híbrida,saude/24,at_06_conv_01,booleana,1
+híbrida,saude/24,v00316,v* (Censo),17
+híbrida,saude/25,at_02_conv_01,booleana,1
+híbrida,saude/25,v0001,v* (Censo),12
+híbrida,saude/26,at_03_conv_01,booleana,2
+híbrida,saude/26,at_04_conv_01,booleana,1
+híbrida,saude/27,at_04_conv_01,booleana,1
+híbrida,saude/27,v01068,v* (Censo),35
+"híbrida, com complementos",ed_basica/2,tp_dependencia,categórica,1
+"híbrida, com complementos",ed_basica/3,in_esgoto_fossa_septica,booleana,1
+"híbrida, com complementos",ed_basica/3,in_esgoto_rede_publica,booleana,5
+"híbrida, com complementos",ed_basica/3,tp_dependencia,categórica,44
+"híbrida, com complementos",ed_basica/4,in_quadra_esportes,booleana,1
+"híbrida, com complementos",ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,2
+"híbrida, com complementos",ed_basica/5,qt_tur_med,outras dos equipamentos,4
+"híbrida, com complementos",ed_basica/6,v00901,v* (Censo),148
+"híbrida, com complementos",ed_basica/7,qt_tur_bas_d,outras dos equipamentos,6
+"híbrida, com complementos",ed_basica/7,qt_tur_med,outras dos equipamentos,7
+"híbrida, com complementos",ed_basica/7,tp_dependencia,categórica,40
+"híbrida, com complementos",ed_basica/7,v00094,v* (Censo),82
+"híbrida, com complementos",ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/8,v01211,v* (Censo),87
+"híbrida, com complementos",ed_basica/9,qt_tur_fund,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/9,v00006,v* (Censo),3
+"híbrida, com complementos",ed_basica/10,qt_tur_fund,outras dos equipamentos,6
+"híbrida, com complementos",ed_basica/10,qt_tur_med,outras dos equipamentos,5
+"híbrida, com complementos",ed_basica/11,qt_tur_bas_n,outras dos equipamentos,24
+"híbrida, com complementos",ed_basica/11,qt_tur_med,outras dos equipamentos,29
+"híbrida, com complementos",ed_basica/11,v00644,v* (Censo),20
+"híbrida, com complementos",ed_basica/11,v00748,v* (Censo),17
+"híbrida, com complementos",ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,4
+"híbrida, com complementos",ed_basica/12,v01031,v* (Censo),1
+"híbrida, com complementos",ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,5
+"híbrida, com complementos",ed_basica/13,v00078,v* (Censo),3
+"híbrida, com complementos",ed_basica/14,qt_tur_inf,outras dos equipamentos,6
+"híbrida, com complementos",ed_basica/14,tp_dependencia,categórica,1
+"híbrida, com complementos",ed_basica/14,v01031,v* (Censo),2
+"híbrida, com complementos",ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/15,v01215,v* (Censo),112
+"híbrida, com complementos",ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/16,v01034,v* (Censo),4
+"híbrida, com complementos",ed_basica/17,qt_tur_med,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/17,v00085,v* (Censo),5
+"híbrida, com complementos",ed_basica/18,qt_tur_eja_med,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/18,v00644,v* (Censo),5
+"híbrida, com complementos",ed_basica/18,v00748,v* (Censo),12
+"híbrida, com complementos",ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,2
+"híbrida, com complementos",ed_basica/20,v00004,v* (Censo),15
+"híbrida, com complementos",ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/21,tp_dependencia,categórica,122
+"híbrida, com complementos",ed_basica/21,v00050,v* (Censo),35
+"híbrida, com complementos",ed_basica/22,qt_tur_bas_d,outras dos equipamentos,1
+"híbrida, com complementos",ed_basica/22,v01320,v* (Censo),174
+"híbrida, com complementos",ed_basica/23,tp_dependencia,categórica,98
+"híbrida, com complementos",ed_basica/23,v00495,v* (Censo),23
+"híbrida, com complementos",ed_basica/24,in_laboratorio_ciencias,booleana,1
+"híbrida, com complementos",ed_basica/25,qt_tur_med,outras dos equipamentos,3
+"híbrida, com complementos",ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,6
+"híbrida, com complementos",ed_basica/27,qt_tur_inf,outras dos equipamentos,2
+"híbrida, com complementos",ed_basica/27,v01031,v* (Censo),15
+"híbrida, com complementos",intersetorial/1,at_02_conv_01,booleana,2
+"híbrida, com complementos",intersetorial/1,tp_dependencia,categórica,16
+"híbrida, com complementos",intersetorial/2,v00006,v* (Censo),13
+"híbrida, com complementos",intersetorial/3,at_04_conv_01,booleana,2
+"híbrida, com complementos",intersetorial/3,qt_tur_fund,outras dos equipamentos,1
+"híbrida, com complementos",intersetorial/3,tp_dependencia,categórica,13
+"híbrida, com complementos",intersetorial/3,v05007,v* (Censo),8
+"híbrida, com complementos",intersetorial/3,v05022,v* (Censo),7
+"híbrida, com complementos",intersetorial/4,at_02_conv_01,booleana,1
+"híbrida, com complementos",intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,17
+"híbrida, com complementos",intersetorial/5,at_02_conv_01,booleana,1
+"híbrida, com complementos",intersetorial/5,tp_dependencia,categórica,56
+"híbrida, com complementos",intersetorial/5,v01040,v* (Censo),22
+"híbrida, com complementos",intersetorial/5,v01041,v* (Censo),93
+"híbrida, com complementos",intersetorial/6,at_04_conv_01,booleana,1
+"híbrida, com complementos",intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,21
+"híbrida, com complementos",intersetorial/6,qt_tur_eja_med,outras dos equipamentos,26
+"híbrida, com complementos",intersetorial/6,v01041,v* (Censo),682
+"híbrida, com complementos",intersetorial/7,at_04_conv_01,booleana,1
+"híbrida, com complementos",intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,28
+"híbrida, com complementos",intersetorial/7,qt_tur_eja_med,outras dos equipamentos,29
+"híbrida, com complementos",intersetorial/7,v05013,v* (Censo),7
+"híbrida, com complementos",intersetorial/8,at_01_conv_01,booleana,20
+"híbrida, com complementos",intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,58
+"híbrida, com complementos",intersetorial/8,v00009,v* (Censo),1
+"híbrida, com complementos",intersetorial/9,v0001,v* (Censo),6
+"híbrida, com complementos",intersetorial/10,at_06_conv_01,booleana,7
+"híbrida, com complementos",intersetorial/10,qt_tur_fund_af,outras dos equipamentos,68
+"híbrida, com complementos",intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,64
+"híbrida, com complementos",intersetorial/10,tp_dependencia,categórica,15
+"híbrida, com complementos",intersetorial/10,v00094,v* (Censo),113
+"híbrida, com complementos",intersetorial/11,at_06_conv_01,booleana,1
+"híbrida, com complementos",intersetorial/12,at_06_conv_01,booleana,15
+"híbrida, com complementos",intersetorial/12,tp_dependencia,categórica,11
+"híbrida, com complementos",intersetorial/12,v00401,v* (Censo),2
+"híbrida, com complementos",saude/1,at_01_conv_01,booleana,4
+"híbrida, com complementos",saude/1,v00002,v* (Censo),2
+"híbrida, com complementos",saude/2,at_02_conv_01,booleana,1
+"híbrida, com complementos",saude/2,v00644,v* (Censo),3
+"híbrida, com complementos",saude/2,v00748,v* (Censo),2
+"híbrida, com complementos",saude/3,v0001,v* (Censo),7
+"híbrida, com complementos",saude/4,at_04_conv_06,booleana,1
+"híbrida, com complementos",saude/4,v01020,v* (Censo),5
+"híbrida, com complementos",saude/5,at_06_conv_01,booleana,42
+"híbrida, com complementos",saude/5,v00591,v* (Censo),1
+"híbrida, com complementos",saude/6,at_04_conv_01,booleana,1
+"híbrida, com complementos",saude/6,v01040,v* (Censo),12
+"híbrida, com complementos",saude/6,v01041,v* (Censo),22
+"híbrida, com complementos",saude/7,at_01_conv_01,booleana,9
+"híbrida, com complementos",saude/7,v00001,v* (Censo),12
+"híbrida, com complementos",saude/8,at_01_conv_07,booleana,1
+"híbrida, com complementos",saude/8,v01188,v* (Censo),6
+"híbrida, com complementos",saude/9,at_06_conv_01,booleana,2
+"híbrida, com complementos",saude/9,v01019,v* (Censo),17
+"híbrida, com complementos",saude/9,v01030,v* (Censo),10
+"híbrida, com complementos",saude/10,at_02_conv_01,booleana,1
+"híbrida, com complementos",saude/10,v0001,v* (Censo),1403
+"híbrida, com complementos",saude/11,at_04_conv_01,booleana,1
+"híbrida, com complementos",saude/11,v01040,v* (Censo),12
+"híbrida, com complementos",saude/11,v01041,v* (Censo),20
+"híbrida, com complementos",saude/12,at_03_conv_01,booleana,2
+"híbrida, com complementos",saude/12,v01318,v* (Censo),65
+"híbrida, com complementos",saude/13,at_01_conv_06,booleana,1
+"híbrida, com complementos",saude/13,v00498,v* (Censo),8
+"híbrida, com complementos",saude/14,at_02_conv_05,booleana,1
+"híbrida, com complementos",saude/14,v00111,v* (Censo),77
+"híbrida, com complementos",saude/15,at_04_conv_06,booleana,6
+"híbrida, com complementos",saude/15,v00092,v* (Censo),7
+"híbrida, com complementos",saude/16,v0001,v* (Censo),1197
+"híbrida, com complementos",saude/16,v00312,v* (Censo),2
+"híbrida, com complementos",saude/17,at_04_conv_05,booleana,1
+"híbrida, com complementos",saude/17,v01320,v* (Censo),127
+"híbrida, com complementos",saude/18,at_06_conv_01,booleana,40
+"híbrida, com complementos",saude/18,v00238,v* (Censo),106
+"híbrida, com complementos",saude/19,at_04_conv_01,booleana,1
+"híbrida, com complementos",saude/19,v0001,v* (Censo),11
+"híbrida, com complementos",saude/20,at_01_conv_01,booleana,2
+"híbrida, com complementos",saude/20,at_02_conv_01,booleana,1
+"híbrida, com complementos",saude/21,at_06_conv_05,booleana,4
+"híbrida, com complementos",saude/21,v00901,v* (Censo),134
+"híbrida, com complementos",saude/22,at_01_conv_01,booleana,1
+"híbrida, com complementos",saude/23,at_01_conv_07,booleana,1
+"híbrida, com complementos",saude/23,v01389,v* (Censo),2
+"híbrida, com complementos",saude/24,at_06_conv_01,booleana,1
+"híbrida, com complementos",saude/24,v00316,v* (Censo),17
+"híbrida, com complementos",saude/25,at_02_conv_01,booleana,1
+"híbrida, com complementos",saude/25,v0001,v* (Censo),12
+"híbrida, com complementos",saude/26,at_03_conv_01,booleana,2
+"híbrida, com complementos",saude/26,at_04_conv_01,booleana,1
+"híbrida, com complementos",saude/27,at_04_conv_01,booleana,1
+"híbrida, com complementos",saude/27,v01068,v* (Censo),35
+MMR sobre a vetorial,ed_basica/2,tp_dependencia,categórica,1
+MMR sobre a vetorial,ed_basica/3,in_esgoto_fossa_septica,booleana,15
+MMR sobre a vetorial,ed_basica/3,in_esgoto_rede_publica,booleana,1
+MMR sobre a vetorial,ed_basica/3,tp_dependencia,categórica,140
+MMR sobre a vetorial,ed_basica/4,in_quadra_esportes,booleana,1
+MMR sobre a vetorial,ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,2
+MMR sobre a vetorial,ed_basica/5,qt_tur_med,outras dos equipamentos,30
+MMR sobre a vetorial,ed_basica/6,v00901,v* (Censo),76
+MMR sobre a vetorial,ed_basica/7,qt_tur_bas_d,outras dos equipamentos,12
+MMR sobre a vetorial,ed_basica/7,qt_tur_med,outras dos equipamentos,34
+MMR sobre a vetorial,ed_basica/7,tp_dependencia,categórica,6
+MMR sobre a vetorial,ed_basica/7,v00094,v* (Censo),72
+MMR sobre a vetorial,ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/8,v01211,v* (Censo),365
+MMR sobre a vetorial,ed_basica/9,qt_tur_fund,outras dos equipamentos,15
+MMR sobre a vetorial,ed_basica/9,v00006,v* (Censo),17
+MMR sobre a vetorial,ed_basica/10,qt_tur_fund,outras dos equipamentos,14
+MMR sobre a vetorial,ed_basica/10,qt_tur_med,outras dos equipamentos,6
+MMR sobre a vetorial,ed_basica/11,qt_tur_bas_n,outras dos equipamentos,8
+MMR sobre a vetorial,ed_basica/11,qt_tur_med,outras dos equipamentos,32
+MMR sobre a vetorial,ed_basica/11,v00644,v* (Censo),27
+MMR sobre a vetorial,ed_basica/11,v00748,v* (Censo),7
+MMR sobre a vetorial,ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,4
+MMR sobre a vetorial,ed_basica/12,v01031,v* (Censo),1
+MMR sobre a vetorial,ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/13,v00078,v* (Censo),16
+MMR sobre a vetorial,ed_basica/14,qt_tur_inf,outras dos equipamentos,35
+MMR sobre a vetorial,ed_basica/14,tp_dependencia,categórica,16
+MMR sobre a vetorial,ed_basica/14,v01031,v* (Censo),2
+MMR sobre a vetorial,ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/15,v01215,v* (Censo),199
+MMR sobre a vetorial,ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/16,v01034,v* (Censo),2
+MMR sobre a vetorial,ed_basica/17,qt_tur_med,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/17,v00085,v* (Censo),5
+MMR sobre a vetorial,ed_basica/18,qt_tur_eja_med,outras dos equipamentos,29
+MMR sobre a vetorial,ed_basica/18,v00644,v* (Censo),21
+MMR sobre a vetorial,ed_basica/18,v00748,v* (Censo),4
+MMR sobre a vetorial,ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,24
+MMR sobre a vetorial,ed_basica/20,v00004,v* (Censo),6
+MMR sobre a vetorial,ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/21,tp_dependencia,categórica,206
+MMR sobre a vetorial,ed_basica/21,v00050,v* (Censo),100
+MMR sobre a vetorial,ed_basica/22,qt_tur_bas_d,outras dos equipamentos,1
+MMR sobre a vetorial,ed_basica/22,v01320,v* (Censo),575
+MMR sobre a vetorial,ed_basica/23,tp_dependencia,categórica,204
+MMR sobre a vetorial,ed_basica/23,v00495,v* (Censo),156
+MMR sobre a vetorial,ed_basica/24,in_laboratorio_ciencias,booleana,4
+MMR sobre a vetorial,ed_basica/25,qt_tur_med,outras dos equipamentos,19
+MMR sobre a vetorial,ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,7
+MMR sobre a vetorial,ed_basica/27,qt_tur_inf,outras dos equipamentos,23
+MMR sobre a vetorial,ed_basica/27,v01031,v* (Censo),3
+MMR sobre a vetorial,intersetorial/1,at_02_conv_01,booleana,2
+MMR sobre a vetorial,intersetorial/1,tp_dependencia,categórica,24
+MMR sobre a vetorial,intersetorial/2,v00006,v* (Censo),41
+MMR sobre a vetorial,intersetorial/3,at_04_conv_01,booleana,19
+MMR sobre a vetorial,intersetorial/3,qt_tur_fund,outras dos equipamentos,5
+MMR sobre a vetorial,intersetorial/3,tp_dependencia,categórica,1
+MMR sobre a vetorial,intersetorial/3,v05007,v* (Censo),25
+MMR sobre a vetorial,intersetorial/3,v05022,v* (Censo),46
+MMR sobre a vetorial,intersetorial/4,at_02_conv_01,booleana,2
+MMR sobre a vetorial,intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,10
+MMR sobre a vetorial,intersetorial/5,at_02_conv_01,booleana,1
+MMR sobre a vetorial,intersetorial/5,tp_dependencia,categórica,14
+MMR sobre a vetorial,intersetorial/5,v01040,v* (Censo),3
+MMR sobre a vetorial,intersetorial/5,v01041,v* (Censo),8
+MMR sobre a vetorial,intersetorial/6,at_04_conv_01,booleana,1
+MMR sobre a vetorial,intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,41
+MMR sobre a vetorial,intersetorial/6,qt_tur_eja_med,outras dos equipamentos,43
+MMR sobre a vetorial,intersetorial/6,v01041,v* (Censo),884
+MMR sobre a vetorial,intersetorial/7,at_04_conv_01,booleana,1
+MMR sobre a vetorial,intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,44
+MMR sobre a vetorial,intersetorial/7,qt_tur_eja_med,outras dos equipamentos,45
+MMR sobre a vetorial,intersetorial/7,v05013,v* (Censo),4
+MMR sobre a vetorial,intersetorial/8,at_01_conv_01,booleana,179
+MMR sobre a vetorial,intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,140
+MMR sobre a vetorial,intersetorial/8,v00009,v* (Censo),6
+MMR sobre a vetorial,intersetorial/9,v0001,v* (Censo),8
+MMR sobre a vetorial,intersetorial/10,at_06_conv_01,booleana,87
+MMR sobre a vetorial,intersetorial/10,qt_tur_fund_af,outras dos equipamentos,492
+MMR sobre a vetorial,intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,482
+MMR sobre a vetorial,intersetorial/10,tp_dependencia,categórica,15
+MMR sobre a vetorial,intersetorial/10,v00094,v* (Censo),120
+MMR sobre a vetorial,intersetorial/11,at_06_conv_01,booleana,10
+MMR sobre a vetorial,intersetorial/12,at_06_conv_01,booleana,8
+MMR sobre a vetorial,intersetorial/12,tp_dependencia,categórica,11
+MMR sobre a vetorial,intersetorial/12,v00401,v* (Censo),27
+MMR sobre a vetorial,saude/1,at_01_conv_01,booleana,2
+MMR sobre a vetorial,saude/1,v00002,v* (Censo),4
+MMR sobre a vetorial,saude/2,at_02_conv_01,booleana,3
+MMR sobre a vetorial,saude/2,v00644,v* (Censo),16
+MMR sobre a vetorial,saude/2,v00748,v* (Censo),6
+MMR sobre a vetorial,saude/3,v0001,v* (Censo),8
+MMR sobre a vetorial,saude/4,at_04_conv_06,booleana,1
+MMR sobre a vetorial,saude/4,v01020,v* (Censo),12
+MMR sobre a vetorial,saude/5,at_06_conv_01,booleana,93
+MMR sobre a vetorial,saude/5,v00591,v* (Censo),1
+MMR sobre a vetorial,saude/6,at_04_conv_01,booleana,1
+MMR sobre a vetorial,saude/6,v01040,v* (Censo),2
+MMR sobre a vetorial,saude/6,v01041,v* (Censo),8
+MMR sobre a vetorial,saude/7,at_01_conv_01,booleana,94
+MMR sobre a vetorial,saude/7,v00001,v* (Censo),37
+MMR sobre a vetorial,saude/8,at_01_conv_07,booleana,159
+MMR sobre a vetorial,saude/8,v01188,v* (Censo),85
+MMR sobre a vetorial,saude/9,at_06_conv_01,booleana,19
+MMR sobre a vetorial,saude/9,v01019,v* (Censo),38
+MMR sobre a vetorial,saude/9,v01030,v* (Censo),28
+MMR sobre a vetorial,saude/10,at_02_conv_01,booleana,1
+MMR sobre a vetorial,saude/10,v0001,v* (Censo),859
+MMR sobre a vetorial,saude/11,at_04_conv_01,booleana,1
+MMR sobre a vetorial,saude/11,v01040,v* (Censo),2
+MMR sobre a vetorial,saude/11,v01041,v* (Censo),30
+MMR sobre a vetorial,saude/12,at_03_conv_01,booleana,2
+MMR sobre a vetorial,saude/12,v01318,v* (Censo),943
+MMR sobre a vetorial,saude/13,at_01_conv_06,booleana,24
+MMR sobre a vetorial,saude/13,v00498,v* (Censo),11
+MMR sobre a vetorial,saude/14,at_02_conv_05,booleana,1
+MMR sobre a vetorial,saude/14,v00111,v* (Censo),278
+MMR sobre a vetorial,saude/15,at_04_conv_06,booleana,71
+MMR sobre a vetorial,saude/15,v00092,v* (Censo),28
+MMR sobre a vetorial,saude/16,v0001,v* (Censo),936
+MMR sobre a vetorial,saude/16,v00312,v* (Censo),10
+MMR sobre a vetorial,saude/17,at_04_conv_05,booleana,1
+MMR sobre a vetorial,saude/17,v01320,v* (Censo),306
+MMR sobre a vetorial,saude/18,at_06_conv_01,booleana,327
+MMR sobre a vetorial,saude/18,v00238,v* (Censo),111
+MMR sobre a vetorial,saude/19,at_04_conv_01,booleana,1
+MMR sobre a vetorial,saude/19,v0001,v* (Censo),7
+MMR sobre a vetorial,saude/20,at_01_conv_01,booleana,11
+MMR sobre a vetorial,saude/20,at_02_conv_01,booleana,1
+MMR sobre a vetorial,saude/21,at_06_conv_05,booleana,3
+MMR sobre a vetorial,saude/21,v00901,v* (Censo),269
+MMR sobre a vetorial,saude/22,at_01_conv_01,booleana,1
+MMR sobre a vetorial,saude/23,at_01_conv_07,booleana,20
+MMR sobre a vetorial,saude/23,v01389,v* (Censo),23
+MMR sobre a vetorial,saude/24,at_06_conv_01,booleana,1
+MMR sobre a vetorial,saude/24,v00316,v* (Censo),36
+MMR sobre a vetorial,saude/25,at_02_conv_01,booleana,1
+MMR sobre a vetorial,saude/25,v0001,v* (Censo),117
+MMR sobre a vetorial,saude/26,at_03_conv_01,booleana,11
+MMR sobre a vetorial,saude/26,at_04_conv_01,booleana,1
+MMR sobre a vetorial,saude/27,at_04_conv_01,booleana,1
+MMR sobre a vetorial,saude/27,v01068,v* (Censo),85
+reranker sobre a híbrida,ed_basica/2,tp_dependencia,categórica,1
+reranker sobre a híbrida,ed_basica/3,in_esgoto_fossa_septica,booleana,1
+reranker sobre a híbrida,ed_basica/3,in_esgoto_rede_publica,booleana,18
+reranker sobre a híbrida,ed_basica/3,tp_dependencia,categórica,266
+reranker sobre a híbrida,ed_basica/4,in_quadra_esportes,booleana,1
+reranker sobre a híbrida,ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,7
+reranker sobre a híbrida,ed_basica/5,qt_tur_med,outras dos equipamentos,3
+reranker sobre a híbrida,ed_basica/6,v00901,v* (Censo),148
+reranker sobre a híbrida,ed_basica/7,qt_tur_bas_d,outras dos equipamentos,35
+reranker sobre a híbrida,ed_basica/7,qt_tur_med,outras dos equipamentos,28
+reranker sobre a híbrida,ed_basica/7,tp_dependencia,categórica,145
+reranker sobre a híbrida,ed_basica/7,v00094,v* (Censo),82
+reranker sobre a híbrida,ed_basica/8,qt_tur_inf_int,outras dos equipamentos,1
+reranker sobre a híbrida,ed_basica/8,v01211,v* (Censo),93
+reranker sobre a híbrida,ed_basica/9,qt_tur_fund,outras dos equipamentos,28
+reranker sobre a híbrida,ed_basica/9,v00006,v* (Censo),1
+reranker sobre a híbrida,ed_basica/10,qt_tur_fund,outras dos equipamentos,2
+reranker sobre a híbrida,ed_basica/10,qt_tur_med,outras dos equipamentos,3
+reranker sobre a híbrida,ed_basica/11,qt_tur_bas_n,outras dos equipamentos,40
+reranker sobre a híbrida,ed_basica/11,qt_tur_med,outras dos equipamentos,42
+reranker sobre a híbrida,ed_basica/11,v00644,v* (Censo),1
+reranker sobre a híbrida,ed_basica/11,v00748,v* (Censo),3
+reranker sobre a híbrida,ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,2
+reranker sobre a híbrida,ed_basica/12,v01031,v* (Censo),1
+reranker sobre a híbrida,ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,39
+reranker sobre a híbrida,ed_basica/13,v00078,v* (Censo),2
+reranker sobre a híbrida,ed_basica/14,qt_tur_inf,outras dos equipamentos,22
+reranker sobre a híbrida,ed_basica/14,tp_dependencia,categórica,20
+reranker sobre a híbrida,ed_basica/14,v01031,v* (Censo),1
+reranker sobre a híbrida,ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,1
+reranker sobre a híbrida,ed_basica/15,v01215,v* (Censo),112
+reranker sobre a híbrida,ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,20
+reranker sobre a híbrida,ed_basica/16,v01034,v* (Censo),1
+reranker sobre a híbrida,ed_basica/17,qt_tur_med,outras dos equipamentos,21
+reranker sobre a híbrida,ed_basica/17,v00085,v* (Censo),1
+reranker sobre a híbrida,ed_basica/18,qt_tur_eja_med,outras dos equipamentos,11
+reranker sobre a híbrida,ed_basica/18,v00644,v* (Censo),1
+reranker sobre a híbrida,ed_basica/18,v00748,v* (Censo),4
+reranker sobre a híbrida,ed_basica/19,qt_tur_inf,outras dos equipamentos,1
+reranker sobre a híbrida,ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,5
+reranker sobre a híbrida,ed_basica/20,v00004,v* (Censo),1
+reranker sobre a híbrida,ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,1
+reranker sobre a híbrida,ed_basica/21,tp_dependencia,categórica,359
+reranker sobre a híbrida,ed_basica/21,v00050,v* (Censo),10
+reranker sobre a híbrida,ed_basica/22,qt_tur_bas_d,outras dos equipamentos,3
+reranker sobre a híbrida,ed_basica/22,v01320,v* (Censo),173
+reranker sobre a híbrida,ed_basica/23,tp_dependencia,categórica,374
+reranker sobre a híbrida,ed_basica/23,v00495,v* (Censo),1
+reranker sobre a híbrida,ed_basica/24,in_laboratorio_ciencias,booleana,1
+reranker sobre a híbrida,ed_basica/25,qt_tur_med,outras dos equipamentos,13
+reranker sobre a híbrida,ed_basica/26,qt_tur_inf_cre,outras dos equipamentos,5
+reranker sobre a híbrida,ed_basica/27,qt_tur_inf,outras dos equipamentos,6
+reranker sobre a híbrida,ed_basica/27,v01031,v* (Censo),1
+reranker sobre a híbrida,intersetorial/1,at_02_conv_01,booleana,1
+reranker sobre a híbrida,intersetorial/1,tp_dependencia,categórica,52
+reranker sobre a híbrida,intersetorial/2,v00006,v* (Censo),2
+reranker sobre a híbrida,intersetorial/3,at_04_conv_01,booleana,10
+reranker sobre a híbrida,intersetorial/3,qt_tur_fund,outras dos equipamentos,13
+reranker sobre a híbrida,intersetorial/3,tp_dependencia,categórica,27
+reranker sobre a híbrida,intersetorial/3,v05007,v* (Censo),1
+reranker sobre a híbrida,intersetorial/3,v05022,v* (Censo),2
+reranker sobre a híbrida,intersetorial/4,at_02_conv_01,booleana,1
+reranker sobre a híbrida,intersetorial/4,qt_tur_inf_cre,outras dos equipamentos,27
+reranker sobre a híbrida,intersetorial/5,at_02_conv_01,booleana,2
+reranker sobre a híbrida,intersetorial/5,tp_dependencia,categórica,78
+reranker sobre a híbrida,intersetorial/5,v01040,v* (Censo),1
+reranker sobre a híbrida,intersetorial/5,v01041,v* (Censo),91
+reranker sobre a híbrida,intersetorial/6,at_04_conv_01,booleana,2
+reranker sobre a híbrida,intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,10
+reranker sobre a híbrida,intersetorial/6,qt_tur_eja_med,outras dos equipamentos,14
+reranker sobre a híbrida,intersetorial/6,v01041,v* (Censo),682
+reranker sobre a híbrida,intersetorial/7,at_04_conv_01,booleana,4
+reranker sobre a híbrida,intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,17
+reranker sobre a híbrida,intersetorial/7,qt_tur_eja_med,outras dos equipamentos,20
+reranker sobre a híbrida,intersetorial/7,v05013,v* (Censo),1
+reranker sobre a híbrida,intersetorial/8,at_01_conv_01,booleana,2
+reranker sobre a híbrida,intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,58
+reranker sobre a híbrida,intersetorial/8,v00009,v* (Censo),1
+reranker sobre a híbrida,intersetorial/9,v0001,v* (Censo),1
+reranker sobre a híbrida,intersetorial/10,at_06_conv_01,booleana,1
+reranker sobre a híbrida,intersetorial/10,qt_tur_fund_af,outras dos equipamentos,67
+reranker sobre a híbrida,intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,69
+reranker sobre a híbrida,intersetorial/10,tp_dependencia,categórica,35
+reranker sobre a híbrida,intersetorial/10,v00094,v* (Censo),116
+reranker sobre a híbrida,intersetorial/11,at_06_conv_01,booleana,1
+reranker sobre a híbrida,intersetorial/12,at_06_conv_01,booleana,16
+reranker sobre a híbrida,intersetorial/12,tp_dependencia,categórica,34
+reranker sobre a híbrida,intersetorial/12,v00401,v* (Censo),1
+reranker sobre a híbrida,saude/1,at_01_conv_01,booleana,21
+reranker sobre a híbrida,saude/1,v00002,v* (Censo),1
+reranker sobre a híbrida,saude/2,at_02_conv_01,booleana,21
+reranker sobre a híbrida,saude/2,v00644,v* (Censo),1
+reranker sobre a híbrida,saude/2,v00748,v* (Censo),2
+reranker sobre a híbrida,saude/3,v0001,v* (Censo),11
+reranker sobre a híbrida,saude/4,at_04_conv_06,booleana,3
+reranker sobre a híbrida,saude/4,v01020,v* (Censo),1
+reranker sobre a híbrida,saude/5,at_06_conv_01,booleana,47
+reranker sobre a híbrida,saude/5,v00591,v* (Censo),1
+reranker sobre a híbrida,saude/6,at_04_conv_01,booleana,2
+reranker sobre a híbrida,saude/6,v01040,v* (Censo),1
+reranker sobre a híbrida,saude/6,v01041,v* (Censo),3
+reranker sobre a híbrida,saude/7,at_01_conv_01,booleana,21
+reranker sobre a híbrida,saude/7,v00001,v* (Censo),16
+reranker sobre a híbrida,saude/8,at_01_conv_07,booleana,17
+reranker sobre a híbrida,saude/8,v01188,v* (Censo),1
+reranker sobre a híbrida,saude/9,at_06_conv_01,booleana,2
+reranker sobre a híbrida,saude/9,v01019,v* (Censo),3
+reranker sobre a híbrida,saude/9,v01030,v* (Censo),4
+reranker sobre a híbrida,saude/10,at_02_conv_01,booleana,1
+reranker sobre a híbrida,saude/10,v0001,v* (Censo),1402
+reranker sobre a híbrida,saude/11,at_04_conv_01,booleana,2
+reranker sobre a híbrida,saude/11,v01040,v* (Censo),1
+reranker sobre a híbrida,saude/11,v01041,v* (Censo),4
+reranker sobre a híbrida,saude/12,at_03_conv_01,booleana,45
+reranker sobre a híbrida,saude/12,v01318,v* (Censo),65
+reranker sobre a híbrida,saude/13,at_01_conv_06,booleana,26
+reranker sobre a híbrida,saude/13,v00498,v* (Censo),9
+reranker sobre a híbrida,saude/14,at_02_conv_05,booleana,1
+reranker sobre a híbrida,saude/14,v00111,v* (Censo),77
+reranker sobre a híbrida,saude/15,at_04_conv_06,booleana,50
+reranker sobre a híbrida,saude/15,v00092,v* (Censo),30
+reranker sobre a híbrida,saude/16,v0001,v* (Censo),1196
+reranker sobre a híbrida,saude/16,v00312,v* (Censo),12
+reranker sobre a híbrida,saude/17,at_04_conv_05,booleana,1
+reranker sobre a híbrida,saude/17,v01320,v* (Censo),124
+reranker sobre a híbrida,saude/18,at_06_conv_01,booleana,41
+reranker sobre a híbrida,saude/18,v00238,v* (Censo),106
+reranker sobre a híbrida,saude/19,at_04_conv_01,booleana,2
+reranker sobre a híbrida,saude/19,v0001,v* (Censo),3
+reranker sobre a híbrida,saude/20,at_01_conv_01,booleana,2
+reranker sobre a híbrida,saude/20,at_02_conv_01,booleana,1
+reranker sobre a híbrida,saude/21,at_06_conv_05,booleana,1
+reranker sobre a híbrida,saude/21,v00901,v* (Censo),134
+reranker sobre a híbrida,saude/22,at_01_conv_01,booleana,1
+reranker sobre a híbrida,saude/23,at_01_conv_07,booleana,16
+reranker sobre a híbrida,saude/23,v01389,v* (Censo),1
+reranker sobre a híbrida,saude/24,at_06_conv_01,booleana,1
+reranker sobre a híbrida,saude/24,v00316,v* (Censo),14
+reranker sobre a híbrida,saude/25,at_02_conv_01,booleana,1
+reranker sobre a híbrida,saude/25,v0001,v* (Censo),3
+reranker sobre a híbrida,saude/26,at_03_conv_01,booleana,10
+reranker sobre a híbrida,saude/26,at_04_conv_01,booleana,1
+reranker sobre a híbrida,saude/27,at_04_conv_01,booleana,7
+reranker sobre a híbrida,saude/27,v01068,v* (Censo),1
