@@ -150,7 +150,7 @@ embeddado e os metadados (variável, nó, tema, tabela, descrição, tipo, valor
 A decisão de pôr os valores só nas colunas de código no texto buscado vem de um
 experimento que compara três versões do texto indexado. Ele mostrou que os valores
 dobram o recall nas colunas de código e atrapalham nas booleanas. Detalhes, como rodar
-e resultados em [`../testes/rag_categorias/`](../testes/rag_categorias).
+e resultados em [`../testes/rag_valores/`](../testes/rag_valores).
 
 TODO
 

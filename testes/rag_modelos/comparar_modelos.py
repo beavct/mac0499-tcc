@@ -1,7 +1,7 @@
 """
 Experimento: qual modelo de embedding recupera melhor as propriedades do dicionário?
 Usa o texto da versão B (o que o workflow usa), o mesmo gabarito, a mesma busca exata e
-o mesmo recall@k do teste de categorias (../rag_categorias/).
+o mesmo recall@k do teste dos valores (../rag_valores/).
 Os resultados vão para output/recall.csv e output/posicoes.csv.
 
 Uso (a partir de testes/rag_modelos/, depois da etapa 01 do dicionário):
@@ -14,15 +14,15 @@ import os
 import shutil
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "rag_categorias"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "rag_valores"))
 
 from sentence_transformers import SentenceTransformer
-from experimento import (CORPUS_JSON, EMBEDDING_MODEL, KS, carregar_consultas, grupo,
-                         ranking_da_versao)
+from comparar_textos import (CORPUS_JSON, EMBEDDING_MODEL, KS, carregar_consultas, grupo,
+                             ranking_da_versao)
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
 CACHE_HF = os.path.expanduser("~/.cache/huggingface/hub")
-GRUPOS = ["todas", "v* (Censo)", "código (tp_*)", "booleana", "outras (qt_* etc.)"]
+GRUPOS = ["todas", "v* (Censo)", "categórica", "booleana", "outras dos equipamentos"]
 
 # ---------------------------------------------------------------------------
 # MODELOS
@@ -135,7 +135,7 @@ def main():
         if "--limpar-cache" in sys.argv:
             limpar_cache(m["nome"])
 
-    print(f"\n{'recall@20':40} {'todas':>6} {'v*':>6} {'código':>6} {'bool':>6} "
+    print(f"\n{'recall@20':40} {'todas':>6} {'v*':>6} {'categ.':>6} {'bool':>6} "
           f"{'outras':>6} {'compl.':>6}")
     for linha in resumo:
         valores = " ".join(f"{linha[g + '@20']:6.2f}" for g in GRUPOS)

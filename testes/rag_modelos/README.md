@@ -4,7 +4,7 @@ Compara modelos de embedding abertos e multilíngues pra ver qual recupera melho
 
 ## Como funciona
 
-O teste usa o mesmo gabarito, a mesma busca exata e a mesma métrica do [teste das categorias](../rag_categorias): pra cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, conta quantas das propriedades do Cypher correto aparecem entre as `k` mais parecidas com a pergunta (**recall@k**, com k = 5, 10 e 20). O texto indexado é o da versão B (tema, descrição e os valores das colunas de código), que é o que o workflow usa.
+O teste usa o mesmo gabarito, a mesma busca exata e a mesma métrica do [teste dos valores](../rag_valores): pra cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, conta quantas das propriedades do Cypher correto aparecem entre as `k` mais parecidas com a pergunta (**recall@k**, com k = 5, 10 e 20). O texto indexado é o da versão B (tema, descrição e os valores das colunas que não são booleanas), que é o que o workflow usa.
 
 Além do recall, o script conta as **perguntas completas**: aquelas em que todas as propriedades do gabarito estão no top-20. É o caso em que o modelo gerador recebe tudo de que precisa.
 
@@ -42,7 +42,7 @@ Ele imprime a tabela e grava em `output/`:
 
 A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de propriedade:
 
-| Modelo | todas | `v*` (Censo) | código | booleana | outras | completas |
+| Modelo | todas | `v*` (Censo) | categórica | booleana | outras | completas |
 |--------|------:|-------------:|-------:|---------:|-------:|----------:|
 | MiniLM | 0,37 | 0,19 | 0,36 | 0,39 | 0,67 | 12/65 |
 | mpnet | 0,41 | 0,32 | 0,09 | 0,44 | 0,64 | 15/65 |

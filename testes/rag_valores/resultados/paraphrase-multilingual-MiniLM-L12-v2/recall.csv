@@ -1,0 +1,64 @@
+grupo,n,versao,k,recall
+todas,144,A,5,0.2083
+todas,144,B,5,0.2292
+todas,144,C,5,0.2153
+todas,144,A,10,0.2778
+todas,144,B,10,0.3056
+todas,144,C,10,0.2778
+todas,144,A,20,0.3542
+todas,144,B,20,0.3681
+todas,144,C,20,0.3681
+v* (Censo),59,A,5,0.0847
+v* (Censo),59,B,5,0.0847
+v* (Censo),59,C,5,0.1186
+v* (Censo),59,A,10,0.1356
+v* (Censo),59,B,10,0.1186
+v* (Censo),59,C,10,0.1356
+v* (Censo),59,A,20,0.1864
+v* (Censo),59,B,20,0.1864
+v* (Censo),59,C,20,0.2373
+categórica,11,A,5,0.0
+categórica,11,B,5,0.3636
+categórica,11,C,5,0.3636
+categórica,11,A,10,0.0
+categórica,11,B,10,0.3636
+categórica,11,C,10,0.3636
+categórica,11,A,20,0.1818
+categórica,11,B,20,0.3636
+categórica,11,C,20,0.3636
+booleana,41,A,5,0.2927
+booleana,41,B,5,0.2927
+booleana,41,C,5,0.1463
+booleana,41,A,10,0.3902
+booleana,41,B,10,0.3902
+booleana,41,C,10,0.1707
+booleana,41,A,20,0.3902
+booleana,41,B,20,0.3902
+booleana,41,C,20,0.2927
+outras dos equipamentos,33,A,5,0.3939
+outras dos equipamentos,33,B,5,0.3636
+outras dos equipamentos,33,C,5,0.4242
+outras dos equipamentos,33,A,10,0.4848
+outras dos equipamentos,33,B,10,0.5152
+outras dos equipamentos,33,C,10,0.6364
+outras dos equipamentos,33,A,20,0.6667
+outras dos equipamentos,33,B,20,0.6667
+outras dos equipamentos,33,C,20,0.697
+"categórica, pergunta cita",4,A,5,0.0
+"categórica, pergunta cita",4,B,5,0.5
+"categórica, pergunta cita",4,C,5,0.5
+"categórica, pergunta cita",4,A,10,0.0
+"categórica, pergunta cita",4,B,10,0.5
+"categórica, pergunta cita",4,C,10,0.5
+"categórica, pergunta cita",4,A,20,0.5
+"categórica, pergunta cita",4,B,20,0.5
+"categórica, pergunta cita",4,C,20,0.5
+"categórica, não cita",7,A,5,0.0
+"categórica, não cita",7,B,5,0.2857
+"categórica, não cita",7,C,5,0.2857
+"categórica, não cita",7,A,10,0.0
+"categórica, não cita",7,B,10,0.2857
+"categórica, não cita",7,C,10,0.2857
+"categórica, não cita",7,A,20,0.0
+"categórica, não cita",7,B,20,0.2857
+"categórica, não cita",7,C,20,0.2857
