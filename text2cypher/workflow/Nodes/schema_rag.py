@@ -14,7 +14,7 @@ from Nodes.States.states import InputState, OverallState
 # sobe até text2cypher/ para importar o retriever e o config
 TEXT2CYPHER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, TEXT2CYPHER_DIR)
-from config import TOP_K, PROPRIEDADES_FIXAS
+from config import TOP_K, PROPRIEDADES_FIXAS, HIERARQUIA_TERRITORIAL
 from dicionario.retriever import montar_fragmento_schema, propriedades_indexadas, descrever
 
 # nº de nós amostrados por rótulo para descobrir as propriedades
@@ -102,13 +102,14 @@ def montar_backbone(driver, database_name):
 
 
 def construir_schema(driver, database_name, question, k):
-    """Junta a estrutura do grafo e as propriedades recuperadas em uma única string."""
+    """Junta a estrutura do grafo, a hierarquia e as propriedades recuperadas numa string."""
     fragmento, _ = montar_fragmento_schema(question, k)
     nos, rels = montar_backbone(driver, database_name)
     return (
         "Propriedades dos nós:\n" + nos
         + "\n\nPropriedades relevantes para a pergunta:\n" + fragmento
         + "\n\nRelações:\n" + rels
+        + "\n\nHierarquia territorial:\n" + HIERARQUIA_TERRITORIAL
     )
 
 

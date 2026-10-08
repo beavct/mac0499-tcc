@@ -88,6 +88,19 @@ PROPRIEDADES_FIXAS = [
      "descricao": "Polígono do setor em texto WKT; não usar em consultas"},
 ]
 
+# Hierarquia territorial que vai no esquema enviado ao modelo. É fixa porque o ETL sempre
+# monta o grafo assim (etl/01_geografia.py). Como nem todo setor tem Bairro, o nº de saltos
+# do setor até cada nível varia, e o modelo erra se usar um salto só.
+HIERARQUIA_TERRITORIAL = """\
+UF <- Municipio <- Distrito <- Subdistrito <- Bairro <- SetorCensitario, todos por PARTE_DE.
+Só parte dos setores tem Bairro: os outros ligam direto no Subdistrito. Do setor até cada
+nível, use o intervalo de saltos:
+(:SetorCensitario)-[:PARTE_DE*1..2]->(:Subdistrito)
+(:SetorCensitario)-[:PARTE_DE*2..3]->(:Distrito)
+(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio)
+(:SetorCensitario)-[:PARTE_DE*4..5]->(:UF)
+(:SetorCensitario)-[:PARTE_DE]->(:Bairro)  // só os setores que têm bairro"""
+
 # Descrições que faltam no PG e na planilha de metadados, inferidas pelas colunas irmãs
 DESCRICOES_INFERIDAS = [
     {"no_label": "Escola", "propriedade": "qt_mat_prof_tec",
