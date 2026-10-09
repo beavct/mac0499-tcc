@@ -22,7 +22,9 @@ O CyVerACT escolhe quais partes do esquema mandar pro modelo comparando as palav
 Por isso, a gente busca as propriedades pela **descrição**. São duas partes (na monografia, Camadas A e B):
 
 - **Dicionário das propriedades (RAG):** cada propriedade vira um documento com o tema do nó e a descrição, guardado no Chroma. Na hora da pergunta, só as propriedades mais parecidas com ela vão pro esquema, junto da estrutura do grafo (rótulos, códigos, nomes e relações), que vai sempre.
-- **Valores dos filtros:** (a fazer) usar nos `WHERE` os valores que existem de fato no grafo (*value grounding*).
+- **Valores dos filtros (opcional):** os nomes de lugares e de equipamentos citados na pergunta vão pro modelo do jeito que estão escritos no grafo, pra ele usar nos `WHERE` (ver [Camada B](workflow/README.md#camada_b)).
+
+A ideia de separar em duas camadas veio do artigo de Macedo et al. (SBBD 2026). Só a Camada B segue o artigo: lá, a outra camada recupera exemplos de SQL já validados, e aqui a Camada A recupera as propriedades do esquema.
 
 As descrições vêm dos `COMMENT ON COLUMN` do PostgreSQL da CulturaEduca: das tabelas de agregados do Censo e dos microdados de educação e saúde. Os valores das colunas de código (ex.: `tp_dependencia`: 1 = Federal, 2 = Estadual…) vêm do `metadata.attribute`, o catálogo de colunas da plataforma, e o tipo de cada propriedade é lido do próprio Neo4j. Os nomes das propriedades são os mesmos no grafo.
 
@@ -39,6 +41,8 @@ text2cypher/
 │   ├── run_all.py                 ← roda as etapas 01 e 02 em ordem
 │   ├── retriever.py               ← consulta o Chroma e monta o trecho do esquema
 │   ├── inspecionar.py             ← inspeciona a coleção do Chroma pelo terminal
+│   ├── valores.py                 ← Camada B: acha na pergunta os nomes que existem no grafo
+│   ├── bridge.py                  ← funções de casamento do BRIDGE (BSD-3, ver o cabeçalho)
 │   └── corpus/variaveis.json      ← dicionário gerado pela etapa 01 (fora do git; regenerável)
 ├── vectorstore/              ← índice Chroma persistido (fora do git)
 └── workflow/                 ← pipeline sobre o CyVerACT (ver workflow/README.md)
@@ -160,8 +164,7 @@ e resultados em [`../testes/rag_valores/`](../testes/rag_valores).
 
 TODO
 
-- **Hierarquia e não permitir repetição de consultas**
-- **Camada B** (value grounding) para os filtros `WHERE` — opcional/plugável (ablação).
+- **Não permitir repetição de consultas** no laço de correção
 - **Avaliação** por EX / CM / AST, tentativas até acertar e cobertura do RAG.
 - **Recall baixo das `v*`**: só 19% das necessárias aparecem no top-20.
 

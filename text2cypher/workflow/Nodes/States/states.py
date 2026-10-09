@@ -1,5 +1,6 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Reusado; único acréscimo: o campo execution_error (erro da execução no Neo4j).
+# Reusado; acréscimos: os campos execution_error (erro da execução no Neo4j) e
+# grounded_values (valores da Camada B).
 from operator import add
 from typing import Annotated, List,Any
 from neo4j import GraphDatabase, Driver
@@ -18,6 +19,7 @@ class InputState(TypedDict):
 class OverallState(TypedDict):
     question: str
     schema: str
+    grounded_values: str  # valores do grafo achados pela Camada B (vazio se desligada)
     # filtered_schema:str
     database_url :str
     database_name: str

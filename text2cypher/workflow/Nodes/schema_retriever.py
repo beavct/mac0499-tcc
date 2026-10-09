@@ -1,7 +1,8 @@
 """
 Nó de fallback do esquema, acionado quando as correções com o esquema filtrado se
 esgotam. Adaptado do schema_retriever.py do CyVerACT (CC BY-SA 4.0; ver NOTICE.md):
-em vez do esquema completo, refaz a busca com um k maior (TOP_K_FALLBACK).
+em vez do esquema completo, refaz a busca com um k maior (TOP_K_FALLBACK). Com a Camada B
+ligada, o esquema novo recebe de volta os valores achados pelo value_grounding.
 """
 import os
 import sys
@@ -25,6 +26,9 @@ def schema_retriever(state: OverallState) -> OverallState:
     driver = state.get("neo4j_driver")
 
     schema = construir_schema(driver, database_name, question, k=TOP_K_FALLBACK)
+    # os valores não dependem do k, então são reaproveitados em vez de buscados de novo
+    if state.get("grounded_values"):
+        schema += "\n\n" + state.get("grounded_values")
 
     return {"schema": schema,
             "path": ["schema_retriever"],

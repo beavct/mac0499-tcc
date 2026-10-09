@@ -2,7 +2,8 @@
 Monta o grafo de estados (LangGraph) do workflow.
 
 Adaptado do extended_workflow/graph.py do CyVerACT (CC BY-SA 4.0; ver NOTICE.md):
-o schema_filtering foi substituído pelo schema_rag.
+o schema_filtering foi substituído pelo schema_rag. Com USAR_VALUE_GROUNDING ligado, o
+value_grounding (Camada B) entra entre o schema_rag e o cypher_generator.
 """
 import sys
 
@@ -17,7 +18,9 @@ from Nodes.cypher_corrector import cypher_corrector
 from Nodes.cypher_executor import cypher_executor
 from Nodes.output_generator import output_generator
 from Nodes.unavailable_output import unavailable_output
+from Nodes.value_grounding import value_grounding
 from Edges.conditional_edges_extended import select_next_action
+from config_workflow import USAR_VALUE_GROUNDING
 
 sys.path.append('Nodes')
 
@@ -37,7 +40,12 @@ workflow.add_node(unavailable_output)
 
 # Add edges
 workflow.add_edge(START, "schema_rag")
-workflow.add_edge("schema_rag", "cypher_generator")
+if USAR_VALUE_GROUNDING:
+    workflow.add_node(value_grounding)
+    workflow.add_edge("schema_rag", "value_grounding")
+    workflow.add_edge("value_grounding", "cypher_generator")
+else:
+    workflow.add_edge("schema_rag", "cypher_generator")
 workflow.add_edge("schema_retriever", "cypher_generator")
 workflow.add_edge("cypher_generator", "cyver_evaluator")
 workflow.add_conditional_edges("cyver_evaluator", select_next_action)

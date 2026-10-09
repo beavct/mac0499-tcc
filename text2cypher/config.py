@@ -147,6 +147,31 @@ TEMA_POR_LABEL = {
     "EquipamentoSaude": "Equipamento de saúde",
 }
 
+# --- Valores dos filtros (Camada B) ---------------------------------------
+# Propriedades de nome cujos valores são lidos do grafo para ancorar os filtros, e as
+# palavras que indicam na pergunta o tipo do lugar ("distrito da Saúde"). Os tipos vão sem
+# acento, porque a pergunta é comparada sem acento.
+# O Subdistrito não entra porque no grafo ele só tem código.
+PROPRIEDADES_VALORES = [
+    {"no_label": "UF", "propriedade": "nm_uf", "tipos": ["estado"]},
+    {"no_label": "Municipio", "propriedade": "nm_mun", "tipos": ["municipio", "cidade"]},
+    # Muitas cidades não possuem bairros propriamente ditos, mas é costume chamar o distrito de bairro
+    {"no_label": "Distrito", "propriedade": "nm_dist", "tipos": ["distrito", "bairro"]}, 
+    {"no_label": "Bairro", "propriedade": "nm_bairro", "tipos": ["bairro"]},
+    {"no_label": "Escola", "propriedade": "nm_aparelho", "tipos": ["escola", "colegio"]},
+    {"no_label": "EquipamentoSaude", "propriedade": "nm_aparelho",
+     "tipos": ["unidade", "hospital", "posto", "ubs", "aps", "upa", "ama", "ame"]},
+]
+
+# Semelhança mínima para o BRIDGE devolver um casamento, e a nota mínima para ele ficar,
+# os dois valores do CodeS
+LIMIAR_CASAMENTO = 0.85
+NOTA_MINIMA_CASAMENTO = 0.9
+
+# O CodeS guarda até 25 valores por propriedade; aqui ficam 5, o bastante para uma pergunta
+# que cita vários lugares do mesmo tipo ("escolas em Campinas, Sorocaba e Santos")
+MAX_VALORES_POR_COLUNA = 5
+
 def load_perfis_config():
     """Lê config_perfis.txt -> lista de dicts {no_label, tabela}."""
     perfis = []
