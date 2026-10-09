@@ -21,8 +21,8 @@ PARAMS_GERACAO = {
 }
 
 
-def get_qwen_local():
-    """Qwen servido localmente pelo Ollama (sem custo; roda na CPU/GPU da máquina)."""
+def get_ollama_local():
+    """Modelo servido localmente pelo Ollama (roda na CPU/GPU da máquina)."""
     return ChatOpenAI(
         model=os.getenv("OLLAMA_MODEL", "qwen2.5-coder:7b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1"),
@@ -42,6 +42,6 @@ def get_servidor_externo():
 
 
 models = {
-    "qwen_local": get_qwen_local,
+    "ollama_local": get_ollama_local,
     "servidor_externo": get_servidor_externo,
 }

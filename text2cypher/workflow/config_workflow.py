@@ -7,7 +7,7 @@ import os
 from Configuration.models import models
 
 # --- Modelo ----------------------------------------------------------------
-MODEL_NAME = os.getenv("MODEL_NAME", "qwen_local")   # chave em Configuration/models.py
+MODEL_NAME = os.getenv("MODEL_NAME", "ollama_local")   # chave em Configuration/models.py
 
 # --- Laço de correção (Fig. 2) ---------------------------------------------
 # Mesmos valores do CyVerACT; com k > n o fallback não é acionado

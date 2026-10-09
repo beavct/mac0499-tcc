@@ -93,7 +93,7 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 
 | Flag | Env | Default | O que faz |
 |------|-----|---------|-----------|
-| Modelo | `MODEL_NAME` | `qwen_local` | chave em `Configuration/models.py` |
+| Modelo | `MODEL_NAME` | `ollama_local` | chave em `Configuration/models.py` |
 | `k` | `ATTEMPTS_W_FILTERED` | `5` | tentativas de correção com o esquema filtrado (valor do CyVerACT) |
 | `n` | `TOTAL_ATTEMPTS` | `10` | tentativas totais antes de desistir (`k < n`; com `k > n`, o fallback nunca é acionado) |
 | Timeout da execução | `TIMEOUT_EXECUCAO` | `60` | limite (s) para executar a query no Neo4j; ao estourar, o erro vai para `execution_error` |
@@ -105,7 +105,7 @@ Só usamos modelos abertos, por uma API compatível com a da OpenAI. Os parâmet
 
 | `MODEL_NAME` | Onde roda | Variáveis de ambiente |
 |--------------|-----------|-----------------------|
-| `qwen_local` | Ollama na própria máquina, sem custo | `OLLAMA_MODEL` (padrão `qwen2.5-coder:7b`), `OLLAMA_BASE_URL` (padrão `http://localhost:11434/v1`) |
+| `ollama_local` | Ollama na própria máquina, sem custo | `OLLAMA_MODEL` (padrão `qwen2.5-coder:7b`), `OLLAMA_BASE_URL` (padrão `http://localhost:11434/v1`) |
 | `servidor_externo` | qualquer servidor compatível com a API da OpenAI (ex.: servidor de pesquisa, vLLM) | `LLM_MODEL`, `LLM_BASE_URL`, `LLM_API_KEY` |
 
 Pra usar outro modelo, é só adicionar uma fábrica em `models.py` e apontar o `MODEL_NAME` pra ela.
@@ -210,6 +210,7 @@ No Linux, a instalação pode ter criado um serviço do Ollama que já sobe sozi
 
 ```bash
 ollama pull qwen2.5-coder:7b       # modelo padrão (~4,7 GB)
+ollama pull llama3.1:8b            # segundo modelo dos testes (~4,9 GB)
 ollama pull qwen2.5-coder:1.5b     # opcional: bem menor (~1 GB), só para testar a integração
 ```
 
@@ -220,7 +221,7 @@ cd text2cypher/workflow
 python executar.py "quantas escolas há em Campinas?"
 
 # com outro modelo do Ollama:
-OLLAMA_MODEL=qwen2.5-coder:1.5b python executar.py "quantas escolas há em Campinas?"
+OLLAMA_MODEL=llama3.1:8b python executar.py "quantas escolas há em Campinas?"
 ```
 
 Rode sempre de dentro de `text2cypher/workflow/`: os módulos usam imports relativos a essa pasta, como no CyVerACT original.
@@ -252,3 +253,4 @@ Esta pasta é uma obra derivada do **CyVerACT** (Androna et al., *Information Pr
 - [Ollama — download](https://ollama.com/download)
 - [Ollama — compatibilidade com a API da OpenAI](https://docs.ollama.com/api/openai-compatibility)
 - [Qwen2.5-Coder na biblioteca do Ollama](https://ollama.com/library/qwen2.5-coder)
+- [Llama 3.1 na biblioteca do Ollama](https://ollama.com/library/llama3.1)
