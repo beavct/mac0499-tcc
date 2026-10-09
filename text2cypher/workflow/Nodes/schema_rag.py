@@ -15,7 +15,8 @@ from Nodes.States.states import InputState, OverallState
 TEXT2CYPHER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, TEXT2CYPHER_DIR)
 from config import TOP_K, PROPRIEDADES_FIXAS, HIERARQUIA_TERRITORIAL
-from dicionario.retriever import montar_fragmento_schema, propriedades_indexadas, descrever
+from dicionario.retriever import (montar_fragmento_schema, propriedades_indexadas, descrever,
+                                  formatar_fragmento, todas_as_propriedades)
 
 # nº de nós amostrados por rótulo para descobrir as propriedades
 AMOSTRA_PROPRIEDADES = 10
@@ -102,12 +103,20 @@ def montar_backbone(driver, database_name):
 
 
 def construir_schema(driver, database_name, question, k):
-    """Junta a estrutura do grafo, a hierarquia e as propriedades recuperadas numa string."""
-    fragmento, _ = montar_fragmento_schema(question, k)
+    """
+    Junta a estrutura do grafo, a hierarquia e as propriedades recuperadas numa string. Com
+    k None, vão todas as propriedades, sem busca (Camada A desligada).
+    """
+    if k is None:
+        titulo = "Todas as propriedades:"
+        fragmento = formatar_fragmento(todas_as_propriedades())
+    else:
+        titulo = "Propriedades relevantes para a pergunta:"
+        fragmento, _ = montar_fragmento_schema(question, k)
     nos, rels = montar_backbone(driver, database_name)
     return (
         "Propriedades dos nós:\n" + nos
-        + "\n\nPropriedades relevantes para a pergunta:\n" + fragmento
+        + "\n\n" + titulo + "\n" + fragmento
         + "\n\nRelações:\n" + rels
         + "\n\nHierarquia territorial:\n" + HIERARQUIA_TERRITORIAL
     )
@@ -118,22 +127,25 @@ def construir_schema(driver, database_name, question, k):
 # ---------------------------------------------------------------------------
 
 
-def schema_rag(state: InputState) -> OverallState:
-    """Recupera as propriedades relevantes e monta o esquema filtrado da pergunta."""
-    question = state.get("question")
-    database_url = state.get("database_url")
-    database_name = state.get("database_name")
-    database_user = state.get("database_user")
-    database_password = state.get("database_password")
-
-    driver = _get_driver(database_url, database_user, database_password)
-    print('Schema RAG Agent: START')
-
-    schema = construir_schema(driver, database_name, question, k=TOP_K)
-
+def _montar_estado(state, k, nome_do_no):
+    driver = _get_driver(state.get("database_url"), state.get("database_user"),
+                         state.get("database_password"))
+    schema = construir_schema(driver, state.get("database_name"), state.get("question"), k)
     return {"schema": schema,
             "neo4j_driver": driver,
-            "path": ["schema_rag"],
+            "path": [nome_do_no],
             "total_tokens": [-1],
             "prompt_tokens": [-1],
             "completion_tokens": [-1]}
+
+
+def schema_rag(state: InputState) -> OverallState:
+    """Recupera as propriedades relevantes e monta o esquema filtrado da pergunta."""
+    print('Schema RAG Agent: START')
+    return _montar_estado(state, TOP_K, "schema_rag")
+
+
+def schema_completo(state: InputState) -> OverallState:
+    """Camada A desligada: manda todas as propriedades, para modelos de contexto grande."""
+    print('Schema completo: START')
+    return _montar_estado(state, None, "schema_completo")

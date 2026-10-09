@@ -28,13 +28,13 @@ removido código comentado sem uso. Além disso:
 (Camada B, opcional; não tem equivalente no CyVerACT), `config_workflow.py`, `executar.py`.
 
 **Adaptados:**
-- `graph.py` — usa o `schema_rag`; parâmetros do `StateGraph` atualizados para o langgraph 1.x; com `USAR_VALUE_GROUNDING`, põe o `value_grounding` entre o `schema_rag` e o `cypher_generator`.
-- `Nodes/schema_retriever.py` — fallback por RAG com `k` maior, em vez do esquema completo; mantém os valores da Camada B no esquema novo.
+- `graph.py` — usa o `schema_rag` (ou o `schema_completo`, com `USAR_RAG` desligado); parâmetros do `StateGraph` atualizados para o langgraph 1.x; com `USAR_VALUE_GROUNDING`, põe o `value_grounding` entre o `schema_rag` e o `cypher_generator`.
+- `Nodes/schema_retriever.py` — fallback por RAG com `k` maior, em vez do esquema completo (sem o RAG, o esquema já é o completo e não é ampliado); mantém os valores da Camada B no esquema novo.
 - `Nodes/cypher_executor.py` — execução habilitada, com timeout e registro do erro.
 - `Configuration/models.py` — só modelos abertos via API compatível com a OpenAI.
 - `Nodes/cypher_generator.py`, `Nodes/cypher_corrector.py` — contagem de tokens pelo `langchain-core`; mensagem de início antes da chamada ao LLM.
 - `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B).
-- `Configuration/configurations.py` — campo `timeout_execucao`.
+- `Configuration/configurations.py` — campos `timeout_execucao` e `usar_rag`.
 - `Nodes/unavailable_output.py` — `database_records` passa de `['']` a `None`.
 - `Nodes/cyver_evaluator.py` — só comentários corrigidos (`k` e `n` estavam trocados).
 

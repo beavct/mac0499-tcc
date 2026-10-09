@@ -20,6 +20,8 @@ TOTAL_ATTEMPTS = int(os.getenv("TOTAL_ATTEMPTS", "10"))           # n: tentativa
 TIMEOUT_EXECUCAO = float(os.getenv("TIMEOUT_EXECUCAO", "60"))
 
 # --- Ablação ---------------------------------------------------------------
+# RAG das propriedades (Camada A); desligado, o esquema leva todas as ~1.800 propriedades
+USAR_RAG = os.getenv("USAR_RAG", "true").lower() in ("true", "1", "sim")
 # value grounding (Camada B): acrescenta ao esquema os valores reais dos nomes citados
 USAR_VALUE_GROUNDING = os.getenv("USAR_VALUE_GROUNDING", "false").lower() in ("true", "1", "sim")
 
@@ -32,4 +34,5 @@ def montar_configuracao():
         "attempts_w_filtered": ATTEMPTS_W_FILTERED,
         "total_attempts": TOTAL_ATTEMPTS,
         "timeout_execucao": TIMEOUT_EXECUCAO,
+        "usar_rag": USAR_RAG,
     }}

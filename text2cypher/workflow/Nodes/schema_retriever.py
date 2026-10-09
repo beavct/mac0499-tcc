@@ -7,6 +7,8 @@ ligada, o esquema novo recebe de volta os valores achados pelo value_grounding.
 import os
 import sys
 
+from langchain_core.runnables.config import RunnableConfig
+
 from Nodes.States.states import OverallState
 from Nodes.schema_rag import construir_schema
 
@@ -18,14 +20,16 @@ from config import TOP_K
 TOP_K_FALLBACK = int(os.getenv("TOP_K_FALLBACK", str(TOP_K * 3)))
 
 
-def schema_retriever(state: OverallState) -> OverallState:
+def schema_retriever(state: OverallState, config: RunnableConfig) -> OverallState:
     """Reexecuta o RAG com um k maior para ampliar o esquema recuperado."""
     print('Schema retriever Agent: START')
     question = state.get("question")
     database_name = state.get("database_name")
     driver = state.get("neo4j_driver")
 
-    schema = construir_schema(driver, database_name, question, k=TOP_K_FALLBACK)
+    # sem a Camada A, o esquema já leva todas as propriedades e não há o que ampliar
+    k = TOP_K_FALLBACK if config["configurable"]["usar_rag"] else None
+    schema = construir_schema(driver, database_name, question, k)
     # os valores não dependem do k, então são reaproveitados em vez de buscados de novo
     if state.get("grounded_values"):
         schema += "\n\n" + state.get("grounded_values")

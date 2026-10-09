@@ -31,7 +31,7 @@ START
                         unavailable_output ──> END ◄──────────────────── (Retry = n)
 ```
 
-- **`schema_rag`** — busca no Chroma as propriedades relevantes e monta o esquema, junto da estrutura do grafo e da hierarquia territorial.
+- **`schema_rag`** — busca no Chroma as propriedades relevantes e monta o esquema, junto da estrutura do grafo e da hierarquia territorial. Com `USAR_RAG` desligado, entra no lugar dele o **`schema_completo`**, que manda todas as propriedades, sem busca.
 - **`value_grounding`** (opcional, Camada B) — entra entre o `schema_rag` e o `cypher_generator` e acrescenta ao esquema os valores reais dos nomes citados na pergunta (ver [Camada B](#camada_b)).
 - **`cypher_generator`** — LLM gera o Cypher a partir do esquema e da pergunta.
 - **`cyver_evaluator`** — roda os validadores do CyVer (sintaxe, esquema, propriedades) **sem executar** a query e junta os erros.
@@ -75,7 +75,7 @@ workflow/
 │   └── conditional_edges_extended.py   ← roteador da decisão do laço
 └── Nodes/
     ├── States/states.py       ← formatos do estado (entrada, trabalho, saída)
-    ├── schema_rag.py          ← NOVO: esquema por RAG (Camada A)
+    ├── schema_rag.py          ← NOVO: esquema por RAG (Camada A) ou completo (schema_completo)
     ├── value_grounding.py     ← NOVO: valores dos filtros (Camada B, opcional)
     ├── schema_retriever.py    ← fallback (RAG com k maior)
     ├── cypher_generator.py    ← LLM gera o Cypher
@@ -99,6 +99,7 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Timeout da execução | `TIMEOUT_EXECUCAO` | `60` | limite (s) para executar a query no Neo4j; ao estourar, o erro vai para `execution_error` |
 | `k` do RAG | `TOP_K` | `20` | propriedades recuperadas por pergunta (definido em `../config.py`) |
 | `k` do fallback | `TOP_K_FALLBACK` | `3×TOP_K` | propriedades recuperadas no `schema_retriever` (definido no próprio nó) |
+| RAG das propriedades | `USAR_RAG` | `true` | liga a Camada A; desligado, o nó `schema_completo` manda todas as ~1.800 propriedades, o que só cabe no contexto de modelos grandes |
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
 
 Só usamos modelos abertos, por uma API compatível com a da OpenAI. Os parâmetros de geração são os do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens):
