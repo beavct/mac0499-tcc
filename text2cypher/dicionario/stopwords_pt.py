@@ -1,7 +1,7 @@
 """
 Lista de stopwords em português do Snowball, sem acentos
 (https://snowballstem.org/algorithms/portuguese/stop.txt). A única mudança em relação à
-lista original foi tirar os acentos, para casar com o tokenizar do comparar_buscas.py.
+lista original foi tirar os acentos, para casar com o tokenizar do retriever.py.
 
 Licença do Snowball (https://snowballstem.org/license.html):
 

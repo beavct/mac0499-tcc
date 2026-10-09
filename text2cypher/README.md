@@ -39,7 +39,8 @@ text2cypher/
 │   ├── 01_extrair_dicionario.py   ← descrições, tipos e valores (PG + Neo4j) → corpus/variaveis.json
 │   ├── 02_indexar_chroma.py       ← embeda o corpus e indexa no Chroma
 │   ├── run_all.py                 ← roda as etapas 01 e 02 em ordem
-│   ├── retriever.py               ← consulta o Chroma e monta o trecho do esquema
+│   ├── retriever.py               ← busca híbrida (Chroma + BM25) e monta o trecho do esquema
+│   ├── stopwords_pt.py            ← stopwords em português do Snowball, para o BM25 (BSD)
 │   ├── inspecionar.py             ← inspeciona a coleção do Chroma pelo terminal
 │   ├── valores.py                 ← Camada B: acha na pergunta os nomes que existem no grafo
 │   ├── bridge.py                  ← funções de casamento do BRIDGE (BSD-3, ver o cabeçalho)
@@ -118,8 +119,13 @@ medo: ele recria a coleção do zero.
 
 ### `retriever.py`
 
-Recebe a pergunta, transforma em vetor com o mesmo modelo e busca no Chroma as `k`
-propriedades mais parecidas (`config.TOP_K`). Depois agrupa por nó e anota a aresta que
+Recebe a pergunta e faz duas buscas: a vetorial, no Chroma, com o mesmo modelo do índice,
+e o BM25, pelas palavras em comum (com o radical das palavras em português, do Snowball). As
+duas listas são juntadas pelo RRF, e ficam as `k` primeiras (`config.TOP_K`). O BM25 e a fusão
+são o `BM25Retriever` e o `EnsembleRetriever` do LangChain, porque o Chroma local não tem
+índice de palavras. Essa busca híbrida foi a que ganhou no teste de
+[`../testes/rag_buscas/`](../testes/rag_buscas): 41 das 65 perguntas com todas as propriedades
+no top-20, contra 30 só com a vetorial. Depois agrupa por nó e anota a aresta que
 liga cada nó ao setor: `(:SetorCensitario)-[:TEM_PERFIL]->(:Perfil*)` pros perfis e
 `(:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)` pros equipamentos.
 
@@ -166,7 +172,6 @@ TODO
 
 - **Não permitir repetição de consultas** no laço de correção
 - **Avaliação** por EX / CM / AST, tentativas até acertar e cobertura do RAG.
-- **Recall baixo das `v*`**: só 19% das necessárias aparecem no top-20.
 
 <a name="refs"></a>
 ## Referências

@@ -15,23 +15,19 @@ Uso (a partir de testes/rag_buscas/, depois da etapa 01 do dicionário):
 import csv
 import json
 import os
-import re
 import sys
-import unicodedata
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "rag_valores"))
 
-import snowballstemmer
 from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
-from langchain_core.embeddings import Embeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 from sentence_transformers import CrossEncoder, SentenceTransformer
 
 from comparar_textos import CORPUS_JSON, EMBEDDING_MODEL, GRUPOS, carregar_consultas, grupo
-from config import PREFIXO_PERGUNTA, PREFIXO_TEXTO
-from stopwords_pt import STOPWORDS
+# o tokenizar e o modelo no formato do LangChain são os mesmos do workflow
+from dicionario.retriever import EmbeddingE5, tokenizar
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
 NOTAS_RERANKER = os.path.join(OUTPUT_DIR, "notas_reranker.csv")
@@ -44,8 +40,6 @@ C_RRF = 60
 PESO_MMR = 0.5
 CANDIDATOS = 50
 RERANKER = "BAAI/bge-reranker-v2-m3"
-
-stemmer = snowballstemmer.stemmer("portuguese")
 
 # ---------------------------------------------------------------------------
 # TEXTOS
@@ -63,36 +57,9 @@ def sem_complementos(docs):
     return novos
 
 
-def sem_acento(texto):
-    return unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
-
-
-def tokenizar(texto):
-    """Palavras em minúsculas, sem stopwords, reduzidas ao radical: 'escolas' -> 'escol'."""
-    radicais = []
-    for palavra in re.findall(r"\w+", texto.lower()):
-        if sem_acento(palavra) not in STOPWORDS:
-            radicais.append(sem_acento(stemmer.stemWord(palavra)))
-    return radicais
-
-
 # ---------------------------------------------------------------------------
 # BUSCAS
 # ---------------------------------------------------------------------------
-
-
-class EmbeddingE5(Embeddings):
-    """O InMemoryVectorStore pede o modelo neste formato; aqui entram os prefixos do E5."""
-
-    def __init__(self, model):
-        self.model = model
-
-    def embed_documents(self, textos):
-        textos = [PREFIXO_TEXTO + t for t in textos]
-        return self.model.encode(textos, normalize_embeddings=True).tolist()
-
-    def embed_query(self, texto):
-        return self.model.encode(PREFIXO_PERGUNTA + texto, normalize_embeddings=True).tolist()
 
 
 def documentos(docs):

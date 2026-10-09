@@ -20,7 +20,7 @@ A híbrida usa o RRF do artigo original, com pesos iguais e a constante 60, que 
 
 O script também testa a híbrida com os complementos do `COMPLEMENTOS_DESCRICAO` do [`text2cypher/config.py`](../../text2cypher/config.py), como "Dependência Administrativa (rede pública ou privada)". As outras buscas usam o texto sem eles.
 
-> **Atenção:** a busca híbrida não roda dentro do Chroma local, porque o índice do BM25 só existe no Chroma Cloud ("Sparse vector indexing is not enabled in local"). A função de BM25 do Chroma também usa um stemmer de inglês. Por isso, o BM25 e a fusão ficam com o `BM25Retriever` e o `EnsembleRetriever` do LangChain, e o Chroma faz só a busca vetorial. Por enquanto, o workflow ainda usa só a vetorial, e a híbrida vai entrar no `retriever.py`.
+> **Atenção:** a busca híbrida não roda dentro do Chroma local, porque o índice do BM25 só existe no Chroma Cloud ("Sparse vector indexing is not enabled in local"). A função de BM25 do Chroma também usa um stemmer de inglês. Por isso, o BM25 e a fusão ficam com o `BM25Retriever` e o `EnsembleRetriever` do LangChain, e o Chroma faz só a busca vetorial. O [`retriever.py`](../../text2cypher/dicionario/retriever.py) do workflow faz a mesma busca, com o mesmo `tokenizar`, e dá o mesmo resultado no gabarito.
 
 ## Como rodar
 
@@ -61,7 +61,6 @@ O resto não compensou. O reranker acha mais `v*`, mas perde nas booleanas e nas
 ```
 rag_buscas/
 ├── comparar_buscas.py
-├── stopwords_pt.py   # stopwords em português do Snowball (licença BSD)
 ├── output/           # CSVs gerados (não versionado)
 └── resultados/       # rodada usada na monografia
 ```

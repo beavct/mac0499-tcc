@@ -31,7 +31,7 @@ START
                         unavailable_output ──> END ◄──────────────────── (Retry = n)
 ```
 
-- **`schema_rag`** — busca no Chroma as propriedades relevantes e monta o esquema, junto da estrutura do grafo e da hierarquia territorial. Com `USAR_RAG` desligado, entra no lugar dele o **`schema_completo`**, que manda todas as propriedades, sem busca.
+- **`schema_rag`** — busca as propriedades relevantes (busca híbrida: vetorial no Chroma + BM25) e monta o esquema, junto da estrutura do grafo e da hierarquia territorial. Com `USAR_RAG` desligado, entra no lugar dele o **`schema_completo`**, que manda todas as propriedades, sem busca.
 - **`value_grounding`** (opcional, Camada B) — entra entre o `schema_rag` e o `cypher_generator` e acrescenta ao esquema os valores reais dos nomes citados na pergunta (ver [Camada B](#camada_b)).
 - **`cypher_generator`** — LLM gera o Cypher a partir do esquema e da pergunta.
 - **`cyver_evaluator`** — roda os validadores do CyVer (sintaxe, esquema, propriedades) **sem executar** a query e junta os erros.
