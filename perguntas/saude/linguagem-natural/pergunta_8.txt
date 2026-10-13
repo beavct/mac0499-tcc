@@ -1,1 +1,1 @@
-Quais distritos de Campinas possuem internação por gratuidade em territórios com alta proporção de domicílios chefiados por mulheres sem cônjuge?
+Quais distritos de Campinas possuem internação por gratuidade, ordenados pelo número de domicílios chefiados por mulheres sem cônjuge?

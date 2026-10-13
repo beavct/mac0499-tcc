@@ -7,10 +7,10 @@ ed_basica/4,in_quadra_esportes,booleana,False,1,1,1
 ed_basica/5,qt_tur_inf_cre,outras dos equipamentos,False,5,5,5
 ed_basica/5,qt_tur_med,outras dos equipamentos,False,9,9,9
 ed_basica/6,v00901,v* (Censo),False,,,
-ed_basica/7,qt_tur_bas_d,outras dos equipamentos,False,13,14,14
+ed_basica/7,qt_tur_bas_d,outras dos equipamentos,False,,,
 ed_basica/7,qt_tur_med,outras dos equipamentos,False,,,
 ed_basica/7,tp_dependencia,categórica,False,,,
-ed_basica/7,v00094,v* (Censo),False,,,
+ed_basica/7,v00094,v* (Censo),False,13,14,12
 ed_basica/8,qt_tur_inf_int,outras dos equipamentos,False,1,1,1
 ed_basica/8,v01211,v* (Censo),False,,,
 ed_basica/9,qt_tur_fund,outras dos equipamentos,False,3,4,12
@@ -24,11 +24,11 @@ ed_basica/11,v00748,v* (Censo),False,14,14,17
 ed_basica/12,qt_tur_inf_cre,outras dos equipamentos,False,9,9,9
 ed_basica/12,v01031,v* (Censo),False,1,1,1
 ed_basica/13,qt_tur_bas_ead,outras dos equipamentos,False,1,1,2
-ed_basica/13,v00078,v* (Censo),False,3,4,5
+ed_basica/13,v00078,v* (Censo),False,4,3,4
 ed_basica/14,qt_tur_inf,outras dos equipamentos,False,6,8,11
 ed_basica/14,tp_dependencia,categórica,True,,2,2
 ed_basica/14,v01031,v* (Censo),False,1,3,4
-ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,False,1,1,1
+ed_basica/15,qt_tur_inf_cre_int,outras dos equipamentos,False,2,2,2
 ed_basica/15,v01215,v* (Censo),False,,,
 ed_basica/16,qt_tur_esp_cc,outras dos equipamentos,False,1,1,1
 ed_basica/16,v01034,v* (Censo),False,3,3,3
@@ -40,7 +40,7 @@ ed_basica/18,v00748,v* (Censo),False,9,9,9
 ed_basica/19,qt_tur_inf,outras dos equipamentos,False,1,1,1
 ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,False,3,3,3
 ed_basica/20,v00004,v* (Censo),False,18,17,18
-ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,False,1,1,1
+ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,False,2,2,3
 ed_basica/21,tp_dependencia,categórica,True,,,
 ed_basica/21,v00050,v* (Censo),False,,,
 ed_basica/22,qt_tur_bas_d,outras dos equipamentos,False,1,1,1
@@ -54,7 +54,7 @@ ed_basica/27,qt_tur_inf,outras dos equipamentos,False,2,2,3
 ed_basica/27,v01031,v* (Censo),False,7,7,7
 intersetorial/1,at_02_conv_01,booleana,False,11,9,11
 intersetorial/1,tp_dependencia,categórica,False,,12,8
-intersetorial/2,v00006,v* (Censo),False,8,8,2
+intersetorial/2,v00006,v* (Censo),False,9,9,2
 intersetorial/3,at_04_conv_01,booleana,False,20,,9
 intersetorial/3,qt_tur_fund,outras dos equipamentos,False,5,6,
 intersetorial/3,tp_dependencia,categórica,False,,1,6
@@ -67,28 +67,28 @@ intersetorial/5,tp_dependencia,categórica,True,,16,16
 intersetorial/5,v01040,v* (Censo),False,2,2,1
 intersetorial/5,v01041,v* (Censo),False,,,
 intersetorial/6,at_04_conv_01,booleana,False,1,1,1
-intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,False,19,18,14
-intersetorial/6,qt_tur_eja_med,outras dos equipamentos,False,,,18
-intersetorial/6,v01041,v* (Censo),False,,,
+intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,False,19,18,11
+intersetorial/6,qt_tur_eja_med,outras dos equipamentos,False,,,
+intersetorial/6,v01041,v* (Censo),False,6,6,4
 intersetorial/7,at_04_conv_01,booleana,False,1,1,1
 intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,False,19,19,
 intersetorial/7,qt_tur_eja_med,outras dos equipamentos,False,,,
 intersetorial/7,v05013,v* (Censo),False,,,
-intersetorial/8,at_01_conv_01,booleana,False,,,
+intersetorial/8,at_01_conv_01,booleana,False,1,1,2
 intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,False,,,
-intersetorial/8,v00009,v* (Censo),False,5,5,5
+intersetorial/8,v00009,v* (Censo),False,3,3,3
 intersetorial/9,v0001,v* (Censo),False,,,10
 intersetorial/10,at_06_conv_01,booleana,False,,,
 intersetorial/10,qt_tur_fund_af,outras dos equipamentos,False,,,
 intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,False,,,
-intersetorial/10,tp_dependencia,categórica,False,,3,3
+intersetorial/10,tp_dependencia,categórica,False,,9,10
 intersetorial/10,v00094,v* (Censo),False,,,
 intersetorial/11,at_06_conv_01,booleana,False,5,5,8
 intersetorial/12,at_06_conv_01,booleana,False,19,,
 intersetorial/12,tp_dependencia,categórica,False,,2,3
 intersetorial/12,v00401,v* (Censo),False,12,14,14
-saude/1,at_01_conv_01,booleana,False,14,14,2
-saude/1,v00002,v* (Censo),False,5,5,7
+saude/1,at_01_conv_01,booleana,False,17,17,3
+saude/1,v00002,v* (Censo),False,4,4,5
 saude/2,at_02_conv_01,booleana,False,7,7,
 saude/2,v00644,v* (Censo),False,3,3,3
 saude/2,v00748,v* (Censo),False,2,2,2
@@ -114,18 +114,18 @@ saude/11,v01040,v* (Censo),False,5,5,2
 saude/11,v01041,v* (Censo),False,14,14,10
 saude/12,at_03_conv_01,booleana,False,,,
 saude/12,v01318,v* (Censo),False,,,
-saude/13,at_01_conv_06,booleana,False,14,14,
-saude/13,v00498,v* (Censo),False,15,15,14
+saude/13,at_01_conv_06,booleana,False,9,9,
+saude/13,v00498,v* (Censo),False,19,19,16
 saude/14,at_02_conv_05,booleana,False,1,1,1
 saude/14,v00111,v* (Censo),False,,,
-saude/15,at_04_conv_06,booleana,False,,,
-saude/15,v00092,v* (Censo),False,12,12,12
+saude/15,at_04_conv_06,booleana,False,5,5,2
+saude/15,v00092,v* (Censo),False,9,9,10
 saude/16,v0001,v* (Censo),False,,,
 saude/16,v00312,v* (Censo),False,4,4,4
 saude/17,at_04_conv_05,booleana,False,1,1,1
 saude/17,v01320,v* (Censo),False,,,
 saude/18,at_06_conv_01,booleana,False,,,
-saude/18,v00238,v* (Censo),False,,,
+saude/18,v00238,v* (Censo),False,2,2,2
 saude/19,at_04_conv_01,booleana,False,1,1,1
 saude/19,v0001,v* (Censo),False,14,13,19
 saude/20,at_01_conv_01,booleana,False,2,2,2
@@ -133,7 +133,7 @@ saude/20,at_02_conv_01,booleana,False,1,1,1
 saude/21,at_06_conv_05,booleana,False,15,15,8
 saude/21,v00901,v* (Censo),False,,,
 saude/22,at_01_conv_01,booleana,False,1,1,1
-saude/23,at_01_conv_07,booleana,False,4,4,3
+saude/23,at_01_conv_07,booleana,False,3,3,4
 saude/23,v01389,v* (Censo),False,5,5,2
 saude/24,at_06_conv_01,booleana,False,1,1,3
 saude/24,v00316,v* (Censo),False,,,

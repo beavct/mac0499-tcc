@@ -9,9 +9,9 @@ ed_basica/5,qt_tur_med,outras dos equipamentos,False,2,2,1
 ed_basica/6,v00901,v* (Censo),False,,,
 ed_basica/7,qt_tur_bas_d,outras dos equipamentos,False,,,
 ed_basica/7,qt_tur_med,outras dos equipamentos,False,,,15
-ed_basica/7,tp_dependencia,categórica,False,,,
+ed_basica/7,tp_dependencia,categórica,False,,,10
 ed_basica/7,v00094,v* (Censo),False,,,
-ed_basica/8,qt_tur_inf_int,outras dos equipamentos,False,3,3,3
+ed_basica/8,qt_tur_inf_int,outras dos equipamentos,False,1,1,1
 ed_basica/8,v01211,v* (Censo),False,,,
 ed_basica/9,qt_tur_fund,outras dos equipamentos,False,13,12,8
 ed_basica/9,v00006,v* (Censo),False,,,
@@ -40,10 +40,10 @@ ed_basica/18,v00748,v* (Censo),False,,,
 ed_basica/19,qt_tur_inf,outras dos equipamentos,False,6,6,3
 ed_basica/20,qt_tur_esp_cc,outras dos equipamentos,False,3,4,2
 ed_basica/20,v00004,v* (Censo),False,,,
-ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,False,15,14,5
-ed_basica/21,tp_dependencia,categórica,True,19,,
+ed_basica/21,qt_tur_eja_fund,outras dos equipamentos,False,4,4,3
+ed_basica/21,tp_dependencia,categórica,True,5,,
 ed_basica/21,v00050,v* (Censo),False,,,
-ed_basica/22,qt_tur_bas_d,outras dos equipamentos,False,16,15,11
+ed_basica/22,qt_tur_bas_d,outras dos equipamentos,False,15,16,15
 ed_basica/22,v01320,v* (Censo),False,,,
 ed_basica/23,tp_dependencia,categórica,False,,,
 ed_basica/23,v00495,v* (Censo),False,,,
@@ -54,7 +54,7 @@ ed_basica/27,qt_tur_inf,outras dos equipamentos,False,2,2,2
 ed_basica/27,v01031,v* (Censo),False,,,
 intersetorial/1,at_02_conv_01,booleana,False,,,
 intersetorial/1,tp_dependencia,categórica,False,,,
-intersetorial/2,v00006,v* (Censo),False,17,17,17
+intersetorial/2,v00006,v* (Censo),False,10,10,10
 intersetorial/3,at_04_conv_01,booleana,False,,,
 intersetorial/3,qt_tur_fund,outras dos equipamentos,False,,,
 intersetorial/3,tp_dependencia,categórica,False,,1,1
@@ -67,8 +67,8 @@ intersetorial/5,tp_dependencia,categórica,True,,5,5
 intersetorial/5,v01040,v* (Censo),False,,,
 intersetorial/5,v01041,v* (Censo),False,6,11,11
 intersetorial/6,at_04_conv_01,booleana,False,,,
-intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,False,14,14,10
-intersetorial/6,qt_tur_eja_med,outras dos equipamentos,False,3,3,2
+intersetorial/6,qt_tur_eja_fund,outras dos equipamentos,False,6,7,4
+intersetorial/6,qt_tur_eja_med,outras dos equipamentos,False,2,2,2
 intersetorial/6,v01041,v* (Censo),False,,,
 intersetorial/7,at_04_conv_01,booleana,False,,,
 intersetorial/7,qt_tur_eja_fund,outras dos equipamentos,False,,,
@@ -76,12 +76,12 @@ intersetorial/7,qt_tur_eja_med,outras dos equipamentos,False,,,
 intersetorial/7,v05013,v* (Censo),False,6,6,1
 intersetorial/8,at_01_conv_01,booleana,False,,,
 intersetorial/8,qt_tur_inf_cre,outras dos equipamentos,False,,,
-intersetorial/8,v00009,v* (Censo),False,13,13,13
+intersetorial/8,v00009,v* (Censo),False,3,3,3
 intersetorial/9,v0001,v* (Censo),False,,,18
 intersetorial/10,at_06_conv_01,booleana,False,,,
 intersetorial/10,qt_tur_fund_af,outras dos equipamentos,False,,,
 intersetorial/10,qt_tur_fund_ai,outras dos equipamentos,False,,,
-intersetorial/10,tp_dependencia,categórica,False,,5,2
+intersetorial/10,tp_dependencia,categórica,False,,2,1
 intersetorial/10,v00094,v* (Censo),False,,,
 intersetorial/11,at_06_conv_01,booleana,False,,,
 intersetorial/12,at_06_conv_01,booleana,False,,,
@@ -115,7 +115,7 @@ saude/11,v01041,v* (Censo),False,1,1,1
 saude/12,at_03_conv_01,booleana,False,10,10,7
 saude/12,v01318,v* (Censo),False,,,
 saude/13,at_01_conv_06,booleana,False,,,
-saude/13,v00498,v* (Censo),False,6,6,6
+saude/13,v00498,v* (Censo),False,7,7,7
 saude/14,at_02_conv_05,booleana,False,,,
 saude/14,v00111,v* (Censo),False,,,
 saude/15,at_04_conv_06,booleana,False,,,
@@ -125,7 +125,7 @@ saude/16,v00312,v* (Censo),False,,,
 saude/17,at_04_conv_05,booleana,False,,,
 saude/17,v01320,v* (Censo),False,,,
 saude/18,at_06_conv_01,booleana,False,,,
-saude/18,v00238,v* (Censo),False,19,19,19
+saude/18,v00238,v* (Censo),False,3,3,3
 saude/19,at_04_conv_01,booleana,False,7,7,
 saude/19,v0001,v* (Censo),False,,,
 saude/20,at_01_conv_01,booleana,False,6,6,

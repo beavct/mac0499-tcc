@@ -50,15 +50,15 @@ As rodadas usadas na monografia estão em `resultados/`, uma pasta por modelo. R
 
 | Grupo | n | MiniLM A | MiniLM B | MiniLM C | e5 A | e5 B | e5 C |
 |-------|---|---:|---:|---:|---:|---:|---:|
-| categórica | 11 | 0,18 | **0,36** | 0,36 | 0,00 | **0,64** | 0,64 |
-| booleana | 41 | 0,39 | **0,39** | 0,29 | **0,80** | 0,76 | 0,73 |
-| `v*` (Censo) | 59 | 0,19 | 0,19 | 0,24 | 0,51 | 0,51 | 0,53 |
-| outras dos equipamentos | 33 | 0,67 | 0,67 | 0,70 | **0,76** | **0,76** | 0,70 |
-| todas | 144 | 0,35 | **0,37** | 0,37 | 0,61 | **0,65** | 0,63 |
+| categórica | 11 | 0,18 | 0,36 | **0,45** | 0,00 | **0,64** | **0,64** |
+| booleana | 41 | **0,39** | **0,39** | 0,29 | **0,85** | 0,80 | 0,78 |
+| `v*` (Censo) | 59 | 0,19 | 0,19 | **0,24** | 0,56 | 0,56 | **0,58** |
+| outras dos equipamentos | 33 | 0,67 | 0,67 | **0,70** | **0,73** | **0,73** | 0,64 |
+| todas | 144 | 0,35 | 0,37 | **0,38** | 0,64 | **0,67** | 0,65 |
 
 - Nas **categóricas**, os valores fazem a maior diferença: com o e5, sem eles nenhuma é encontrada (0,00 contra 0,64), e com o MiniLM o recall dobra. A palavra da pergunta ("municipal", "privadas") só aparece no texto quando os valores estão lá.
 - Nas **booleanas**, pôr os valores piora. O mesmo `true = Sim, false = Não` em centenas de textos deixa todos parecidos, e com o MiniLM o recall@10 cai de 0,39 pra 0,17.
-- No geral, a **versão B** é a melhor com os dois modelos, e por isso o workflow usa ela.
+- No geral, com o e5, que é o modelo do workflow, a **versão B** é a melhor (0,67), e por isso o workflow usa ela. Com o MiniLM, a C fica um pouco à frente (0,38 contra 0,37).
 - Nas **outras dos equipamentos**, B e A empatam nos dois modelos. Nenhuma das 28 colunas com códigos especiais está no gabarito, então o teste não mede se esses códigos ajudam a achar as próprias colunas. O [teste das formas de busca](../rag_buscas) tira os códigos especiais do texto e mostra que eles também não atrapalham as outras.
 
 ## Estrutura

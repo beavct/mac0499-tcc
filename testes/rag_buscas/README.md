@@ -45,16 +45,16 @@ A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de prop
 
 | Busca | todas | `v*` (Censo) | categórica | booleana | outras | completas |
 |-------|------:|-------------:|-----------:|---------:|-------:|----------:|
-| vetorial | 0,65 | 0,51 | **0,64** | 0,76 | **0,76** | 30/65 |
-| BM25 | 0,66 | 0,54 | 0,09 | **0,95** | 0,70 | 31/65 |
-| híbrida | 0,72 | 0,66 | 0,18 | **0,95** | 0,73 | 38/65 |
-| **híbrida, com complementos** | **0,75** | 0,66 | 0,55 | **0,95** | 0,73 | **41/65** |
-| reranker sobre a híbrida | 0,69 | **0,73** | 0,18 | 0,80 | 0,64 | 31/65 |
-| MMR sobre a vetorial | 0,60 | 0,46 | **0,64** | 0,80 | 0,58 | 25/65 |
+| vetorial | 0,67 | 0,56 | **0,64** | 0,80 | **0,73** | 31/65 |
+| BM25 | 0,69 | 0,63 | 0,09 | **0,95** | 0,67 | 33/65 |
+| híbrida | 0,76 | 0,75 | 0,18 | **0,95** | **0,73** | 38/65 |
+| **híbrida, com complementos** | **0,78** | 0,75 | 0,55 | **0,95** | **0,73** | **41/65** |
+| reranker sobre a híbrida | 0,72 | **0,81** | 0,18 | 0,83 | 0,61 | 33/65 |
+| MMR sobre a vetorial | 0,60 | 0,49 | 0,55 | 0,85 | 0,52 | 24/65 |
 
-A melhor foi a **híbrida com os complementos**: 41 perguntas completas, contra 30 da vetorial. A híbrida sozinha já ganha bastante nas `v*` e nas booleanas, mas perde nas categóricas, porque "escolas públicas" não tem palavra em comum com "Dependência Administrativa". O complemento resolve boa parte disso. Ele foi escrito olhando os erros do próprio gabarito, então esse ganho é um pouco otimista.
+A melhor foi a **híbrida com os complementos**: 41 perguntas completas, contra 31 da vetorial. A híbrida sozinha já ganha bastante nas `v*` e nas booleanas, mas perde nas categóricas, porque "escolas públicas" não tem palavra em comum com "Dependência Administrativa". O complemento resolve boa parte disso. Ele foi escrito olhando os erros do próprio gabarito, então esse ganho é um pouco otimista.
 
-O resto não compensou. O reranker acha mais `v*`, mas perde nas booleanas e nas outras colunas dos equipamentos, e fica com menos perguntas completas que a própria híbrida que ele reordena (31 contra 38), além de custar um modelo de 2,3 GB. O MMR piora: ao evitar propriedades parecidas, ele tira do top-20 propriedades vizinhas de que a pergunta precisa.
+O resto não compensou. O reranker acha mais `v*`, mas perde nas booleanas e nas outras colunas dos equipamentos, e fica com menos perguntas completas que a própria híbrida que ele reordena (33 contra 38), além de custar um modelo de 2,3 GB. O MMR piora: ao evitar propriedades parecidas, ele tira do top-20 propriedades vizinhas de que a pergunta precisa.
 
 ## Estrutura
 
