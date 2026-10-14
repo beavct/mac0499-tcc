@@ -14,7 +14,8 @@ from Nodes.States.states import InputState, OverallState
 # sobe até text2cypher/ para importar o retriever e o config
 TEXT2CYPHER_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, TEXT2CYPHER_DIR)
-from config import TOP_K, PROPRIEDADES_FIXAS, HIERARQUIA_TERRITORIAL
+from config import (TOP_K, PROPRIEDADES_FIXAS, PROPRIEDADES_FORA_DO_ESQUEMA,
+                    HIERARQUIA_TERRITORIAL)
 from dicionario.retriever import (montar_fragmento_schema, propriedades_indexadas, descrever,
                                   formatar_fragmento, todas_as_propriedades)
 
@@ -74,7 +75,13 @@ def montar_backbone(driver, database_name):
         linhas_nos = []
         for label in _labels(driver, database_name):
             ocultas = no_dicionario.get(label, set())
-            visiveis = [p for p in _propriedades(driver, database_name, label) if p not in ocultas]
+            visiveis = []
+            for p in _propriedades(driver, database_name, label):
+                if p in ocultas:
+                    continue
+                if (label, p) in PROPRIEDADES_FORA_DO_ESQUEMA:
+                    continue
+                visiveis.append(p)
             aviso = ""
             if ocultas:
                 aviso = "  // demais propriedades: só as relevantes, listadas abaixo"

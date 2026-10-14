@@ -1,8 +1,8 @@
 """
 Experimento: qual forma de busca recupera melhor as propriedades do dicionário?
 
-Compara a busca vetorial, o BM25 e a híbrida, que junta as duas por RRF como o workflow
-vai fazer. Também testa a híbrida com os complementos de descrição da etapa 01, o MMR e o
+Compara a busca vetorial, o BM25 e a híbrida, que junta as duas por RRF, como faz o
+workflow. Também testa a híbrida com os complementos de descrição da etapa 01, o MMR e o
 reranker. Todas as buscas usam as peças prontas do LangChain.
 
 O gabarito, a métrica e os grupos de propriedade são os do teste dos valores
@@ -67,7 +67,8 @@ def documentos(docs):
 
 
 def criar_base_vetorial(model, docs):
-    """Busca vetorial exata do LangChain. No workflow é o Chroma, que dá o mesmo resultado."""
+    """Busca vetorial exata do LangChain. No workflow é o Chroma, que deu o mesmo resultado
+    no gabarito."""
     return InMemoryVectorStore.from_documents(documentos(docs), EmbeddingE5(model))
 
 
@@ -97,7 +98,6 @@ def buscar_mmr(base_vetorial, consultas, vetorial):
     for (_, pergunta, _), lista in zip(consultas, vetorial):
         escolhidos = base_vetorial.max_marginal_relevance_search(
             pergunta, k=CANDIDATOS, fetch_k=CANDIDATOS, lambda_mult=PESO_MMR)
-        # o MMR só reordena as CANDIDATOS primeiras, então o resto é o da vetorial
         topo = [r.metadata["variavel"] for r in escolhidos]
         ordens.append(topo + lista[CANDIDATOS:])
     return ordens
@@ -205,7 +205,8 @@ def main():
     print("=" * 60)
 
     # Gabarito (as buscas usam o texto sem os complementos, que são testados à parte)
-    corpus = json.load(open(CORPUS_JSON, encoding="utf-8"))
+    with open(CORPUS_JSON, encoding="utf-8") as f:
+        corpus = json.load(f)
     docs = sem_complementos(corpus)
     por_nome = {d["variavel"]: d for d in docs}
     consultas = carregar_consultas(set(por_nome))

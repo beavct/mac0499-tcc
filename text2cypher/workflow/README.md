@@ -138,7 +138,7 @@ Da lista `PROPRIEDADES_VALORES`, em `../config.py`: `nm_uf`, `nm_mun`, `nm_dist`
 
 A ideia vem da camada semântica de Macedo et al. (SBBD 2026): comparar a pergunta com os valores reais das colunas, sem acento e sem maiúscula, e mandar os que batem num bloco do prompt. Lá, um LLM tira os nomes da pergunta antes; aqui a pergunta é comparada direto, como faz o CodeS (Li et al., 2024), então não tem uma chamada a mais ao modelo.
 
-A comparação usa as funções do BRIDGE (Lin et al., 2020), copiadas em [`../dicionario/bridge.py`](../dicionario/bridge.py): pra cada nome, ele acha o maior trecho em comum com a pergunta e dá uma nota de 0 a 1. Ficam os nomes com nota a partir de 0,9, o mesmo valor do CodeS, então erros pequenos de digitação também passam:
+A comparação usa as funções do BRIDGE (Lin et al., 2020), copiadas em [`../dicionario/bridge.py`](../dicionario/bridge.py): pra cada nome, ele acha o maior trecho em comum com a pergunta e dá uma nota de 0 a 1. Ficam os nomes com nota a partir de 0,9, o mesmo valor do CodeS (do código dos autores), então erros pequenos de digitação também passam:
 
 | Pergunta | Valor encontrado |
 |----------|------------------|
@@ -150,10 +150,10 @@ Ficam no máximo 5 valores por coluna (o CodeS guarda até 25). Nas perguntas de
 
 ### Nomes que são palavras comuns
 
-Muitos lugares do estado têm nome de palavra comum: há um distrito chamado Saúde, um município chamado Quadra e um bairro chamado Centro. Sem cuidado, toda pergunta sobre "estabelecimentos de saúde" receberia o distrito Saúde. Por isso entram dois filtros, inspirados no TAGME (Ferragina e Scaiella, 2010):
+Muitos lugares do estado têm nome de palavra comum: há um distrito chamado Saúde, um município chamado Quadra e um bairro chamado Centro. Sem cuidado, toda pergunta sobre "estabelecimentos de saúde" receberia o distrito Saúde. Por isso entram dois filtros:
 
 - **o trecho maior ganha:** quando a pergunta tem `Vila Sônia`, o bairro `Vila` sai;
-- **palavra comum só vale com o tipo do lugar antes:** se o nome é feito só de palavras das descrições do dicionário, ele só entra quando a pergunta diz antes que tipo de lugar é.
+- **palavra comum só vale com o tipo do lugar antes:** se o nome é feito só de palavras das descrições do dicionário, ele só entra quando a pergunta diz antes que tipo de lugar é. Esse filtro se inspira no TAGME (Ferragina e Scaiella, 2010), que descarta os trechos que quase nunca aparecem como link na Wikipédia, em geral palavras comuns.
 
 | Pergunta | Resultado |
 |----------|-----------|

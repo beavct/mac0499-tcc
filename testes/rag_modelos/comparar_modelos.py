@@ -28,10 +28,11 @@ GRUPOS = ["todas", "v* (Censo)", "categórica", "booleana", "outras dos equipame
 # MODELOS
 # ---------------------------------------------------------------------------
 
-# Prefixos que cada modelo espera na pergunta e no texto, segundo a página dele no Hugging Face
+# Instrução que o Qwen3 espera antes da pergunta
 INSTRUCAO_QWEN = ("Instruct: Given a question about census, school and health data, "
                   "retrieve the database properties needed to answer it\nQuery:")
 
+# Prefixos que cada modelo espera na pergunta e no texto, segundo a página dele no Hugging Face
 MODELOS = [
     {"nome": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
      "pergunta": "", "texto": ""},
@@ -121,7 +122,8 @@ def main():
     print("EXPERIMENTO: modelos de embedding")
     print("=" * 60)
 
-    docs = json.load(open(CORPUS_JSON, encoding="utf-8"))
+    with open(CORPUS_JSON, encoding="utf-8") as f:
+        docs = json.load(f)
     por_nome = {d["variavel"]: d for d in docs}
     consultas = carregar_consultas(set(por_nome))
     print(f"\n[Gabarito] {len(consultas)} consultas")

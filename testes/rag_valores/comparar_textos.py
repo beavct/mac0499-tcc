@@ -2,7 +2,8 @@
 Experimento: colocar os valores das colunas (ex.: 1 = Federal) no texto indexado ajuda
 ou atrapalha o RAG a recuperar as propriedades? Compara três versões do texto:
   A: "tema: descrição"
-  B: A + valores das colunas que não são booleanas (como a etapa 01 monta o texto)
+  B: A + valores das colunas que não são booleanas (como a etapa 01 monta o texto, mas sem
+     os complementos de descrição, medidos em ../rag_buscas/)
   C: A + valores de todas as colunas, inclusive as booleanas
 
 A busca é exata (similaridade de cosseno com todos os textos), para o resultado não
@@ -27,7 +28,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "text2cyp
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from config import CORPUS_JSON, EMBEDDING_MODEL, PREFIXO_PERGUNTA, PREFIXO_TEXTO
+from config import CORPUS_JSON, EMBEDDING_MODEL  # o EMBEDDING_MODEL é usado pelos outros testes
 
 PERGUNTAS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "perguntas")
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "output")
@@ -40,7 +41,6 @@ GRUPOS = ["v* (Censo)", "categórica", "booleana", "outras dos equipamentos"]
 PREFIXOS = {
     "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2": ("", ""),
     "intfloat/multilingual-e5-base": ("query: ", "passage: "),
-    EMBEDDING_MODEL: (PREFIXO_PERGUNTA, PREFIXO_TEXTO),
 }
 
 # Códigos que marcam um valor fora do normal numa coluna de contagem ou de número, e não
@@ -58,9 +58,11 @@ def carregar_consultas(nomes_no_dicionario):
     for eixo in EIXOS:
         for arq in glob.glob(os.path.join(PERGUNTAS_DIR, eixo, "neo4j-cypher", "*.cypher")):
             n = re.findall(r"\d+", os.path.basename(arq))[0]
-            cypher = open(arq, encoding="utf-8").read()
+            with open(arq, encoding="utf-8") as f:
+                cypher = f.read()
             txt = os.path.join(PERGUNTAS_DIR, eixo, "linguagem-natural", f"pergunta_{n}.txt")
-            pergunta = open(txt, encoding="utf-8").read().strip()
+            with open(txt, encoding="utf-8") as f:
+                pergunta = f.read().strip()
             # propriedades acessadas como x.prop ou dentro de {prop: valor}
             usados = set(re.findall(r"\.(\w+)", cypher))
             usados |= set(re.findall(r"[{,]\s*(\w+)\s*:", cypher))
@@ -125,17 +127,13 @@ def cita_categoria(pergunta, doc):
 
 
 def texto_da_versao(doc, versao):
+    """Texto na versão dada, sem os complementos da etapa 01 (medidos em rag_buscas)."""
     base = f"{doc['tema']}: {doc['descricao']}"
-    if versao == "A":
+    if versao == "A" or not doc["valores"]:
         return base
-    # as versões não usam os complementos da etapa 01, que o teste das buscas mede à parte
-    if versao == "B" and doc["valores"] and doc["tipo"] != "BOOLEAN":
-        return f"{base}. valores: {doc['valores']}"
-    if versao == "B":
+    if versao == "B" and doc["tipo"] == "BOOLEAN":
         return base
-    if doc["valores"]:
-        return f"{base}. valores: {doc['valores']}"
-    return base
+    return f"{base}. valores: {doc['valores']}"
 
 
 def ranking_da_versao(model, docs, consultas, versao, prefixo=("", "")):
@@ -240,7 +238,8 @@ def main():
     print("EXPERIMENTO: valores das colunas no texto indexado")
     print("=" * 60)
 
-    docs = json.load(open(CORPUS_JSON, encoding="utf-8"))
+    with open(CORPUS_JSON, encoding="utf-8") as f:
+        docs = json.load(f)
     por_nome = {d["variavel"]: d for d in docs}
     consultas = carregar_consultas(set(por_nome))
     total = sum(len(c[2]) for c in consultas)

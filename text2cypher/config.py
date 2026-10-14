@@ -62,8 +62,8 @@ EQUIPAMENTOS = [
 # Propriedades que o ETL grava fora das listas de colunas: aparecem sempre no esquema,
 # sem passar pela busca. As descrições e valores foram copiados do metadata.attribute
 # do PG, da coluna original (o ETL mudou o nome: id_aparelho era co_entidade/co_unidade,
-# nm_aparelho era no_entidade/no_fantasia, tp_gestao era tp_gestao2). location e geometry
-# foram criadas pelo ETL e não existem no PG.
+# nm_aparelho era no_entidade/no_fantasia, tp_gestao era tp_gestao2). location foi criada
+# pelo ETL e não existe no PG. Os valores de situacao foram lidos do grafo.
 DESCRICAO_LOCATION = "Localização (latitude/longitude); usar com point.distance"
 
 PROPRIEDADES_FIXAS = [
@@ -83,9 +83,13 @@ PROPRIEDADES_FIXAS = [
     {"no_label": "EquipamentoSaude", "propriedade": "location", "tipo": "POINT",
      "descricao": DESCRICAO_LOCATION},
     {"no_label": "SetorCensitario", "propriedade": "situacao", "tipo": "STRING",
-     "descricao": "Situação do Setor Censitário"},
-    {"no_label": "SetorCensitario", "propriedade": "geometry", "tipo": "STRING",
-     "descricao": "Polígono do setor em texto WKT; não usar em consultas"},
+     "descricao": "Situação do Setor Censitário", "valores": "'Urbana', 'Rural'"},
+]
+
+# Propriedades que não vão para o esquema. O geometry é o polígono do setor em texto WKT,
+# que nenhuma consulta usa (as espaciais usam o location dos equipamentos)
+PROPRIEDADES_FORA_DO_ESQUEMA = [
+    ("SetorCensitario", "geometry"),
 ]
 
 # Hierarquia territorial que vai no esquema enviado ao modelo. É fixa porque o ETL sempre
@@ -93,13 +97,18 @@ PROPRIEDADES_FIXAS = [
 # do setor até cada nível varia, e o modelo erra se usar um salto só.
 HIERARQUIA_TERRITORIAL = """\
 UF <- Municipio <- Distrito <- Subdistrito <- Bairro <- SetorCensitario, todos por PARTE_DE.
-Só parte dos setores tem Bairro: os outros ligam direto no Subdistrito. Do setor até cada
-nível, use o intervalo de saltos:
+Entre dois níveis acima do setor é sempre um salto:
+(:Subdistrito)-[:PARTE_DE]->(:Distrito)-[:PARTE_DE]->(:Municipio)-[:PARTE_DE]->(:UF)
+Só parte dos setores tem Bairro (os outros ligam direto no Subdistrito), então o caminho que
+sai do SetorCensitario usa um intervalo de saltos. Esses intervalos valem só a partir do setor:
 (:SetorCensitario)-[:PARTE_DE*1..2]->(:Subdistrito)
 (:SetorCensitario)-[:PARTE_DE*2..3]->(:Distrito)
 (:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio)
 (:SetorCensitario)-[:PARTE_DE*4..5]->(:UF)
-(:SetorCensitario)-[:PARTE_DE]->(:Bairro)  // só os setores que têm bairro"""
+(:SetorCensitario)-[:PARTE_DE]->(:Bairro)  // só os setores que têm bairro: use OPTIONAL MATCH
+Os perfis e os equipamentos ligam-se ao setor, e não aos outros níveis. Exemplo, escolas por
+município:
+MATCH (e:Escola)-[:LOCALIZADA_EM]->(s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio)"""
 
 # Descrições que faltam no PG e na planilha de metadados, inferidas pelas colunas irmãs
 DESCRICOES_INFERIDAS = [

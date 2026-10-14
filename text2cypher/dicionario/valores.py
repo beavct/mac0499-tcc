@@ -1,18 +1,8 @@
 """
 Valores dos filtros (Camada B): acha na pergunta os nomes de lugares e de equipamentos e
-devolve os valores que existem de fato no grafo, escritos como estão lá.
-
-Segue a camada semântica de Macedo et al. (SBBD 2026): valores distintos das colunas de
-nome, casamento sem acento e sem maiúscula, e um bloco no prompt com os valores achados. No
-lugar da extração de entidades por LLM, a pergunta é comparada direto com cada valor pelo
-trecho em comum mais longo, como na etapa fina do value retriever do CodeS (Li et al., 2024),
-usando as funções do BRIDGE (bridge.py). Como no CodeS, ficam os casamentos com nota a partir
-de 0,9, o que pega erros de digitação ('Sorocab' -> 'Sorocaba').
-
-Como muitos lugares têm nome de palavra comum (o distrito da Saúde, o município de Quadra),
-entram dois filtros inspirados no TAGME (Ferragina e Scaiella, 2010): o trecho contido em
-outro maior é descartado, e o trecho feito só de palavras das descrições do dicionário só
-vale se a pergunta disser antes o tipo do lugar.
+devolve os valores que existem no grafo, escritos como estão lá. A comparação usa as funções
+do BRIDGE (bridge.py), como no CodeS, e os filtros para nomes que são palavras comuns estão
+explicados no README do workflow (seção Camada B).
 
 Uso (teste rápido pelo terminal):
     python valores.py "Quantas escolas há em sao jose dos campos?"

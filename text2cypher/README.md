@@ -125,7 +125,7 @@ duas listas são juntadas pelo RRF, e ficam as `k` primeiras (`config.TOP_K`). O
 são o `BM25Retriever` e o `EnsembleRetriever` do LangChain, porque o Chroma local não tem
 índice de palavras. Essa busca híbrida foi a que ganhou no teste de
 [`../testes/rag_buscas/`](../testes/rag_buscas): 41 das 65 perguntas com todas as propriedades
-no top-20, contra 30 só com a vetorial. Depois agrupa por nó e anota a aresta que
+no top-20, contra 31 só com a vetorial. Depois agrupa por nó e anota a aresta que
 liga cada nó ao setor: `(:SetorCensitario)-[:TEM_PERFIL]->(:Perfil*)` pros perfis e
 `(:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)` pros equipamentos.
 
