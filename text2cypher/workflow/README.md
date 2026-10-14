@@ -8,11 +8,12 @@ Workflow que transforma a pergunta em Cypher, valida a consulta com o CyVer, cor
 2. [O que foi reusado e o que mudou](#reuso)
 3. [Estrutura](#estrutura)
 4. [Configuração e flags](#flags)
-5. [Camada B: valores dos filtros](#camada_b)
-6. [Bloqueio de repetição](#repeticao)
-7. [Como rodar](#rodar)
-8. [Atribuição e licença](#licenca)
-9. [Referências](#refs)
+5. [Claude](#claude)
+6. [Camada B: valores dos filtros](#camada_b)
+7. [Bloqueio de repetição](#repeticao)
+8. [Como rodar](#rodar)
+9. [Atribuição e licença](#licenca)
+10. [Referências](#refs)
 
 ---
 
@@ -69,10 +70,12 @@ workflow/
 ├── teste_rapido.py            ← teste do fluxo completo com LLM falso (sem Ollama)
 ├── teste_value_grounding.py   ← teste da Camada B com LLM falso (sem Ollama)
 ├── teste_repeticao.py         ← teste do bloqueio de repetição com LLM falso (sem Ollama)
+├── piloto_claude.py           ← teste de conexão e piloto de custo do Claude
 ├── config_workflow.py         ← modelo, k, n e flags de ablação
 ├── Configuration/
 │   ├── configurations.py      ← campos do config['configurable'] (referência)
-│   └── models.py              ← fábricas de modelo (Ollama local, servidor externo)
+│   ├── models.py              ← fábricas de modelo (Ollama local, servidor externo, Claude)
+│   └── claude.py              ← NOVO: Claude pela API da Anthropic, com cache de prompt
 ├── Edges/
 │   └── conditional_edges_extended.py   ← roteador da decisão do laço
 └── Nodes/
@@ -107,14 +110,38 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
 | Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
 
-Só usamos modelos abertos, por uma API compatível com a da OpenAI. Os parâmetros de geração são os do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens):
+Os modelos abertos vão por uma API compatível com a da OpenAI, com os parâmetros de geração do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens). O Claude vai pela API da Anthropic, com algumas diferenças (ver [Claude](#claude)):
 
 | `MODEL_NAME` | Onde roda | Variáveis de ambiente |
 |--------------|-----------|-----------------------|
 | `ollama_local` | Ollama na própria máquina, sem custo | `OLLAMA_MODEL` (padrão `qwen2.5-coder:7b`), `OLLAMA_BASE_URL` (padrão `http://localhost:11434/v1`) |
 | `servidor_externo` | qualquer servidor compatível com a API da OpenAI (ex.: servidor de pesquisa, vLLM) | `LLM_MODEL`, `LLM_BASE_URL`, `LLM_API_KEY` |
+| `claude` | API da Anthropic, pago (créditos do Data Lab) | `ANTHROPIC_API_KEY` no `compartilhado/.env`, `CLAUDE_MODEL` (padrão `claude-sonnet-5-5`), `CLAUDE_EFFORT` (padrão `medium`) |
 
 Pra usar outro modelo, é só adicionar uma fábrica em `models.py` e apontar o `MODEL_NAME` pra ela.
+
+<a name="claude"></a>
+## Claude
+
+O Claude é o modelo grande da avaliação, usado na ablação da Camada A, que manda o esquema completo (~112 mil tokens). Ele fica em `Configuration/claude.py`, e não no `models.py`, porque usa o SDK oficial da Anthropic (`anthropic`), que dá acesso ao cache de prompt. A classe `ChatClaude` segue o [formato de modelo de chat do LangChain](https://python.langchain.com/docs/how_to/custom_chat_model/), então os nós não mudam.
+
+Algumas coisas são diferentes dos modelos abertos:
+
+- **sem `temperature` e `top_p`:** o Sonnet 5.5 rejeita os dois, então os parâmetros do CyVerACT não valem aqui;
+- **raciocínio:** fica no modo adaptativo, controlado pelo [esforço](https://platform.claude.com/docs/en/build-with-claude/effort) (`CLAUDE_EFFORT`, padrão `medium`), e é cobrado como saída;
+- **limite de 16 mil tokens de saída:** o [raciocínio](https://platform.claude.com/docs/en/build-with-claude/thinking) conta dentro do limite, então os 512 do CyVerACT cortariam a resposta.
+
+O texto do usuário é dividido logo depois do esquema, e só a primeira parte vai com `cache_control` ([prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)). Sem a Camada A, o esquema é igual em todas as perguntas e passa a ser lido do cache. O cache dura 5 minutos e se renova a cada leitura.
+
+Pra conferir a chave e o custo:
+
+```bash
+cd text2cypher/workflow
+MODEL_NAME=claude python piloto_claude.py --conexao
+MODEL_NAME=claude USAR_RAG=false python piloto_claude.py intersetorial/12
+```
+
+Durante os testes, uma pergunta sem a Camada A custou US$ 0,28 com o cache vazio e US$ 0,013 com o cache já escrito ([preços](https://platform.claude.com/docs/en/about-claude/pricing)).
 
 <a name="camada_b"></a>
 ## Camada B: valores dos filtros
@@ -290,3 +317,5 @@ Esta pasta é uma obra derivada do **CyVerACT** (Androna et al., *Information Pr
 - [Ollama — compatibilidade com a API da OpenAI](https://docs.ollama.com/api/openai-compatibility)
 - [Qwen2.5-Coder na biblioteca do Ollama](https://ollama.com/library/qwen2.5-coder)
 - [Llama 3.1 na biblioteca do Ollama](https://ollama.com/library/llama3.1)
+- [Claude — documentação da API](https://platform.claude.com/docs/en/home)
+- [SDK da Anthropic pra Python](https://github.com/anthropics/anthropic-sdk-python)

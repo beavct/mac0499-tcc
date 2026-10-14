@@ -1,13 +1,16 @@
 """
 Fábricas de modelos de linguagem do workflow.
 
-Adaptado do Configuration/models.py do CyVerACT: ficam só modelos abertos, acessados
-por uma API compatível com a da OpenAI. A escolha é feita por MODEL_NAME (config_workflow.py).
+Adaptado do Configuration/models.py do CyVerACT: os modelos abertos, acessados por uma API
+compatível com a da OpenAI, e o Claude, pela API da Anthropic (Configuration/claude.py). A
+escolha é feita por MODEL_NAME (config_workflow.py).
 """
 import os
 
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
+
+from Configuration.claude import get_claude
 
 load_dotenv()
 
@@ -44,4 +47,5 @@ def get_servidor_externo():
 models = {
     "ollama_local": get_ollama_local,
     "servidor_externo": get_servidor_externo,
+    "claude": get_claude,
 }
