@@ -1,5 +1,5 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Reusado; alterações: contagem de tokens pelo langchain-core e o print de início antes da chamada ao LLM.
+# Reusado; alterações: contagem de tokens, cypher_history e memória das tentativas (NOTICE.md).
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables.config import RunnableConfig
 from langchain_core.output_parsers import StrOutputParser
@@ -7,6 +7,7 @@ from langchain_core.callbacks import get_usage_metadata_callback
 
 
 from Nodes.States.states import OverallState
+from Nodes.tentativas import montar_bloco_tentativas
 
 system_prompt = '''
                 You are a Cypher expert reviewing a statement.
@@ -34,7 +35,14 @@ human_prompt = '''
 
                 The errors for the Cypher statement are:
                 {errors}
-
+'''
+# bloco das tentativas anteriores (memória), inserido antes do pedido final
+memory_prompt = '''
+                Previous Cypher statements that also failed, with their errors.
+                Do not return any of them again, nor the Cypher statement above:
+                {previous_attempts}
+'''
+request_prompt = '''
                 Corrected Cypher statement:
 
                 '''
@@ -49,7 +57,7 @@ fix_cypher_prompt = ChatPromptTemplate.from_messages(
         (
             "human",
             (
-                human_prompt
+                human_prompt + request_prompt
             ),
         ),
     ]
@@ -60,9 +68,22 @@ fix_cypher_prompt_flattened = ChatPromptTemplate.from_messages(
         (
             "human",
             (
-                system_prompt + human_prompt
+                system_prompt + human_prompt + request_prompt
             ),
         ),
+    ]
+)
+
+fix_cypher_memory_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        ("human", human_prompt + memory_prompt + request_prompt),
+    ]
+)
+
+fix_cypher_memory_prompt_flattened = ChatPromptTemplate.from_messages(
+    [
+        ("human", system_prompt + human_prompt + memory_prompt + request_prompt),
     ]
 )
 
@@ -81,21 +102,34 @@ def cypher_corrector(state: OverallState, config:RunnableConfig) -> OverallState
     chat_model = config['configurable']['model']
 
     if model_name == 'gemma2_9b' or model_name == 'finetuned_gemma2_9b' or model_name == 'finetuned_gemma2_9b_local':
-        fix_cypher_chain = fix_cypher_prompt_flattened | chat_model | StrOutputParser()
+        prompt = fix_cypher_prompt_flattened
+        prompt_with_memory = fix_cypher_memory_prompt_flattened
     else:
-        fix_cypher_chain = fix_cypher_prompt | chat_model | StrOutputParser()
+        prompt = fix_cypher_prompt
+        prompt_with_memory = fix_cypher_memory_prompt
 
+    inputs = {
+        "question": question,
+        "schema": schema,
+        "cypher": cypher,
+        "errors": cypher_errors
+    }
+    previous_attempts = ""
+    if config['configurable']['bloquear_repeticao']:
+        previous_attempts = montar_bloco_tentativas(
+            cypher,
+            state.get("cypher_history", []),
+            state.get("internal_cypher_errors_history", []),
+            config['configurable']['max_tentativas_memoria'],
+        )
+    if previous_attempts:
+        prompt = prompt_with_memory
+        inputs["previous_attempts"] = previous_attempts
+    fix_cypher_chain = prompt | chat_model | StrOutputParser()
 
     print('Cypher Corrector: START')
     with get_usage_metadata_callback() as cb:
-        corrected_cypher = fix_cypher_chain.invoke(
-            {
-                "question": question,
-                "schema": schema,
-                "cypher": cypher,
-                "errors": cypher_errors
-            }
-        )
+        corrected_cypher = fix_cypher_chain.invoke(inputs)
 
     # usage_metadata = {nome_do_modelo: {input_tokens, output_tokens, total_tokens}}
     uso = cb.usage_metadata.values()
@@ -111,6 +145,7 @@ def cypher_corrector(state: OverallState, config:RunnableConfig) -> OverallState
     return {
         'next_action': 'cypher_evaluator',
         'cypher_statement': corrected_cypher,
+        'cypher_history': [corrected_cypher],
         'path': ['cypher_corrector'],
         "total_tokens": [total_tokens],
         "prompt_tokens": [prompt_tokens],

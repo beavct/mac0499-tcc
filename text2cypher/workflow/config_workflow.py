@@ -24,6 +24,10 @@ TIMEOUT_EXECUCAO = float(os.getenv("TIMEOUT_EXECUCAO", "60"))
 USAR_RAG = os.getenv("USAR_RAG", "true").lower() in ("true", "1", "sim")
 # value grounding (Camada B): acrescenta ao esquema os valores reais dos nomes citados
 USAR_VALUE_GROUNDING = os.getenv("USAR_VALUE_GROUNDING", "false").lower() in ("true", "1", "sim")
+# bloqueio de repetição: se o corretor repete uma consulta que já falhou, o laço pula de etapa
+BLOQUEAR_REPETICAO = os.getenv("BLOQUEAR_REPETICAO", "true").lower() in ("true", "1", "sim")
+# tentativas anteriores no prompt do corretor; 0 desliga (no teste, piorou o qwen2.5-coder:7b)
+MAX_TENTATIVAS_MEMORIA = int(os.getenv("MAX_TENTATIVAS_MEMORIA", "0"))
 
 
 def montar_configuracao():
@@ -35,4 +39,6 @@ def montar_configuracao():
         "total_attempts": TOTAL_ATTEMPTS,
         "timeout_execucao": TIMEOUT_EXECUCAO,
         "usar_rag": USAR_RAG,
+        "bloquear_repeticao": BLOQUEAR_REPETICAO,
+        "max_tentativas_memoria": MAX_TENTATIVAS_MEMORIA,
     }}

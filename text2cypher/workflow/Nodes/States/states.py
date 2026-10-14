@@ -1,6 +1,5 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Reusado; acréscimos: os campos execution_error (erro da execução no Neo4j) e
-# grounded_values (valores da Camada B).
+# Reusado; campos novos: execution_error, grounded_values e cypher_history (NOTICE.md).
 from operator import add
 from typing import Annotated, List,Any
 from neo4j import GraphDatabase, Driver
@@ -28,6 +27,7 @@ class OverallState(TypedDict):
     neo4j_driver: Driver
     next_action: str
     cypher_statement: str
+    cypher_history: Annotated[List[str], add]  # consultas do gerador e do corretor, em ordem
     correct_output: bool
     cypher_errors: List[str]
     internal_cypher_errors_history: Annotated[List[Any], add]

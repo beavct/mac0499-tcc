@@ -25,18 +25,26 @@ Em todos os arquivos vendorizados foi acrescentado um cabeçalho de proveniênci
 removido código comentado sem uso. Além disso:
 
 **Novos:** `Nodes/schema_rag.py` (substitui o `schema_filtering`), `Nodes/value_grounding.py`
-(Camada B, opcional; não tem equivalente no CyVerACT), `config_workflow.py`, `executar.py`.
+(Camada B, opcional; não tem equivalente no CyVerACT), `Nodes/tentativas.py` (memória das
+tentativas do laço de correção, usada com `BLOQUEAR_REPETICAO`), `config_workflow.py`, `executar.py`.
 
 **Adaptados:**
 - `graph.py` — usa o `schema_rag` (ou o `schema_completo`, com `USAR_RAG` desligado); parâmetros do `StateGraph` atualizados para o langgraph 1.x; com `USAR_VALUE_GROUNDING`, põe o `value_grounding` entre o `schema_rag` e o `cypher_generator`.
 - `Nodes/schema_retriever.py` — fallback por RAG com `k` maior, em vez do esquema completo (sem o RAG, o esquema já é o completo e não é ampliado); mantém os valores da Camada B no esquema novo.
 - `Nodes/cypher_executor.py` — execução habilitada, com timeout e registro do erro.
 - `Configuration/models.py` — só modelos abertos via API compatível com a OpenAI.
-- `Nodes/cypher_generator.py`, `Nodes/cypher_corrector.py` — contagem de tokens pelo `langchain-core`; mensagem de início antes da chamada ao LLM.
-- `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B).
-- `Configuration/configurations.py` — campos `timeout_execucao` e `usar_rag`.
+- `Nodes/cypher_generator.py`, `Nodes/cypher_corrector.py`:
+  - contagem de tokens pelo `langchain-core`;
+  - mensagem de início antes da chamada ao LLM;
+  - a consulta devolvida vai para `cypher_history`;
+  - no corretor, com `MAX_TENTATIVAS_MEMORIA` acima de 0, o prompt ganha um bloco com as últimas tentativas que falharam e os erros de cada uma. O texto original do prompt não muda.
+- `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B) e o `cypher_history` (consultas tentadas).
+- `Configuration/configurations.py` — campos `timeout_execucao`, `usar_rag`, `bloquear_repeticao` e `max_tentativas_memoria`.
 - `Nodes/unavailable_output.py` — `database_records` passa de `['']` a `None`.
-- `Nodes/cyver_evaluator.py` — só comentários corrigidos (`k` e `n` estavam trocados).
+- `Nodes/cyver_evaluator.py`:
+  - comentários corrigidos (`k` e `n` estavam trocados);
+  - o teste do fallback já usado passa de `current_path[-2]=='schema_retriever'` a `'schema_retriever' in current_path`, o que dá no mesmo sem o bloqueio;
+  - com `BLOQUEAR_REPETICAO`, a consulta do corretor igual a uma que já falhou não é validada de novo, e o laço pula para o `schema_retriever` ou, se ele já foi usado, para o `unavailable_output`.
 
 **Sem alteração:** `Edges/conditional_edges_extended.py`.
 

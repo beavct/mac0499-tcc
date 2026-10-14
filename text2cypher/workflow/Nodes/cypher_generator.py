@@ -1,5 +1,5 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Reusado; alterações: contagem de tokens pelo langchain-core e o print de início antes da chamada ao LLM.
+# Reusado; alterações: contagem de tokens, print de início e cypher_history (NOTICE.md).
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables.config import RunnableConfig
@@ -88,6 +88,7 @@ def cypher_generator(state: OverallState, config:RunnableConfig) -> OverallState
 
 
     return {"cypher_statement": generated_cypher,
+            "cypher_history": [generated_cypher],
             "path": ["cypher_generator"],
             "total_tokens": [total_tokens],
             "prompt_tokens": [prompt_tokens],

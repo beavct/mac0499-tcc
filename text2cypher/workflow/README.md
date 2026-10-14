@@ -9,9 +9,10 @@ Workflow que transforma a pergunta em Cypher, valida a consulta com o CyVer, cor
 3. [Estrutura](#estrutura)
 4. [Configuração e flags](#flags)
 5. [Camada B: valores dos filtros](#camada_b)
-6. [Como rodar](#rodar)
-7. [Atribuição e licença](#licenca)
-8. [Referências](#refs)
+6. [Bloqueio de repetição](#repeticao)
+7. [Como rodar](#rodar)
+8. [Atribuição e licença](#licenca)
+9. [Referências](#refs)
 
 ---
 
@@ -67,6 +68,7 @@ workflow/
 ├── executar.py                ← ponto de entrada (pergunta → Cypher → execução)
 ├── teste_rapido.py            ← teste do fluxo completo com LLM falso (sem Ollama)
 ├── teste_value_grounding.py   ← teste da Camada B com LLM falso (sem Ollama)
+├── teste_repeticao.py         ← teste do bloqueio de repetição com LLM falso (sem Ollama)
 ├── config_workflow.py         ← modelo, k, n e flags de ablação
 ├── Configuration/
 │   ├── configurations.py      ← campos do config['configurable'] (referência)
@@ -77,6 +79,7 @@ workflow/
     ├── States/states.py       ← formatos do estado (entrada, trabalho, saída)
     ├── schema_rag.py          ← NOVO: esquema por RAG (Camada A) ou completo (schema_completo)
     ├── value_grounding.py     ← NOVO: valores dos filtros (Camada B, opcional)
+    ├── tentativas.py          ← NOVO: memória das tentativas (bloqueio de repetição)
     ├── schema_retriever.py    ← fallback (RAG com k maior)
     ├── cypher_generator.py    ← LLM gera o Cypher
     ├── cyver_evaluator.py     ← validação CyVer e decisão do laço
@@ -101,6 +104,8 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | `k` do fallback | `TOP_K_FALLBACK` | `3×TOP_K` | propriedades recuperadas no `schema_retriever` (definido no próprio nó) |
 | RAG das propriedades | `USAR_RAG` | `true` | liga a Camada A; desligado, o nó `schema_completo` manda todas as ~1.800 propriedades, o que só cabe no contexto de modelos grandes |
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
+| Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
+| Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
 
 Só usamos modelos abertos, por uma API compatível com a da OpenAI. Os parâmetros de geração são os do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens):
 
@@ -179,6 +184,34 @@ cd ../dicionario
 python valores.py "quantas escolas há em sao jose dos campos?"
 ```
 
+<a name="repeticao"></a>
+## Bloqueio de repetição
+
+O bloqueio de repetição evita que o laço de correção gaste tentativas com uma consulta que já falhou. Ele vem ligado, e com ele desligado o laço é o do CyVerACT.
+
+Ele existe porque o corretor só vê a última tentativa e os erros dela. Com os modelos pequenos (qwen2.5-coder:7b, llama3.1:8b), ao receber os mesmos erros, ele tende a devolver a mesma "correção". Como o CyVer é determinístico, a mesma consulta dá os mesmos erros, e o laço se repete até gastar as `n` tentativas.
+
+São duas partes:
+
+- **parada sem progresso:** se o corretor devolve uma consulta igual (tirando espaços e quebras de linha) a uma que já falhou, ela não é validada de novo, e o laço pula pra próxima etapa: o `schema_retriever`, se o fallback ainda não foi usado, ou o `unavailable_output`. Isso não muda o resultado, porque aquela consulta daria os mesmos erros. A motivação são os ganhos decrescentes das correções observados no LitE-SQL (Piao et al., 2026);
+- **memória das tentativas:** o prompt do corretor recebe as últimas tentativas diferentes que falharam, cada uma com os erros do CyVer, e o pedido de não repeti-las. A ideia vem do Reflexion (Shinn et al., 2023), que o próprio CyVerACT cita, mas mais simples: guarda só a consulta e os erros, sem pedir ao modelo uma reflexão, então não tem chamada a mais.
+
+| Flag | O que controla |
+|------|----------------|
+| `BLOQUEAR_REPETICAO` | liga as duas partes (padrão `true`) |
+| `MAX_TENTATIVAS_MEMORIA` | quantas tentativas vão pro corretor (padrão `0`, que deixa só a parada) |
+
+A memória vem desligada. Num teste pequeno com o qwen2.5-coder:7b, em 6 perguntas que repetiam consultas, ela deixou 1 consulta válida, contra 3 sem ela, e gastou mais correções: o modelo pequeno parece se confundir com as tentativas erradas que recebe. Pra testar com outro modelo, é só pôr `MAX_TENTATIVAS_MEMORIA=3`.
+
+Lembrando que o `n` continua sendo o total de correções: o que sobra da etapa com o esquema filtrado passa pra do fallback. E a consulta que o gerador refaz depois do fallback é sempre validada, pra não cortar as correções com o esquema maior.
+
+Pra conferir sem o Ollama, o teste rápido roda o laço com um LLM falso, com o bloqueio ligado e desligado:
+
+```bash
+cd text2cypher/workflow
+python teste_repeticao.py
+```
+
 <a name="rodar"></a>
 ## Como rodar
 
@@ -250,6 +283,8 @@ Esta pasta é uma obra derivada do **CyVerACT** (Androna et al., *Information Pr
 - Li et al., *CodeS: Towards Building Open-source Language Models for Text-to-SQL*, [arXiv:2402.16347](https://arxiv.org/abs/2402.16347), 2024 (*value retriever* da Camada B)
 - Lin, Socher e Xiong, *Bridging Textual and Tabular Data for Cross-Domain Text-to-SQL Semantic Parsing*, Findings of EMNLP 2020, [arXiv:2012.12627](https://arxiv.org/abs/2012.12627) (funções de casamento, em `../dicionario/bridge.py`)
 - Ferragina e Scaiella, *TAGME*, CIKM 2010; versão estendida em [arXiv:1006.3498](https://arxiv.org/abs/1006.3498) (filtros da Camada B)
+- Shinn et al., *Reflexion: Language Agents with Verbal Reinforcement Learning*, NeurIPS 2023, [arXiv:2303.11366](https://arxiv.org/abs/2303.11366) (memória do bloqueio de repetição)
+- Piao, Lee e Park, *LitE-SQL*, EACL 2026 (Findings) (parada sem progresso)
 - [LangGraph — documentação](https://docs.langchain.com/oss/python/langgraph/overview)
 - [Ollama — download](https://ollama.com/download)
 - [Ollama — compatibilidade com a API da OpenAI](https://docs.ollama.com/api/openai-compatibility)
