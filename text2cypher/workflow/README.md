@@ -50,9 +50,11 @@ A lógica do CyVerACT continua a mesma: o gerador, a validação pelo CyVer, o l
 
 - **`schema_rag`** (novo): substitui o filtro de esquema por nome pelo RAG das propriedades;
 - **`schema_retriever`**: o fallback amplia o RAG (`k` maior) em vez de mandar o esquema completo, que teria ~1.800 propriedades;
+- **hierarquia territorial no esquema**: o esquema ganha o caminho do setor até cada nível, com o intervalo de saltos (`HIERARQUIA_TERRITORIAL`, em `../config.py`);
+- **`cyver_evaluator`**: o bloqueio de repetição (ver [Bloqueio de repetição](#repeticao));
 - **`cypher_executor`**: a execução, que vinha desligada no original, agora roda, com timeout e registro do erro;
 - **`value_grounding`** (novo, opcional): a Camada B, que não existe no CyVerACT;
-- **`models.py`**: só modelos abertos, sem fine-tuning, via API compatível com a da OpenAI;
+- **`Configuration/`**: os modelos abertos, pela API compatível com a da OpenAI, e o Claude, pela API da Anthropic, todos sem ajuste fino;
 - ajustes pontuais para as versões atuais do `langchain-core` e do `langgraph`.
 
 A lista por arquivo está em [`NOTICE.md`](NOTICE.md).
@@ -67,11 +69,11 @@ workflow/
 ├── NOTICE.md                  ← atribuição e mudanças feitas
 ├── graph.py                   ← montagem do grafo de estados (LangGraph)
 ├── executar.py                ← ponto de entrada (pergunta → Cypher → execução)
-├── teste_rapido.py            ← teste do fluxo completo com LLM falso (sem Ollama)
-├── teste_value_grounding.py   ← teste da Camada B com LLM falso (sem Ollama)
-├── teste_repeticao.py         ← teste do bloqueio de repetição com LLM falso (sem Ollama)
-├── piloto_claude.py           ← teste de conexão e piloto de custo do Claude
 ├── config_workflow.py         ← modelo, k, n e flags de ablação
+├── testes/                    ← testes com LLM falso (sem Ollama)
+│   ├── teste_correcao.py      ← laço de correção (gera → CyVer reprova → corrige → executa)
+│   ├── teste_value_grounding.py   ← Camada B
+│   └── teste_repeticao.py     ← bloqueio de repetição
 ├── Configuration/
 │   ├── configurations.py      ← campos do config['configurable'] (referência)
 │   ├── models.py              ← fábricas de modelo (Ollama local, servidor externo, Claude)
@@ -105,7 +107,7 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Timeout da execução | `TIMEOUT_EXECUCAO` | `60` | limite (s) para executar a query no Neo4j; ao estourar, o erro vai para `execution_error` |
 | `k` do RAG | `TOP_K` | `20` | propriedades recuperadas por pergunta (definido em `../config.py`) |
 | `k` do fallback | `TOP_K_FALLBACK` | `3×TOP_K` | propriedades recuperadas no `schema_retriever` (definido no próprio nó) |
-| RAG das propriedades | `USAR_RAG` | `true` | liga a Camada A; desligado, o nó `schema_completo` manda todas as ~1.800 propriedades, o que só cabe no contexto de modelos grandes |
+| RAG das propriedades | `USAR_RAG` | `true` | liga a Camada A; desligado, o nó `schema_completo` manda todas as ~1.800 propriedades, o que só cabe no contexto de modelos grandes (no caso deste trabalho, o Claude)|
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
 | Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
 | Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
@@ -118,35 +120,39 @@ Os modelos abertos vão por uma API compatível com a da OpenAI, com os parâmet
 | `servidor_externo` | qualquer servidor compatível com a API da OpenAI (ex.: servidor de pesquisa, vLLM) | `LLM_MODEL`, `LLM_BASE_URL`, `LLM_API_KEY` |
 | `claude` | API da Anthropic, pago (créditos do Data Lab) | `ANTHROPIC_API_KEY` no `compartilhado/.env`, `CLAUDE_MODEL` (padrão `claude-sonnet-5-5`), `CLAUDE_EFFORT` (padrão `medium`) |
 
-Pra usar outro modelo, é só adicionar uma fábrica em `models.py` e apontar o `MODEL_NAME` pra ela.
+Para usar outro modelo, basta adicionar uma fábrica em `models.py` e apontar o `MODEL_NAME` para ela.
 
 <a name="claude"></a>
 ## Claude
 
-O Claude é o modelo grande da avaliação, usado na ablação da Camada A, que manda o esquema completo (~112 mil tokens). Ele fica em `Configuration/claude.py`, e não no `models.py`, porque usa o SDK oficial da Anthropic (`anthropic`), que dá acesso ao cache de prompt. A classe `ChatClaude` segue o [formato de modelo de chat do LangChain](https://python.langchain.com/docs/how_to/custom_chat_model/), então os nós não mudam.
+O Claude é o modelo grande da avaliação, usado na ablação da Camada A, que manda o esquema completo (~112 mil tokens). Ele fica em `Configuration/claude.py`, e não no `models.py`, porque usa o SDK oficial da Anthropic (`anthropic`), que dá acesso ao cache de prompt. A classe `ChatClaude` segue o formato de modelo de chat do LangChain, então os nós não mudam.
 
 Algumas coisas são diferentes dos modelos abertos:
 
 - **sem `temperature` e `top_p`:** o Sonnet 5.5 rejeita os dois, então os parâmetros do CyVerACT não valem aqui;
-- **raciocínio:** fica no modo adaptativo, controlado pelo [esforço](https://platform.claude.com/docs/en/build-with-claude/effort) (`CLAUDE_EFFORT`, padrão `medium`), e é cobrado como saída;
-- **limite de 16 mil tokens de saída:** o [raciocínio](https://platform.claude.com/docs/en/build-with-claude/thinking) conta dentro do limite, então os 512 do CyVerACT cortariam a resposta.
+- **raciocínio:** fica no modo adaptativo, controlado pelo esforço (`CLAUDE_EFFORT`, padrão `medium`), e é cobrado como saída;
+- **limite de 16 mil tokens de saída:** o raciocínio conta dentro do limite, então os 512 do CyVerACT cortariam a resposta.
 
-O texto do usuário é dividido logo depois do esquema, e só a primeira parte vai com `cache_control` ([prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)). Sem a Camada A, o esquema é igual em todas as perguntas e passa a ser lido do cache. O cache dura 5 minutos e se renova a cada leitura.
+O texto do usuário é dividido logo depois do esquema, e só a primeira parte vai com `cache_control`. Sem a Camada A, o esquema é igual em todas as perguntas e passa a ser lido do cache. O cache dura 5 minutos e se renova a cada leitura.
 
-Pra conferir a chave e o custo:
+Para conferir a chave e o custo, o piloto fica em [`../../testes/avaliacao/`](../../testes/avaliacao):
 
 ```bash
-cd text2cypher/workflow
+cd testes/avaliacao
 MODEL_NAME=claude python piloto_claude.py --conexao
 MODEL_NAME=claude USAR_RAG=false python piloto_claude.py intersetorial/12
 ```
 
-Durante os testes, uma pergunta sem a Camada A custou US$ 0,28 com o cache vazio e US$ 0,013 com o cache já escrito ([preços](https://platform.claude.com/docs/en/about-claude/pricing)).
+Durante os testes, uma pergunta sem a Camada A custou US$ 0,28 com o cache vazio e US$ 0,013, com o cache já escrito.
 
 <a name="camada_b"></a>
 ## Camada B: valores dos filtros
 
-A Camada B manda pro modelo os nomes de lugares e de equipamentos citados na pergunta, escritos do jeito que estão no grafo. Ela é opcional e vem desligada.
+A Camada B manda para o modelo os nomes de lugares e de equipamentos citados na pergunta, escritos do jeito que estão no grafo. Ela é opcional e vem desligada.
+
+Os valores de domínio pequeno, como os códigos das colunas categóricas (`1 = Federal`...) e os booleanos, já vão fixos no esquema, pela Camada A. A Camada B cuida do que não cabe no esquema: os ~44 mil nomes.
+
+Também testamos ancorar os números da pergunta ("1.000" → 1000, "4 km" → 4000, já que o `point.distance` devolve metros). Num teste com 3 perguntas e os dois modelos locais, eles já escreveram os números no formato certo sem essa ajuda, então o bloco saiu. Ficou só a descrição fixa do `location`, que diz que o `point.distance` devolve metros.
 
 Ela existe porque o modelo tende a copiar o nome do jeito que veio na pergunta. Se a pergunta é "quantas escolas há em sao jose dos campos?" e ele escreve `{nm_mun: 'sao jose dos campos'}`, a consulta volta vazia, porque o grafo guarda `'São José dos Campos'`. O CyVer não reclama, já que a propriedade existe, então o erro só aparece no resultado.
 
@@ -165,7 +171,7 @@ Da lista `PROPRIEDADES_VALORES`, em `../config.py`: `nm_uf`, `nm_mun`, `nm_dist`
 
 A ideia vem da camada semântica de Macedo et al. (SBBD 2026): comparar a pergunta com os valores reais das colunas, sem acento e sem maiúscula, e mandar os que batem num bloco do prompt. Lá, um LLM tira os nomes da pergunta antes; aqui a pergunta é comparada direto, como faz o CodeS (Li et al., 2024), então não tem uma chamada a mais ao modelo.
 
-A comparação usa as funções do BRIDGE (Lin et al., 2020), copiadas em [`../dicionario/bridge.py`](../dicionario/bridge.py): pra cada nome, ele acha o maior trecho em comum com a pergunta e dá uma nota de 0 a 1. Ficam os nomes com nota a partir de 0,9, o mesmo valor do CodeS (do código dos autores), então erros pequenos de digitação também passam:
+A comparação usa as funções do BRIDGE (Lin et al., 2020), copiadas em [`../dicionario/bridge.py`](../dicionario/bridge.py): para cada nome, ele acha o maior trecho em comum com a pergunta e dá uma nota de 0 a 1. Ficam os nomes com nota a partir de 0,9, o mesmo valor do CodeS (do código dos autores), então erros pequenos de digitação também passam:
 
 | Pergunta | Valor encontrado |
 |----------|------------------|
@@ -188,13 +194,13 @@ Muitos lugares do estado têm nome de palavra comum: há um distrito chamado Sa�
 | "escolas no distrito da Saúde" | `Distrito.nm_dist = 'Saúde'` |
 | "centros de saúde em Campinas" | só Campinas, sem o bairro Centro |
 
-Em testes pequenos, a gente também tentou mandar esses nomes pro modelo com um aviso, deixando ele decidir se usava. Funcionou pior do que o filtro, então o filtro ficou. O bloco ainda pede pro modelo só usar um valor quando a pergunta estiver falando daquele lugar, pros casos que o filtro deixa passar.
+Em testes pequenos, também tentamos mandar esses nomes para o modelo com um aviso, deixando a decisão de usá-los para ele. O resultado foi pior que o do filtro, então o filtro ficou. O bloco ainda pede ao modelo que só use um valor quando a pergunta estiver falando daquele lugar, para os casos que o filtro deixa passar.
 
 Os tipos aceitos estão no próprio `PROPRIEDADES_VALORES` (`"distrito"`, `"bairro"`, `"municipio"`...), **sem acento**, porque a pergunta é comparada sem acento.
 
-Nas 66 perguntas de [`../../perguntas/`](../../perguntas), só as duas que citam um lugar (Campinas e Vila Sônia) recebem valores.
+Nas 66 perguntas de [`../../perguntas/`](../../perguntas), só as duas que citam um lugar (Campinas e Vila Sônia) recebem nomes.
 
-Lembrando que o BRIDGE só olha a primeira vez que um nome aparece na pergunta. Em "centros de saúde no bairro Centro", ele pega o "centros" do começo, que o filtro descarta, e o bairro Centro fica de fora. É um caso raro, e consertar exigiria mudar o código copiado.
+Uma limitação: o BRIDGE só olha a primeira vez que um nome aparece na pergunta. Em "centros de saúde no bairro Centro", ele pega o "centros" do começo, que o filtro descarta, e o bairro Centro fica de fora. É um caso raro, e consertar exigiria mudar o código copiado.
 
 ### Como usar
 
@@ -204,7 +210,7 @@ cd text2cypher/workflow
 USAR_VALUE_GROUNDING=true python executar.py "quantas escolas há em sao jose dos campos?"
 
 # teste rápido da camada, com LLM falso (sem o Ollama)
-python teste_value_grounding.py
+python testes/teste_value_grounding.py
 
 # só os valores que uma pergunta recebe, sem rodar o workflow
 cd ../dicionario
@@ -220,29 +226,29 @@ Ele existe porque o corretor só vê a última tentativa e os erros dela. Com os
 
 São duas partes:
 
-- **parada sem progresso:** se o corretor devolve uma consulta igual (tirando espaços e quebras de linha) a uma que já falhou, ela não é validada de novo, e o laço pula pra próxima etapa: o `schema_retriever`, se o fallback ainda não foi usado, ou o `unavailable_output`. Isso não muda o resultado, porque aquela consulta daria os mesmos erros. A motivação são os ganhos decrescentes das correções observados no LitE-SQL (Piao et al., 2026);
+- **parada sem progresso:** se o corretor devolve uma consulta igual (tirando espaços e quebras de linha) a uma que já falhou, ela não é validada de novo, e o laço pula para próxima etapa: o `schema_retriever`, se o fallback ainda não foi usado, ou o `unavailable_output`. Isso não muda o resultado, porque aquela consulta daria os mesmos erros. A motivação são os ganhos decrescentes das correções observados no LitE-SQL (Piao et al., 2026);
 - **memória das tentativas:** o prompt do corretor recebe as últimas tentativas diferentes que falharam, cada uma com os erros do CyVer, e o pedido de não repeti-las. A ideia vem do Reflexion (Shinn et al., 2023), que o próprio CyVerACT cita, mas mais simples: guarda só a consulta e os erros, sem pedir ao modelo uma reflexão, então não tem chamada a mais.
 
 | Flag | O que controla |
 |------|----------------|
 | `BLOQUEAR_REPETICAO` | liga as duas partes (padrão `true`) |
-| `MAX_TENTATIVAS_MEMORIA` | quantas tentativas vão pro corretor (padrão `0`, que deixa só a parada) |
+| `MAX_TENTATIVAS_MEMORIA` | quantas tentativas vão para o corretor (padrão `0`, que deixa só a parada) |
 
-A memória vem desligada. Num teste pequeno com o qwen2.5-coder:7b, em 6 perguntas que repetiam consultas, ela deixou 1 consulta válida, contra 3 sem ela, e gastou mais correções: o modelo pequeno parece se confundir com as tentativas erradas que recebe. Pra testar com outro modelo, é só pôr `MAX_TENTATIVAS_MEMORIA=3`.
+A memória vem desligada. Num teste pequeno com o qwen2.5-coder:7b, em 6 perguntas que repetiam consultas, ela deixou 1 consulta válida, contra 3 sem ela, e gastou mais correções: o modelo pequeno parece se confundir com as tentativas erradas que recebe. Para testar com outro modelo, basta usar `MAX_TENTATIVAS_MEMORIA=3`.
 
-Lembrando que o `n` continua sendo o total de correções: o que sobra da etapa com o esquema filtrado passa pra do fallback. E a consulta que o gerador refaz depois do fallback é sempre validada, pra não cortar as correções com o esquema maior.
+O `n` continua sendo o total de correções, o que sobra da etapa com o esquema filtrado passa para do fallback. E a consulta que o gerador refaz depois do fallback é sempre validada, para não cortar as correções com o esquema maior.
 
-Pra conferir sem o Ollama, o teste rápido roda o laço com um LLM falso, com o bloqueio ligado e desligado:
+Para conferir sem o Ollama, o teste rápido roda o laço com um LLM falso, com o bloqueio ligado e desligado:
 
 ```bash
 cd text2cypher/workflow
-python teste_repeticao.py
+python testes/teste_repeticao.py
 ```
 
 <a name="rodar"></a>
 ## Como rodar
 
-Antes de rodar, você precisa de: Neo4j carregado (ver [`../../etl/`](../../etl)), índice do Chroma construído (ver [`../dicionario/`](../dicionario)), dependências instaladas (`compartilhado/requirements.txt`) e o [Ollama](https://ollama.com) rodando com o modelo baixado (abaixo).
+Antes de rodar, é preciso ter o Neo4j carregado (ver [`../../etl/`](../../etl)), índice do Chroma construído (ver [`../dicionario/`](../dicionario)), dependências instaladas (`compartilhado/requirements.txt`) e o [Ollama](https://ollama.com) rodando com o modelo baixado (abaixo).
 
 ### Instalar e subir o Ollama
 
@@ -287,10 +293,10 @@ OLLAMA_MODEL=llama3.1:8b python executar.py "quantas escolas há em Campinas?"
 
 Rode sempre de dentro de `text2cypher/workflow/`: os módulos usam imports relativos a essa pasta, como no CyVerACT original.
 
-Pra conferir se está tudo funcionando **sem** o Ollama, rode o teste rápido. Um LLM falso devolve primeiro uma consulta com uma propriedade que não existe e depois uma válida. O script confere o caminho percorrido (gera → CyVer reprova → corrige → aprova → executa) e o resultado.
+Para conferir se está tudo funcionando sem o Ollama, rode o teste do laço de correção. Um LLM falso devolve primeiro uma consulta com uma propriedade que não existe e depois uma válida. O script confere o caminho percorrido (gera → CyVer reprova → corrige → aprova → executa) e o resultado.
 
 ```bash
-python teste_rapido.py
+python testes/teste_correcao.py
 ```
 
 **Contexto do Ollama:** o esquema enviado ao modelo tem alguns milhares de tokens. Por padrão, o Ollama usa uma janela de contexto pequena e corta o excesso sem avisar. Por isso o `OLLAMA_CONTEXT_LENGTH=16384` ao subir o servidor.
@@ -318,4 +324,4 @@ Esta pasta é uma obra derivada do **CyVerACT** (Androna et al., *Information Pr
 - [Qwen2.5-Coder na biblioteca do Ollama](https://ollama.com/library/qwen2.5-coder)
 - [Llama 3.1 na biblioteca do Ollama](https://ollama.com/library/llama3.1)
 - [Claude — documentação da API](https://platform.claude.com/docs/en/home)
-- [SDK da Anthropic pra Python](https://github.com/anthropics/anthropic-sdk-python)
+- [SDK da Anthropic para Python](https://github.com/anthropics/anthropic-sdk-python)

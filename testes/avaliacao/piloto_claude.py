@@ -3,7 +3,7 @@ Piloto do Claude: roda uma pergunta do conjunto no workflow e mostra o uso de to
 de cada chamada, com a estimativa para as 66 perguntas de um cenário. Com --conexao, só faz uma
 chamada mínima para conferir a chave (custa uma fração de centavo).
 
-Uso (a partir de text2cypher/workflow/, com ANTHROPIC_API_KEY no compartilhado/.env):
+Uso (a partir de testes/avaliacao/, com ANTHROPIC_API_KEY no compartilhado/.env):
     MODEL_NAME=claude python piloto_claude.py --conexao
     MODEL_NAME=claude python piloto_claude.py intersetorial/12                  # com a Camada A
     MODEL_NAME=claude USAR_RAG=false python piloto_claude.py intersetorial/12   # esquema completo
@@ -12,6 +12,9 @@ import os
 import sys
 
 from neo4j import GraphDatabase
+
+# o workflow fica em text2cypher/workflow/
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "text2cypher", "workflow"))
 
 from Configuration import claude
 from executar import responder, NEO4J_DATABASE

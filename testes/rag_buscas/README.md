@@ -1,10 +1,10 @@
-# Teste do RAG: formas de busca
+# RAG — formas de busca
 
-Fizemos este script pra rodar os testes e escolher a melhor técnica de busca no RAG do [`text2cypher/`](../../text2cypher). A ideia é ver qual forma de busca entrega ao modelo mais das propriedades de que cada pergunta precisa.
+Compara formas de busca para o RAG do [`text2cypher/`](../../text2cypher), para ver qual entrega ao modelo mais das propriedades de que cada pergunta precisa.
 
 ## Como funciona
 
-O teste usa o mesmo gabarito, a mesma métrica e os mesmos grupos de propriedade do [teste dos valores](../rag_valores). Pra cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, ele conta quantas propriedades do Cypher correto aparecem entre as `k` primeiras (**recall@k**) e quantas perguntas têm todas as suas propriedades no top-20 (**perguntas completas**).
+O teste usa o mesmo gabarito, a mesma métrica e os mesmos grupos de propriedade do [teste dos valores](../rag_valores). Para cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, ele conta quantas propriedades do Cypher correto aparecem entre as `k` primeiras (**recall@k**) e quantas perguntas têm todas as suas propriedades no top-20 (**perguntas completas**).
 
 As técnicas comparadas e de onde cada uma veio:
 

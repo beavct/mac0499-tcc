@@ -6,10 +6,13 @@ escolas, enquanto o nome escrito como na pergunta não acha nenhuma. O resto rod
 verdade, então precisa do Neo4j carregado e do índice Chroma.
 
 Uso (a partir de text2cypher/workflow/):
-    python teste_value_grounding.py
+    python testes/teste_value_grounding.py
 """
 import os
 import sys
+
+# sobe até workflow/ para importar o grafo e os nós
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 # liga a Camada B só neste teste; precisa vir antes de importar o grafo
 os.environ["USAR_VALUE_GROUNDING"] = "true"

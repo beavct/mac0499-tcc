@@ -64,7 +64,8 @@ EQUIPAMENTOS = [
 # do PG, da coluna original (o ETL mudou o nome: id_aparelho era co_entidade/co_unidade,
 # nm_aparelho era no_entidade/no_fantasia, tp_gestao era tp_gestao2). location foi criada
 # pelo ETL e não existe no PG. Os valores de situacao foram lidos do grafo.
-DESCRICAO_LOCATION = "Localização (latitude/longitude); usar com point.distance"
+DESCRICAO_LOCATION = ("Localização (latitude/longitude); usar com point.distance, que devolve a "
+                      "distância em metros")
 
 PROPRIEDADES_FIXAS = [
     {"no_label": "Escola", "propriedade": "id_aparelho", "tipo": "STRING",

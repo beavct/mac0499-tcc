@@ -7,9 +7,13 @@ anteriores; desligado, deve ir até as n correções, como no CyVerACT. O resto 
 então precisa do Neo4j carregado e do índice Chroma (não do Ollama).
 
 Uso (a partir de text2cypher/workflow/):
-    python teste_repeticao.py
+    python testes/teste_repeticao.py
 """
+import os
 import sys
+
+# sobe até workflow/ para importar o grafo e os nós
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage

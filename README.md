@@ -12,15 +12,25 @@ Bacharelado em Ciência da Computação, IME-USP. Orientadora: Profa. Dra. Kelly
 4. [Como usar](#uso)
 5. [Fontes de dados](#fontes)
 6. [Recorte territorial](#recorte)
+7. [Referências](#refs)
 
 ---
 
 <a name="visao"></a>
 ## Visão geral
 
-Este projeto migra os dados geoespaciais e socioeconômicos da plataforma [CulturaEduca.cc](https://plataforma.culturaeduca.cc/) de um banco relacional (PostgreSQL/PostGIS) para um banco de dados orientado a grafos (Neo4j), e implementa uma interface de consulta em linguagem natural via LLMs (Text-to-Cypher).
+O trabalho tem duas frentes, sobre os dados geoespaciais e socioeconômicos da plataforma [CulturaEduca.cc](https://plataforma.culturaeduca.cc/).
 
-O benchmark compara 66 consultas analíticas executadas nos dois modelos (SQL vs. Cypher) sobre o estado de São Paulo.
+**Banco de dados em grafos.** Os dados saem do banco relacional da plataforma (PostgreSQL/PostGIS) e são carregados num grafo de propriedades no Neo4j, com a hierarquia territorial do IBGE, as escolas, os equipamentos de saúde e os perfis do Censo. Um conjunto de 66 consultas analíticas, escritas em SQL e em Cypher, serve de benchmark para comparar os dois modelos sobre o estado de São Paulo.
+
+**Consulta em linguagem natural (Text-to-Cypher).** Um workflow agêntico traduz perguntas em português para consultas Cypher, valida cada consulta com o CyVer e a corrige em laço quando há erros. Ele é adaptado do CyVerACT, com quatro mudanças:
+
+- **Camada A:** as propriedades do grafo são recuperadas pela descrição (RAG com busca híbrida no Chroma), já que nomes como `v00644` não dizem nada;
+- **Camada B** (opcional): os nomes de lugares e equipamentos citados na pergunta vão para o modelo escritos como estão no grafo;
+- **hierarquia territorial no esquema:** o modelo recebe o número de saltos entre o setor e cada nível;
+- **bloqueio de repetição:** o laço para quando o corretor repete uma consulta que já falhou.
+
+A avaliação usa dois modelos abertos executados localmente pelo Ollama (`qwen2.5-coder:7b` e `llama3.1:8b`) e o Claude (`claude-sonnet-5-5`), pela API da Anthropic, como referência de modelo grande.
 
 ---
 
@@ -30,30 +40,31 @@ O benchmark compara 66 consultas analíticas executadas nos dois modelos (SQL vs
 ### Pré-requisitos
 
 - Python 3.10+
-- Neo4j rodando localmente (Community ou Desktop)
-- Acesso ao PostgreSQL da CulturaEduca — remoto ou uma cópia local (ver [Fonte de dados PostgreSQL](#pg))
-- Para a consulta em linguagem natural: [Ollama](https://ollama.com) com o modelo baixado (ver [`text2cypher/workflow/`](text2cypher/workflow))
+- Neo4j rodando localmente (Community ou Desktop; os experimentos usaram a versão 2026.03)
+- Acesso ao PostgreSQL da CulturaEduca — remoto ou numa cópia local (ver [Fonte de dados PostgreSQL](#pg))
+- Para a consulta em linguagem natural: o [Ollama](https://ollama.com) com o modelo baixado (ver [`text2cypher/workflow/`](text2cypher/workflow))
+- Opcional, para os cenários com o Claude: uma chave da API da Anthropic (`ANTHROPIC_API_KEY`) em `compartilhado/.env`
 
 ### Instalação
 
 ```bash
-# Clonar o repositório
+# clonar o repositório
 git clone <url>
 cd mac0499-tcc
 
-# Criar ambiente virtual
+# criar o ambiente virtual
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Instalar dependências
+# instalar as dependências
 pip install -r compartilhado/requirements.txt
 
-# Configurar credenciais
+# configurar as credenciais
 cp compartilhado/.env.example compartilhado/.env
-# Editar compartilhado/.env com as credenciais reais
+# editar compartilhado/.env com as credenciais reais
 ```
 
-Se `psycopg2-binary` der erro na instalação, instale a lib nativa do PostgreSQL:
+Se o `psycopg2-binary` der erro na instalação, instale a biblioteca nativa do PostgreSQL:
 
 ```bash
 # macOS
@@ -69,9 +80,9 @@ sudo pacman -S postgresql-libs
 <a name="pg"></a>
 ### Fonte de dados PostgreSQL
 
-O ETL lê os dados da CulturaEduca de um PostgreSQL. Há duas formas de acessá-lo, configuráveis no `compartilhado/.env`:
+O ETL lê os dados da CulturaEduca de um PostgreSQL. Há duas formas de acessá-lo, configuráveis no `compartilhado/.env`.
 
-**Opção A — PostgreSQL remoto** (mais rápido de começar)
+**Opção A — PostgreSQL remoto**
 
 Aponte o `.env` para o servidor da CulturaEduca:
 
@@ -84,11 +95,11 @@ PG_PASSWORD=<senha>
 
 Depende de acesso à rede e de credenciais válidas.
 
-**Opção B — cópia local** (offline, e mais justo para benchmarks de tempo)
+**Opção B — cópia local** (funciona offline e é mais justa para os benchmarks de tempo)
 
-Restaure um dump do banco num PostgreSQL local. Requer a extensão **PostGIS** (as tabelas usam colunas geométricas `_geom`):
+Restaure um dump do banco num PostgreSQL local. É preciso ter a extensão PostGIS, porque as tabelas usam colunas geométricas (`_geom`).
 
-**1. Instalar PostgreSQL e PostGIS**
+**1. Instalar o PostgreSQL e o PostGIS**
 
 ```bash
 # macOS
@@ -103,9 +114,7 @@ sudo pacman -S postgresql postgis
 
 **2. Criar o usuário e o banco**
 
-> **Importante:** o banco precisa se chamar `culturaeduca` — as queries usam
-> referência de 3 partes (`culturaeduca.datasets.tabela`) e o PostgreSQL não
-> suporta cross-database reference se o nome for diferente.
+> **Importante:** o banco precisa se chamar `culturaeduca`. As consultas usam referências em três partes (`culturaeduca.datasets.tabela`), e o PostgreSQL não aceita referência entre bancos se o nome for diferente.
 
 ```bash
 psql -d postgres -c "CREATE ROLE <usuario> WITH LOGIN PASSWORD '<senha>' CREATEDB;"
@@ -120,7 +129,7 @@ pg_restore -h localhost -U <usuario> -d culturaeduca \
   --no-owner --no-privileges caminho/do/backup.dump
 ```
 
-No restore é normal aparecerem ~400 erros ignorados — são GRANTs para roles inexistentes e views materializadas de outros schemas (`plataforma`), que não afetam o schema `datasets` usado pelo ETL.
+É normal o restore mostrar cerca de 400 erros ignorados. São `GRANT`s para papéis que não existem e visões materializadas de outros esquemas (`plataforma`), que não afetam o esquema `datasets` usado pelo ETL.
 
 Aponte o `.env` para o banco local:
 
@@ -139,55 +148,51 @@ PG_PASSWORD=<senha>
 ```
 mac0499-tcc/
 ├── compartilhado/            ← configuração e utilitários compartilhados
-│   ├── .env.example          ← template de credenciais
-│   ├── .env                  ← credenciais reais (não vai pro git)
+│   ├── .env.example          ← modelo do arquivo de credenciais
+│   ├── .env                  ← credenciais reais (fora do git)
 │   ├── requirements.txt      ← dependências Python
-│   ├── config.py             ← carrega .env, define municípios-alvo
-│   └── db.py                 ← funções de conexão (PG e Neo4j)
+│   ├── config.py             ← carrega o .env e define o recorte territorial
+│   └── db.py                 ← funções de conexão (PostgreSQL e Neo4j)
 │
-├── etl/                      ← scripts de carga PostgreSQL → Neo4j
-│   ├── README.md
+├── etl/                      ← carga PostgreSQL → Neo4j
 │   ├── 01_geografia.py       ← hierarquia territorial
 │   ├── 02_educacao.py        ← escolas (INEP 2024)
 │   ├── 03_saude.py           ← equipamentos de saúde (CNES 2025)
 │   ├── 04_perfis.py          ← perfis censitários (IBGE 2022)
 │   ├── 05_indices.py         ← índices (espaciais e, opcionalmente, de nome)
 │   ├── run_all.py            ← executa tudo em sequência
-│   └── auxiliares/           ← listas de colunas e configurações
+│   └── auxiliares/           ← listas de colunas e de perfis
 │
-├── perguntas/                ← 66 consultas do benchmark
-│   ├── README.md             ← mapa de consultas (índice completo)
+├── perguntas/                ← as 66 consultas (linguagem natural, SQL e Cypher)
 │   ├── ed_basica/            ← 27 consultas de educação
 │   ├── saude/                ← 27 consultas de saúde
-│   └── intersetorial/        ← 12 consultas cruzando educação + saúde
+│   └── intersetorial/        ← 12 consultas que cruzam educação e saúde
 │
-├── text2cypher/              ← consulta em linguagem natural (NL → Cypher)
-│   ├── README.md
-│   ├── dicionario/           ← RAG das propriedades (extração, indexação no Chroma, retriever)
+├── text2cypher/              ← consulta em linguagem natural
+│   ├── dicionario/           ← RAG das propriedades (Camada A) e valores dos filtros (Camada B)
 │   └── workflow/             ← workflow agêntico adaptado do CyVerACT (CC BY-SA 4.0)
 │
-├── ferramentas/              ← utilitários de administração
-│   ├── neo4j_admin.py        ← inspeciona e limpa o grafo (contar, reset, etc.)
-│   ├── pg_admin.py           ← inspeciona o PostgreSQL (tabelas, recorte, bairros)
-│   └── limpar_pg_sp.py       ← reduz o PostgreSQL ao recorte de São Paulo
-│
 ├── testes/
-│   ├── validacao/            ← script que roda SQL e Cypher e compara resultados
-│   ├── performance/          ← benchmarks de tempo de resposta
+│   ├── validacao/            ← confere se SQL e Cypher devolvem o mesmo resultado
+│   ├── performance/          ← benchmark de desempenho PostgreSQL × Neo4j
 │   ├── rag_valores/          ← valores das colunas no texto indexado do RAG
-│   ├── rag_modelos/          ← comparação de modelos de embedding pro RAG
-│   └── rag_buscas/           ← comparação de formas de busca pro RAG
+│   ├── rag_modelos/          ← comparação de modelos de embedding
+│   ├── rag_buscas/           ← comparação de formas de busca
+│   └── avaliacao/            ← avaliação do Text-to-Cypher (piloto de custo do Claude)
 │
+├── ferramentas/              ← utilitários de administração dos bancos
 └── docs/
     └── Proposta_de_TCC.pdf
 ```
+
+Cada pasta tem o seu README, com os detalhes.
 
 ---
 
 <a name="uso"></a>
 ## Como usar
 
-### 1. Carregar dados no Neo4j
+### 1. Carregar os dados no Neo4j
 
 Com o Neo4j rodando:
 
@@ -196,84 +201,82 @@ cd etl
 python run_all.py
 ```
 
-Ou etapa por etapa:
+As etapas também podem ser rodadas uma a uma; a ordem e os detalhes estão em [`etl/`](etl).
 
-```bash
-python 01_geografia.py   # Hierarquia territorial
-python 02_educacao.py    # Escolas
-python 03_saude.py       # Equipamentos de saúde
-python 04_perfis.py      # Perfis censitários
-```
-
-### 2. Validar consultas
+### 2. Validar as consultas
 
 ```bash
 cd testes/validacao
 python validar_queries.py              # todas
-python validar_queries.py ed_basica    # só educação
-python validar_queries.py saude 5      # só a Q5 de saúde
+python validar_queries.py ed_basica    # só um eixo
+python validar_queries.py saude 5      # só uma consulta
 ```
 
-O script executa cada consulta nos dois bancos e compara número de linhas e valores agregados.
+O script executa cada consulta nos dois bancos e compara as linhas e os valores devolvidos (ver [`testes/validacao/`](testes/validacao)).
 
-### 3. Administrar o grafo
+### 3. Medir o desempenho
+
+```bash
+cd testes/performance
+python bench_postgres.py
+python bench_neo4j.py
+python analise.py          # gera os gráficos a partir dos CSVs
+```
+
+As métricas e os gráficos estão descritos em [`testes/performance/`](testes/performance).
+
+### 4. Consultar em linguagem natural (Text-to-Cypher)
+
+Com o PostgreSQL e o Neo4j no ar e o grafo já carregado:
+
+```bash
+# monta o dicionário das propriedades e indexa no Chroma (uma vez, ou quando o grafo mudar)
+cd text2cypher/dicionario
+python run_all.py
+
+# faz uma pergunta ao workflow (com o Ollama rodando e o modelo baixado)
+cd ../workflow
+python executar.py "quantas escolas sem água potável há em Campinas?"
+```
+
+Para usar o Claude no lugar do modelo local, basta `MODEL_NAME=claude`. Os detalhes estão em [`text2cypher/`](text2cypher) e [`text2cypher/workflow/`](text2cypher/workflow), e os experimentos que embasaram o RAG, em `testes/rag_*`.
+
+### 5. Administrar os bancos
 
 A pasta `ferramentas/` tem utilitários para inspecionar e limpar o Neo4j:
 
 ```bash
-python ferramentas/neo4j_admin.py labels    # lista labels e contagens
+python ferramentas/neo4j_admin.py labels     # lista os rótulos e as contagens
 python ferramentas/neo4j_admin.py contar     # conta todos os nós
-python ferramentas/neo4j_admin.py isolados    # nós sem nenhuma aresta
-python ferramentas/neo4j_admin.py reset       # apaga tudo (nós + constraints)
+python ferramentas/neo4j_admin.py isolados   # nós sem nenhuma aresta
+python ferramentas/neo4j_admin.py reset      # apaga tudo (nós e constraints)
 ```
 
-Use o `reset` antes de trocar o `ESCOPO` (cidades ↔ estado), senão os dois recortes se misturam no mesmo grafo.
+Use o `reset` antes de trocar o `ESCOPO` (cidades ↔ estado); senão, os dois recortes se misturam no mesmo grafo.
 
-### 4. Inspecionar o PostgreSQL
-
-O `pg_admin.py` reúne comandos de leitura para conferir o estado da base de origem:
+O `pg_admin.py` reúne comandos de leitura para conferir a base de origem:
 
 ```bash
-python ferramentas/pg_admin.py tabelas          # lista as tabelas e conta as linhas
-python ferramentas/pg_admin.py contar eq_saude_2025   # conta linhas de uma tabela
-python ferramentas/pg_admin.py ufs               # confere se a base está restrita a SP
-python ferramentas/pg_admin.py bairros           # bairros que cruzam >1 subdistrito/distrito
+python ferramentas/pg_admin.py tabelas               # lista as tabelas e conta as linhas
+python ferramentas/pg_admin.py contar eq_saude_2025  # conta as linhas de uma tabela
+python ferramentas/pg_admin.py ufs                   # confere se a base está restrita a SP
+python ferramentas/pg_admin.py bairros               # bairros que cruzam mais de um subdistrito
 ```
 
-São todos read-only. Para a limpeza destrutiva (reduzir a base a São Paulo), use o script separado descrito abaixo.
-
-### 5. Reduzir o PostgreSQL ao recorte de São Paulo
-
-A cópia local do banco vem com o Brasil inteiro. Como o TCC opera só sobre o estado de São Paulo, o `limpar_pg_sp.py` apaga as linhas de outras UFs nas tabelas usadas pelo ETL/consultas e remove (DROP) as tabelas de níveis e domínios que o projeto não usa (agregados de bairro/distrito/município/subdistrito/UF, CRAS, CREAS, IES, bibliotecas, centros POP).
+A cópia local do banco vem com o Brasil inteiro. Como o trabalho usa só o estado de São Paulo, o `limpar_pg_sp.py` apaga as linhas das outras UFs nas tabelas usadas e remove as tabelas que o projeto não usa (agregados de bairro, distrito, município, subdistrito e UF, CRAS, CREAS, IES, bibliotecas e centros POP):
 
 ```bash
-python ferramentas/limpar_pg_sp.py             # simulação (dry-run): só mostra o que faria
-python ferramentas/limpar_pg_sp.py --executar  # aplica de fato
+python ferramentas/limpar_pg_sp.py             # simulação: só mostra o que faria
+python ferramentas/limpar_pg_sp.py --executar  # aplica
 ```
 
-É uma operação **destrutiva e irreversível** — faça um dump antes de rodar com `--executar`:
+É uma operação **destrutiva e irreversível**; faça um dump antes de rodar com `--executar`:
 
 ```bash
 pg_dump -h localhost -U <usuario> -d culturaeduca -Fc -f backup_brasil.dump
 ```
 
-Os `DELETE` não liberam espaço em disco automaticamente; rode `VACUUM FULL` depois, se quiser recuperar.
-
-### 6. Consultar em linguagem natural (Text-to-Cypher)
-
-Com o PostgreSQL e o Neo4j no ar (o grafo já carregado pelo ETL):
-
-```bash
-# 1) monta o dicionário das propriedades e indexa no Chroma (uma vez, ou quando o grafo mudar)
-cd text2cypher/dicionario
-python run_all.py
-
-# 2) faz uma pergunta ao workflow (requer o Ollama com o modelo baixado)
-cd ../workflow
-python executar.py "quantas escolas sem água potável há em Campinas?"
-```
-
-Detalhes em [`text2cypher/README.md`](text2cypher/README.md) e [`text2cypher/workflow/README.md`](text2cypher/workflow/README.md).
+Os `DELETE` não liberam espaço em disco sozinhos; para recuperá-lo, rode `VACUUM FULL` depois.
 
 ---
 
@@ -291,7 +294,16 @@ Detalhes em [`text2cypher/README.md`](text2cypher/README.md) e [`text2cypher/wor
 
 O recorte usado nos experimentos é o **estado de São Paulo** (`cd_uf: 35`, `ESCOPO=estado` em `compartilhado/.env`).
 
-O ETL também aceita um recorte reduzido, de três municípios (`ESCOPO=cidades`), usado nas etapas iniciais de desenvolvimento:
-- São Paulo (cd_mun: 3550308)
-- Campinas (cd_mun: 3548708)
-- São Bernardo do Campo (cd_mun: 3509502)
+O ETL também aceita um recorte reduzido, de três municípios (`ESCOPO=cidades`), usado no começo do desenvolvimento:
+- São Paulo (`cd_mun`: 3550308)
+- Campinas (`cd_mun`: 3548708)
+- São Bernardo do Campo (`cd_mun`: 3509502)
+
+<a name="refs"></a>
+## Referências
+
+- [CulturaEduca.cc](https://plataforma.culturaeduca.cc/)
+- [Neo4j — documentação](https://neo4j.com/docs/)
+- [PostgreSQL — documentação](https://www.postgresql.org/docs/) e [PostGIS — documentação](https://postgis.net/documentation/)
+- Androna et al., *CyVerACT: An Agentic Cypher Translation Workflow over Knowledge Graphs*, Information Processing and Management, 2026 (base do workflow)
+- [Ollama](https://ollama.com) e [Claude — documentação da API](https://platform.claude.com/docs/en/home)

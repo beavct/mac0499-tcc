@@ -1,6 +1,6 @@
-# Teste do RAG: valores das colunas no texto indexado
+# RAG — valores das colunas no texto indexado
 
-Mede se colocar os valores das colunas no texto que o Chroma busca (ex.: `tp_dependencia`: 1 = Federal, 2 = Estadual, 3 = Municipal, 4 = Privada) ajuda ou atrapalha o RAG do [`text2cypher/`](../../text2cypher) a encontrar as propriedades certas pra cada pergunta.
+Mede se colocar os valores das colunas no texto que o Chroma busca (ex.: `tp_dependencia`: 1 = Federal, 2 = Estadual, 3 = Municipal, 4 = Privada) ajuda ou atrapalha o RAG do [`text2cypher/`](../../text2cypher) a encontrar as propriedades certas para cada pergunta.
 
 ## Como funciona
 
@@ -12,9 +12,9 @@ O script compara três versões do texto de cada propriedade do dicionário:
 | **B** | A + os valores das colunas que não são booleanas (é o que o workflow usa) |
 | **C** | A + os valores de todas as colunas, inclusive as booleanas (`true = Sim, false = Não`) |
 
-O **gabarito** sai das próprias consultas do benchmark: pra cada pergunta de [`perguntas/`](../../perguntas), são as propriedades do dicionário que o Cypher correto usa. 65 das 66 consultas usam alguma, somando 144 propriedades.
+O gabarito sai das próprias consultas do benchmark: para cada pergunta de [`perguntas/`](../../perguntas), são as propriedades do dicionário que o Cypher correto usa. 65 das 66 consultas usam alguma, somando 144 propriedades.
 
-Pra cada versão, o script transforma os textos e as perguntas em vetores e pega as 20 propriedades mais parecidas com cada pergunta. A métrica é o **recall@k** (k = 5, 10 e 20): das propriedades do gabarito, quantas aparecem entre as `k` primeiras.
+Para cada versão, o script transforma os textos e as perguntas em vetores e pega as 20 propriedades mais parecidas com cada pergunta. A métrica é o **recall@k** (k = 5, 10 e 20): das propriedades do gabarito, quantas aparecem entre as `k` primeiras.
 
 Os resultados saem separados em quatro grupos de propriedade:
 - **`v*` (Censo)**: as variáveis do Censo, nos nós de setor, município etc.;
@@ -38,7 +38,7 @@ python comparar_textos.py                                # os dois modelos
 python comparar_textos.py intfloat/multilingual-e5-base  # só um deles
 ```
 
-Os modelos testados ficam no `PREFIXOS` do script: o `paraphrase-multilingual-MiniLM-L12-v2`, usado no começo do projeto, e o `multilingual-e5-base`, escolhido depois pelo [teste dos modelos](../rag_modelos). Pra cada um, o script imprime a tabela de recall e grava em `output/<modelo>/`:
+Os modelos testados ficam no `PREFIXOS` do script: o `paraphrase-multilingual-MiniLM-L12-v2`, usado no começo do projeto, e o `multilingual-e5-base`, escolhido depois pelo [teste dos modelos](../rag_modelos). Para cada um, o script imprime a tabela de recall e grava em `output/<modelo>/`:
 - `recall.csv`: recall por grupo, versão e `k`;
 - `posicoes.csv`: a posição de cada propriedade do gabarito em cada versão (vazio = fora do top-20).
 
@@ -56,16 +56,18 @@ As rodadas usadas na monografia estão em `resultados/`, uma pasta por modelo. R
 | outras dos equipamentos | 33 | 0,67 | 0,67 | **0,70** | **0,73** | **0,73** | 0,64 |
 | todas | 144 | 0,35 | 0,37 | **0,38** | 0,64 | **0,67** | 0,65 |
 
-- Nas **categóricas**, os valores fazem a maior diferença: com o e5, sem eles nenhuma é encontrada (0,00 contra 0,64), e com o MiniLM o recall dobra. A palavra da pergunta ("municipal", "privadas") só aparece no texto quando os valores estão lá.
-- Nas **booleanas**, pôr os valores piora. O mesmo `true = Sim, false = Não` em centenas de textos deixa todos parecidos, e com o MiniLM o recall@10 cai de 0,39 pra 0,17.
-- No geral, com o e5, que é o modelo do workflow, a **versão B** é a melhor (0,67), e por isso o workflow usa ela. Com o MiniLM, a C fica um pouco à frente (0,38 contra 0,37).
-- Nas **outras dos equipamentos**, B e A empatam nos dois modelos. Nenhuma das 28 colunas com códigos especiais está no gabarito, então o teste não mede se esses códigos ajudam a achar as próprias colunas. O [teste das formas de busca](../rag_buscas) tira os códigos especiais do texto e mostra que eles também não atrapalham as outras.
 
 ## Estrutura
 
 ```
 rag_valores/
 ├── comparar_textos.py
-├── output/        # CSVs gerados, uma pasta por modelo (não versionado)
-└── resultados/    # rodadas usadas na monografia
+├── output/      ← CSVs gerados, uma pasta por modelo (não versionado)
+└── resultados/  ← rodadas usadas na monografia
 ```
+
+## Referências
+
+- Reimers e Gurevych, *Making Monolingual Sentence Embeddings Multilingual using Knowledge Distillation*, EMNLP 2020 (MiniLM multilíngue)
+- Wang et al., *Multilingual E5 Text Embeddings: A Technical Report*, arXiv:2402.05672, 2024
+- [sentence-transformers — documentação](https://sbert.net)

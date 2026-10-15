@@ -2,7 +2,7 @@
 
 Scripts que extraem os dados da plataforma CulturaEduca (PostgreSQL, remoto ou cópia local) e carregam no Neo4j local, montando o grafo de propriedades usado no TCC.
 
-Cada script conecta no Postgres, faz a query, e manda pro Neo4j via driver Python, sem precisar copiar os dados do banco de dados relacional e passar para a pasta de import do Neo4j. A fonte PostgreSQL (remota ou local) é definida no `../compartilhado/.env` — ver [README da raiz](../README.md#pg).
+Cada script conecta no PostgreSQL, faz a consulta e manda os dados para o Neo4j pelo driver Python, sem precisar exportar arquivos para a pasta de importação do Neo4j. A fonte PostgreSQL (remota ou local) é definida no `../compartilhado/.env` — ver [README da raiz](../README.md#pg).
 
 ## Conteúdo
 
@@ -24,13 +24,13 @@ Cada script conecta no Postgres, faz a query, e manda pro Neo4j via driver Pytho
 O setup geral (venv, pip install, credenciais) está documentado no [README da raiz](../README.md). Resumindo:
 
 - **Python 3.10+** com as dependências instaladas (`pip install -r ../compartilhado/requirements.txt`)
-- **Neo4j 5.x** rodando localmente (Community ou Desktop)
+- **Neo4j** rodando localmente (Community ou Desktop; os experimentos usaram a versão 2026.03)
 - **Credenciais** preenchidas em `../compartilhado/.env`
 
 <a name="config"></a>
 ## Configuração
 
-O Neo4j precisa estar rodando antes de executar os scripts. Se estiver usando o Neo4j Desktop, é só abrir o projeto e dar Start no banco.
+O Neo4j precisa estar rodando antes de executar os scripts. Com o Neo4j Desktop, basta abrir o projeto e iniciar o banco (*Start*).
 
 Duas variáveis em `../compartilhado/.env` controlam o comportamento da carga:
 
@@ -54,18 +54,18 @@ UF=35
 
 O escopo `cidades` usa o filtro `cd_mun IN (...)` com os 3 municípios; o escopo `estado` usa `cd_uf = '35'`, carregando os 645 municípios de SP (~103 mil setores). A lógica é centralizada na função `filtro_territorial()` em `compartilhado/config.py`, então os dois recortes usam exatamente os mesmos scripts — só muda o filtro.
 
-> **Atenção:** ao trocar de escopo, limpe o banco Neo4j antes de recarregar, senão os dois recortes se misturam no mesmo grafo. O comando de limpezad o banco de dados pode ser encontrado no diretório 'ferramentas'.
+> **Atenção:** ao trocar de escopo, limpe o Neo4j antes de recarregar; senão, os dois recortes se misturam no mesmo grafo. O comando de limpeza é o `reset` do `ferramentas/neo4j_admin.py`.
 
 <a name="como_rodar"></a>
 ## Como rodar
 
-Você pode rodar tudo de uma vez:
+Para rodar tudo de uma vez:
 
 ```bash
 python run_all.py
 ```
 
-Ou etapa por etapa (útil pra debugar ou conferir os CSVs intermediários):
+Ou etapa por etapa (útil para debugar ou conferir os CSVs intermediários):
 
 ```bash
 python 01_geografia.py   # Monta a hierarquia territorial
@@ -75,7 +75,7 @@ python 04_perfis.py      # Carrega os 8 perfis censitários
 python 05_indices.py     # Cria os índices (espaciais e, opcionalmente, de nome)
 ```
 
-**A ordem importa!** A etapa 1 cria os nós de SetorCensitario que as etapas 2, 3 e 4 referenciam. Se rodar fora de ordem, o `MATCH` no Cypher não vai encontrar o setor e os dados ficam soltos. A etapa 5 (índices) roda por último, sobre os nós já carregados.
+**A ordem importa:** A etapa 1 cria os nós de SetorCensitario que as etapas 2, 3 e 4 referenciam. Se rodar fora de ordem, o `MATCH` no Cypher não vai encontrar o setor e os dados ficam soltos. A etapa 5 (índices) roda por último, sobre os nós já carregados.
 
 <a name="scripts"></a>
 ## O que cada script faz
@@ -88,7 +88,7 @@ Cria a espinha dorsal do grafo — a hierarquia territorial:
 UF → Município → Distrito → Subdistrito → [Bairro] → SetorCensitário
 ```
 
-O subdistrito está presente nas 3 cidades. O bairro é condicional (São Paulo não tem bairro mapeado, mas São Bernardo do Campo tem). As 7 variáveis básicas do Censo (v0001 a v0007) ficam como propriedades do nó de setor censitário, junto com o polígono em WKT.
+O bairro é um nível condicional: no estado, só 29.025 dos 103.319 setores estão ligados a um bairro, em 58 dos 645 municípios (a capital, por exemplo, não tem bairros mapeados), e os demais setores ligam-se direto ao subdistrito. As 7 variáveis básicas do Censo (v0001 a v0007) ficam como propriedades do nó de setor censitário, junto com o polígono em WKT.
 
 ### `02_educacao.py`
 
@@ -98,8 +98,9 @@ A associação escola→setor já é resolvida no PostgreSQL usando `ST_Contains
 
 ### `03_saude.py`
 
-Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cada unidade de saúde vira um nó `EquipamentoSaude` com as 35 colunas de atendimento/convênio como propriedades. 
-Durante os testes, notou-se que nem todos os equipamentos de saúde do cadastro possuem dados de atendimento. Para não perder esses equipamentos, o carregamento utiliza uma junção externa (`LEFT JOIN`) para manter todos os equipamentos de saúde, até mesmo aqueles que não possuem entradas na tabela de dados de atendimento, que no banco de dados em grafos ficam com as propriedades de atendimento ausentes.
+Mesmo esquema da educação, mas para os equipamentos de saúde (CNES 2025). Cada unidade de saúde vira um nó `EquipamentoSaude`, com as 35 colunas de atendimento e convênio como propriedades.
+
+Durante os testes, notamos que nem todos os equipamentos do cadastro têm dados de atendimento. Para não perdê-los, a carga usa uma junção externa (`LEFT JOIN`), e esses equipamentos ficam no grafo sem as propriedades de atendimento.
 
 ### `04_perfis.py`
 
@@ -123,12 +124,12 @@ Cria os índices do grafo, sobre os nós já carregados pelas etapas anteriores.
 - **Índices `POINT` (sempre criados):** sobre a propriedade `location` dos nós `Escola` e `EquipamentoSaude`. O Neo4j não indexa coordenadas automaticamente, e sem esse índice as consultas de proximidade (`point.distance` dentro de um raio) fazem varredura de força bruta.
 - **Índices de nome (opcionais, desativados por padrão):** `TEXT` ou `FULLTEXT` sobre os nomes de escolas, equipamentos e territórios. As consultas do experimento não filtram por nome, então ficam fora do escopo; são úteis para o uso real da ferramenta (busca por nome pelo usuário). Ativáveis pela lista `ABORDAGENS_ATIVAS` no início do script.
 
-Lembrando que os índices `RANGE` sobre os códigos identificadores (`cd_mun`, `cd_setor`, etc.) e os `LOOKUP` de rótulo/tipo já são criados automaticamente pelo Neo4j — as constraints de unicidade da etapa 1 cuidam dos primeiros.
+Os índices `RANGE` sobre os códigos identificadores (`cd_mun`, `cd_setor` etc.) e os `LOOKUP` de rótulo e tipo não precisam desta etapa: os primeiros vêm das constraints de unicidade da etapa 1, e os outros o Neo4j cria sozinho.
 
 <a name="csv"></a>
 ## CSVs intermediários
 
-Cada etapa pode salvar um CSV na pasta `output/` antes de mandar pro Neo4j. Isso é pra conferir visualmente se os dados estão saindo certos do Postgres.
+Cada etapa pode salvar um CSV na pasta `output/` antes de mandar para o Neo4j. Isso serve para conferir se os dados estão saindo certos do PostgreSQL.
 
 Controlado pela variável `SALVAR_CSV` em `../compartilhado/.env`:
 
@@ -137,7 +138,7 @@ SALVAR_CSV=true   # gera CSVs para conferência
 SALVAR_CSV=false  # desativa (quando já validado)
 ```
 
-A pasta `output/` está no `.gitignore`, então não vai pro repositório.
+A pasta `output/` está no `.gitignore`, então não vai para o repositório.
 
 <a name="batches"></a>
 ## Carga em batches e uso de memória
@@ -190,28 +191,27 @@ etl/
 <a name="auxiliares"></a>
 ### Pasta `auxiliares/`
 
-Os scripts de educação e saúde lêem as colunas a importar de arquivos `.txt` dentro da pasta `auxiliares/`. Isso permite editar quais colunas entram no grafo sem mexer no código Python. O formato é simples: uma coluna por linha, linhas começando com `#` são ignoradas.
+Os scripts de educação e saúde leem as colunas a importar de arquivos `.txt` dentro da pasta `auxiliares/`. Isso permite editar quais colunas entram no grafo sem mexer no código Python. O formato é uma coluna por linha, linhas começando com `#` são ignoradas.
 
 Para os perfis censitários, o `config_perfis.txt` lista quais tabelas importar (formato `Label | tabela_no_pg`). Como cada tabela de perfil tem centenas de colunas `v*`, todas são importadas automaticamente — o script detecta e carrega todas exceto as internas do PG.
 
 <a name="trouble"></a>
 ## Troubleshooting
 
-**"Connection refused" no Neo4j:** o banco não está rodando. Abre o Neo4j Desktop e dá Start, ou roda `neo4j start` no terminal.
+**"Connection refused" no Neo4j:** o banco não está rodando. Inicie-o pelo Neo4j Desktop ou com `neo4j start` no terminal.
 
-**"Authentication failed" no Neo4j:** conferir a senha em `../compartilhado/.env`. A senha padrão do Neo4j na primeira vez é `neo4j`, mas ele pede pra trocar no primeiro acesso.
+**"Authentication failed" no Neo4j:** confira a senha em `../compartilhado/.env`. A senha padrão do Neo4j é `neo4j`, mas ele pede para trocá-la no primeiro acesso.
 
 **Timeout no PostgreSQL:** se estiver usando o banco remoto, o host pode estar fora do ar ou a rede bloqueando a porta 5432. Se for local, confira se o PostgreSQL está rodando (`brew services list`).
 
 **"cross-database references are not implemented":** o banco local precisa se chamar `culturaeduca`. As queries usam referência de 3 partes (`culturaeduca.datasets.tabela`) e o PostgreSQL trata um nome de banco diferente como cross-database, que não é suportado. Renomeie com `ALTER DATABASE ... RENAME TO culturaeduca`.
 
-**"relation does not exist" no PostgreSQL:** conferir se o schema é `culturaeduca.datasets` e se as tabelas existem com esses nomes exatos. Numa cópia local, confirme também que a extensão PostGIS foi instalada antes do restore (senão as tabelas com `_geom` não são criadas).
+**"relation does not exist" no PostgreSQL:** confira se o esquema é `culturaeduca.datasets` e se as tabelas existem com esses nomes exatos. Numa cópia local, confirme também que a extensão PostGIS foi instalada antes do restore (senão as tabelas com `_geom` não são criadas).
 
 <a name="refs"></a>
 ## Referências
 
-- [Neo4j Python Driver — Documentação oficial](https://neo4j.com/docs/python-manual/current/)
-- [psycopg2 — Documentação](https://www.psycopg.org/docs/)
-- [python-dotenv — GitHub](https://github.com/theskumar/python-dotenv)
-- [Neo4j Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
-- [PostGIS — ST_Contains](https://postgis.net/docs/ST_Contains.html)
+- [Neo4j — driver Python](https://neo4j.com/docs/python-manual/current/) e [manual do Cypher](https://neo4j.com/docs/cypher-manual/current/)
+- [psycopg2 — documentação](https://www.psycopg.org/docs/)
+- [python-dotenv](https://github.com/theskumar/python-dotenv)
+- [PostGIS — documentação](https://postgis.net/documentation/)

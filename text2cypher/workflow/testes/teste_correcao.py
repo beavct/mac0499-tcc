@@ -1,12 +1,16 @@
 """
-Teste rápido do workflow com um LLM falso, que devolve respostas prontas: a primeira
+Teste rápido do laço de correção com um LLM falso, que devolve respostas prontas: a primeira
 com uma propriedade inexistente (para forçar uma correção) e a segunda válida. O resto
 roda de verdade, então precisa do Neo4j carregado e do índice Chroma (não do Ollama).
 
 Uso (a partir de text2cypher/workflow/):
-    python teste_rapido.py
+    python testes/teste_correcao.py
 """
+import os
 import sys
+
+# sobe até workflow/ para importar o grafo e os nós
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage
@@ -49,7 +53,7 @@ def modelo_falso():
 
 def main():
     print("=" * 60)
-    print("TESTE RÁPIDO: workflow com LLM falso")
+    print("TESTE RÁPIDO: laço de correção com LLM falso")
     print("=" * 60)
 
     # troca a fábrica do modelo pelo modelo falso só neste teste

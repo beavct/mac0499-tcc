@@ -1,10 +1,10 @@
-# Teste do RAG: modelos de embedding
+# RAG — modelos de embedding
 
-Compara modelos de embedding abertos e multilíngues pra ver qual recupera melhor as propriedades do dicionário do [`text2cypher/`](../../text2cypher) a partir das perguntas.
+Compara modelos de embedding abertos e multilíngues para ver qual recupera melhor as propriedades do dicionário do [`text2cypher/`](../../text2cypher) a partir das perguntas.
 
 ## Como funciona
 
-O teste usa o mesmo gabarito, a mesma busca exata e a mesma métrica do [teste dos valores](../rag_valores): pra cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, conta quantas das propriedades do Cypher correto aparecem entre as `k` mais parecidas com a pergunta (**recall@k**, com k = 5, 10 e 20). O texto indexado é o da versão B (tema, descrição e os valores das colunas que não são booleanas), que é o que o workflow usa.
+O teste usa o mesmo gabarito, a mesma busca exata e a mesma métrica do [teste dos valores](../rag_valores): para cada uma das 65 consultas de [`perguntas/`](../../perguntas) que usam o dicionário, conta quantas das propriedades do Cypher correto aparecem entre as `k` mais parecidas com a pergunta (**recall@k**, com k = 5, 10 e 20). O texto indexado é o da versão B (tema, descrição e os valores das colunas que não são booleanas), que é o que o workflow usa.
 
 Além do recall, o script conta as **perguntas completas**: aquelas em que todas as propriedades do gabarito estão no top-20. É o caso em que o modelo gerador recebe tudo de que precisa.
 
@@ -28,8 +28,8 @@ Pré-requisito: o dicionário gerado pela etapa 01 (`text2cypher/dicionario/corp
 
 ```bash
 cd testes/rag_modelos
-python comparar_modelos.py                 # baixa e testa os sete modelos
-python comparar_modelos.py --limpar-cache  # apaga cada modelo do cache depois de usar
+python comparar_modelos.py  ← baixa e testa os sete modelos
+python comparar_modelos.py --limpar-cache  ← apaga cada modelo do cache depois de usar
 ```
 
 Os modelos juntos ocupam uns 9 GB no cache do Hugging Face (`~/.cache/huggingface/hub`). Se o disco estiver muito cheio, use o `--limpar-cache`: ele apaga cada modelo depois do teste, menos o que está no `config.py`.
@@ -52,7 +52,7 @@ A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de prop
 | bge-m3 | 0,49 | 0,53 | 0,18 | 0,46 | 0,55 | 20/65 |
 | Qwen3 | **0,67** | 0,53 | 0,64 | **0,88** | 0,70 | **32/65** |
 
-O Qwen3 tem o maior recall, mas o `multilingual-e5-base` fica praticamente empatado (duas perguntas completas a menos), é menor e não depende de uma instrução escrita por nós. Os dois sobem o recall de 0,37 pra perto de 0,65 e mais que dobram as perguntas completas. 
+O Qwen3 tem o maior recall, mas o `multilingual-e5-base` fica praticamente empatado (duas perguntas completas a menos), é menor e não depende de uma instrução escrita por nós. Os dois sobem o recall de 0,37 para perto de 0,65 e mais que dobram as perguntas completas.
 
 ## Estrutura
 
@@ -62,3 +62,11 @@ rag_modelos/
 ├── output/        # CSVs gerados (não versionado)
 └── resultados/    # rodada usada na monografia
 ```
+
+## Referências
+
+- Reimers e Gurevych, *Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks*, EMNLP 2019, e *Making Monolingual Sentence Embeddings Multilingual using Knowledge Distillation*, EMNLP 2020 (MiniLM e mpnet multilíngues)
+- Wang et al., *Multilingual E5 Text Embeddings: A Technical Report*, arXiv:2402.05672, 2024
+- Chen et al., *M3-Embedding*, arXiv:2402.03216, 2024 (bge-m3)
+- Zhang et al., *Qwen3 Embedding: Advancing Text Embedding and Reranking Through Foundation Models*, arXiv:2506.05176, 2025
+- [sentence-transformers — documentação](https://sbert.net)
