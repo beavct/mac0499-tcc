@@ -1,7 +1,9 @@
 """
 Teste rápido do laço de correção com um LLM falso, que devolve respostas prontas: a primeira
-com uma propriedade inexistente (para forçar uma correção) e a segunda válida. O resto
-roda de verdade, então precisa do Neo4j carregado e do índice Chroma (não do Ollama).
+com uma propriedade inexistente (para forçar uma correção) e a segunda válida. Depois, a mesma
+consulta válida dentro de um bloco de código em Markdown, que a limpeza da resposta deve tirar
+antes do CyVer. O resto roda de verdade, então precisa do Neo4j carregado e do índice Chroma
+(não do Ollama).
 
 Uso (a partir de text2cypher/workflow/):
     python testes/teste_correcao.py
@@ -39,11 +41,23 @@ CAMINHO_ESPERADO = [
 ]
 
 
+# a consulta válida como alguns modelos devolvem, mesmo com o prompt pedindo para limpar a resposta
+CYPHER_COM_BLOCO = f"```cypher\n{CYPHER_VALIDO}\n```"
+
+CAMINHO_SEM_CORRECAO = [
+    "schema_rag", "cypher_generator", "cyver_evaluator", "cypher_executor", "output_generator",
+]
+
+
 def modelo_falso():
     return GenericFakeChatModel(messages=iter([
         AIMessage(content=CYPHER_INVALIDO),
         AIMessage(content=CYPHER_VALIDO),
     ]))
+
+
+def modelo_falso_com_bloco():
+    return GenericFakeChatModel(messages=iter([AIMessage(content=CYPHER_COM_BLOCO)]))
 
 
 # ---------------------------------------------------------------------------
@@ -60,6 +74,10 @@ def main():
     config_workflow.models[config_workflow.MODEL_NAME] = modelo_falso
     resultado = responder(PERGUNTA)
 
+    # a mesma consulta válida, mas dentro de um bloco de código
+    config_workflow.models[config_workflow.MODEL_NAME] = modelo_falso_com_bloco
+    com_bloco = responder(PERGUNTA)
+
     path = resultado.get("path", [])
     historico = resultado.get("cypher_errors_history") or []
     checagens = [
@@ -69,6 +87,12 @@ def main():
         ("consulta final é a corrigida", resultado.get("cypher_statement") == CYPHER_VALIDO),
         ("executou sem erro", resultado.get("execution_error") is None),
         ("execução retornou registros", bool(resultado.get("database_records"))),
+        ("sem bloco de código, nada é limpo",
+         resultado.get("cleaned_responses") == [False, False]),
+        ("com bloco: aprova sem correção", com_bloco.get("path") == CAMINHO_SEM_CORRECAO),
+        ("com bloco: a consulta sai sem as crases",
+         com_bloco.get("cypher_statement") == CYPHER_VALIDO),
+        ("com bloco: a limpeza fica registrada", com_bloco.get("cleaned_responses") == [True]),
     ]
 
     print(f"\nCaminho:   {' -> '.join(path)}")

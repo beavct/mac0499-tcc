@@ -1,5 +1,6 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Reusado; alterações: contagem de tokens, print de início e cypher_history (NOTICE.md).
+# Reusado; alterações: contagem de tokens, print de início, cypher_history e limpeza da resposta
+# (NOTICE.md).
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables.config import RunnableConfig
@@ -7,6 +8,7 @@ from langchain_core.callbacks import get_usage_metadata_callback
 
 
 from Nodes.States.states import  OverallState
+from Nodes.resposta import limpar_resposta
 
 system_prompt = """
                 Task: Generate Cypher statement to query a graph database.
@@ -85,10 +87,11 @@ def cypher_generator(state: OverallState, config:RunnableConfig) -> OverallState
         generated_cypher = generated_cypher.split('assistant<|end_header_id|>')[1].strip()
     elif model_name == 'finetuned_gemma2_9b_local':
         generated_cypher = generated_cypher.split('<start_of_turn>model\n')[1].strip()
-
+    generated_cypher, limpou = limpar_resposta(generated_cypher)
 
     return {"cypher_statement": generated_cypher,
             "cypher_history": [generated_cypher],
+            "cleaned_responses": [limpou],
             "path": ["cypher_generator"],
             "total_tokens": [total_tokens],
             "prompt_tokens": [prompt_tokens],

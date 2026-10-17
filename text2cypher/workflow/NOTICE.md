@@ -26,7 +26,8 @@ removido código comentado sem uso. Além disso:
 
 **Novos:** `Nodes/schema_rag.py` (substitui o `schema_filtering`), `Nodes/value_grounding.py`
 (Camada B, opcional; não tem equivalente no CyVerACT), `Nodes/tentativas.py` (memória das
-tentativas do laço de correção, usada com `BLOQUEAR_REPETICAO`), `config_workflow.py`, `executar.py`.
+tentativas do laço de correção, usada com `BLOQUEAR_REPETICAO`), `Nodes/resposta.py` (limpeza do
+bloco de código em Markdown na resposta do modelo), `config_workflow.py`, `executar.py`.
 
 **Adaptados:**
 - `graph.py` — usa o `schema_rag` (ou o `schema_completo`, com `USAR_RAG` desligado); parâmetros do `StateGraph` atualizados para o langgraph 1.x; com `USAR_VALUE_GROUNDING`, põe o `value_grounding` entre o `schema_rag` e o `cypher_generator`.
@@ -37,8 +38,9 @@ tentativas do laço de correção, usada com `BLOQUEAR_REPETICAO`), `config_work
   - contagem de tokens pelo `langchain-core`;
   - mensagem de início antes da chamada ao LLM;
   - a consulta devolvida vai para `cypher_history`;
-  - no corretor, com `MAX_TENTATIVAS_MEMORIA` acima de 0, o prompt ganha um bloco com as últimas tentativas que falharam e os erros de cada uma. O texto original do prompt não muda.
-- `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B) e o `cypher_history` (consultas tentadas).
+  - no corretor, com `MAX_TENTATIVAS_MEMORIA` acima de 0, o prompt ganha um bloco com as últimas tentativas que falharam e os erros de cada uma. O texto original do prompt não muda;
+  - a resposta passa pelo `limpar_resposta` (`Nodes/resposta.py`), que tira o bloco de código em Markdown (```` ```cypher ... ``` ````) quando o modelo o põe, mesmo com o prompt pedindo que não; cada chamada registra em `cleaned_responses` se a limpeza foi usada.
+- `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B) o `cypher_history` (consultas tentadas) e o `cleaned_responses` (se cada resposta veio com bloco de código).
 - `Configuration/configurations.py` — campos `timeout_execucao`, `usar_rag`, `bloquear_repeticao` e `max_tentativas_memoria`.
 - `Nodes/unavailable_output.py` — `database_records` passa de `['']` a `None`.
 - `Nodes/cyver_evaluator.py`:

@@ -52,6 +52,7 @@ A lógica do CyVerACT continua a mesma: o gerador, a validação pelo CyVer, o l
 - **`schema_retriever`**: o fallback amplia o RAG (`k` maior) em vez de mandar o esquema completo, que teria ~1.800 propriedades;
 - **hierarquia territorial no esquema**: o esquema ganha o caminho do setor até cada nível, com o intervalo de saltos (`HIERARQUIA_TERRITORIAL`, em `../config.py`);
 - **`cyver_evaluator`**: o bloqueio de repetição (ver [Bloqueio de repetição](#repeticao));
+- **`cypher_generator` / `cypher_corrector`**: a resposta passa por uma limpeza que tira o bloco de código em Markdown (```` ```cypher ... ``` ````), que o qwen às vezes põe mesmo com o prompt pedindo que não. Sem isso, o CyVer reprova a consulta por sintaxe e o laço gasta as correções com a formatação. Cada chamada registra em `cleaned_responses` se a limpeza foi usada, para medir com que frequência isso acontece;
 - **`cypher_executor`**: a execução, que vinha desligada no original, agora roda, com timeout e registro do erro;
 - **`value_grounding`** (novo, opcional): a Camada B, que não existe no CyVerACT;
 - **`Configuration/`**: os modelos abertos, pela API compatível com a da OpenAI, e o Claude, pela API da Anthropic, todos sem ajuste fino;
@@ -85,6 +86,7 @@ workflow/
     ├── schema_rag.py          ← NOVO: esquema por RAG (Camada A) ou completo (schema_completo)
     ├── value_grounding.py     ← NOVO: valores dos filtros (Camada B, opcional)
     ├── tentativas.py          ← NOVO: memória das tentativas (bloqueio de repetição)
+    ├── resposta.py            ← NOVO: limpeza do bloco de código na resposta do modelo
     ├── schema_retriever.py    ← fallback (RAG com k maior)
     ├── cypher_generator.py    ← LLM gera o Cypher
     ├── cyver_evaluator.py     ← validação CyVer e decisão do laço
