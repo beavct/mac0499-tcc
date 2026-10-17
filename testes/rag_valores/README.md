@@ -38,7 +38,7 @@ python comparar_textos.py                                # os dois modelos
 python comparar_textos.py intfloat/multilingual-e5-base  # só um deles
 ```
 
-Os modelos testados ficam no `PREFIXOS` do script: o `paraphrase-multilingual-MiniLM-L12-v2`, usado no começo do projeto, e o `multilingual-e5-base`, escolhido depois pelo [teste dos modelos](../rag_modelos). Para cada um, o script imprime a tabela de recall e grava em `output/<modelo>/`:
+Os modelos testados ficam no `PREFIXOS` do script. Para cada um, o script imprime a tabela de recall e grava em `output/<modelo>/`:
 - `recall.csv`: recall por grupo, versão e `k`;
 - `posicoes.csv`: a posição de cada propriedade do gabarito em cada versão (vazio = fora do top-20).
 

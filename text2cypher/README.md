@@ -131,7 +131,7 @@ As escolhas da Camada A vêm de três experimentos, cada um com o seu README em 
 | Experimento | Pergunta | Resultado |
 |-------------|----------|-----------|
 | [`rag_valores/`](../testes/rag_valores) | colocar os valores das colunas no texto indexado ajuda? | sim, nas categóricas; nas booleanas, atrapalha |
-| [`rag_modelos/`](../testes/rag_modelos) | qual modelo de embedding recupera melhor? | `multilingual-e5-base`, praticamente empatado com o Qwen3 e sem depender de instrução |
+| [`rag_modelos/`](../testes/rag_modelos) | qual modelo de embedding recupera melhor? | entre dez modelos avaliados no MTEB-BR, o `multilingual-e5-base` empata no topo com o Qwen3 e o e5-large na busca da Camada A, sendo menor e sem depender de instrução |
 | [`rag_buscas/`](../testes/rag_buscas) | qual forma de busca entrega mais propriedades certas? | a híbrida (vetorial + BM25) com os complementos de descrição |
 
 A avaliação do workflow completo, com os modelos locais e o Claude, fica em [`../testes/avaliacao/`](../testes/avaliacao).
