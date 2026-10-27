@@ -6,5 +6,4 @@ WHERE size(escolas_em) = 1
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        escolas_em[0].id_aparelho AS id_escola,
-       escolas_em[0].nm_aparelho AS nome_escola
-ORDER BY municipio, distrito;
+       escolas_em[0].nm_aparelho AS nome_escola;

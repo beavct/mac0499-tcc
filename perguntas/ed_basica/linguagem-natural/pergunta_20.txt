@@ -1,1 +1,1 @@
-Qual a proporção de escolas com Educação Especial Inclusiva em cada distrito, frente à demanda de domicílios permanentes ocupados?
+Em cada distrito, quantas escolas há, quantas oferecem Educação Especial Inclusiva e quantos domicílios particulares permanentes ocupados existem?

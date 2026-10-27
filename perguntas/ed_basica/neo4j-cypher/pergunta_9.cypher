@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor,
        e.id_aparelho AS id_escola,
        e.nm_aparelho AS nome_escola,
-       p.v00006 AS moradores_dom_improvisados
-ORDER BY moradores_dom_improvisados DESC;
+       p.v00006 AS moradores_dom_improvisados;

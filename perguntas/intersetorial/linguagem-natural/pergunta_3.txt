@@ -1,1 +1,1 @@
-Quais distritos com muitos domicílios em vias sem pavimentação e sem calçada concentram escolas públicas de Ensino Fundamental, mas oferecem menos de 3 unidades de Urgência pelo SUS?
+Quais distritos com mais de 1.000 domicílios em vias sem pavimentação e mais de 1.000 domicílios em vias sem calçada têm mais de 5 escolas públicas (federais, estaduais ou municipais) com turmas de Ensino Fundamental, mas menos de 3 unidades de Urgência pelo SUS?

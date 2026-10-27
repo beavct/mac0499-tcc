@@ -10,5 +10,4 @@ WHERE qtd_ambulatorios_sus < 3
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        total_habitantes,
-       qtd_ambulatorios_sus
-ORDER BY total_habitantes DESC;
+       qtd_ambulatorios_sus;

@@ -12,5 +12,4 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 dom2
   ON s.cd_setor = dom2.cd_setor
 WHERE a.at_06_conv_01 = '1' AND dom2.v00316 > 0
-GROUP BY s.nm_mun, s.nm_dist, s.cd_setor
-ORDER BY domicilios_esgoto_inexistente DESC;
+GROUP BY s.nm_mun, s.nm_dist, s.cd_setor;

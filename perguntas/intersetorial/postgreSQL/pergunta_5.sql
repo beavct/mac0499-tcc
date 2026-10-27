@@ -37,5 +37,4 @@ SELECT
 FROM escolas_por_municipio e
 JOIN idosos_por_municipio i ON e.municipio = i.municipio
 LEFT JOIN saude_por_municipio sa ON e.municipio = sa.municipio
-WHERE e.escolas_publicas > 0
-ORDER BY razao_escola_saude DESC NULLS LAST;
+WHERE e.escolas_publicas > 0;

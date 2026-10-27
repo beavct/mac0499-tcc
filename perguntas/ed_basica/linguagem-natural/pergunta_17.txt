@@ -1,1 +1,1 @@
-Quantas escolas de Ensino Médio estão em setores onde há moradores em casas de vila ou condomínio?
+Em cada setor censitário com escolas de Ensino Médio, quantas são essas escolas e quantos moradores em casas de vila ou condomínio há no setor?

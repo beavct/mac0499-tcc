@@ -1,1 +1,1 @@
-Quantas turmas de creche em tempo integral existem em bairros com alta presença de mulheres que moram sozinhas?
+Quantas turmas de creche em tempo integral existem em cada bairro, ordenados pelo número de mulheres que moram sozinhas, do maior para o menor?

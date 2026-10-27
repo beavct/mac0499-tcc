@@ -5,5 +5,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
        coalesce(p.v00316, 0) AS domicilios_esgoto_inexistente,
-       count(DISTINCT saude) AS unidades_vigilancia_sus
-ORDER BY domicilios_esgoto_inexistente DESC;
+       count(DISTINCT saude) AS unidades_vigilancia_sus;

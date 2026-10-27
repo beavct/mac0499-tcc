@@ -1,13 +1,11 @@
 // Vizinho mais próximo: para cada unidade de Diagnose e Terapia (SADT) SUS,
 // a unidade de Urgência SUS mais próxima.
 //
-// Nota de comparação com o PostgreSQL: 4 unidades SADT do estado (em Lorena,
-// Mongaguá, Monteiro Lobato e Santa Fé do Sul) têm coordenadas do CNES que não
-// caem dentro de nenhum polígono de setor censitário, então o ETL (que ancora
-// cada equipamento no setor que o contém, via ST_Contains) não as carrega como
-// nós. Por isso elas não aparecem aqui, mas aparecem na versão PostgreSQL, que
-// mede distância entre pontos sem depender do setor. A origem é a qualidade da
-// coordenada na fonte, não a formulação da consulta.
+// Nota de comparação com o PostgreSQL: 4 unidades SADT do estado têm coordenadas do CNES que
+// não caem em nenhum setor censitário e não são carregadas no grafo; a versão SQL também as
+// exclui, pelo mesmo ST_Contains do ETL. A unidade de Urgência mais próxima ainda difere em
+// cerca de 130 casos, porque o point.distance do Neo4j usa a fórmula de haversine e o SQL, a
+// distância geodésica (nenhuma unidade de Urgência SUS fica fora dos setores).
 MATCH (diag:EquipamentoSaude)
 WHERE diag.at_03_conv_01 = true
 CALL (diag) {
@@ -17,9 +15,10 @@ CALL (diag) {
     ORDER BY d
     LIMIT 1
 }
-RETURN diag.id_aparelho AS id_diagnose,
+MATCH (diag)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*1..3]->(:Distrito)-[:PARTE_DE]->(m:Municipio)
+RETURN m.nm_mun AS municipio,
+       diag.id_aparelho AS id_diagnose,
        diag.nm_aparelho AS nome_diagnose,
        u.id_aparelho AS id_urgencia_proxima,
        u.nm_aparelho AS nome_urgencia_proxima,
-       round(d, 1) AS distancia_m
-ORDER BY distancia_m DESC;
+       round(d, 1) AS distancia_m;

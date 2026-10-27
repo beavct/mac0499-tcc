@@ -6,5 +6,4 @@ WHERE c.v00006 > 100
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       c.v00006 AS moradores_dom_improvisados
-ORDER BY moradores_dom_improvisados DESC;
+       c.v00006 AS moradores_dom_improvisados;

@@ -14,5 +14,4 @@ WHERE COALESCE(carac.v00006, 0) > 100
   AND NOT EXISTS (
     SELECT 1 FROM culturaeduca.datasets.eq_saude_2025 saude
     WHERE ST_Contains(s._geom, saude._geom)
-  )
-ORDER BY moradores_dom_improvisados DESC;
+  );

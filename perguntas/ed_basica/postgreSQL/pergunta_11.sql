@@ -14,5 +14,4 @@ JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_alfabetizacao alf
   ON s.cd_setor = alf.cd_setor
 WHERE m.qt_tur_med > 0
   AND m.qt_tur_bas_n > 0
-  AND (COALESCE(alf.v00644, 0) - COALESCE(alf.v00748, 0)) > 0
-ORDER BY jovens_15_19_analfabetos DESC;
+  AND (COALESCE(alf.v00644, 0) - COALESCE(alf.v00748, 0)) > 0;

@@ -20,5 +20,4 @@ WHERE m.qt_tur_inf > 0
       WHERE mo.qt_tur_inf > 0
         AND outra.co_entidade <> esc.co_entidade
         AND ST_DWithin(esc._geog, outra._geog, 3000)
-  )
-ORDER BY criancas_0_4_no_setor DESC;
+  );

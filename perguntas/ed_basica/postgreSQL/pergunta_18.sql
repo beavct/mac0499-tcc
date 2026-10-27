@@ -20,5 +20,4 @@ SELECT a.municipio,
        a.total_jovens_15_19_analfabetos,
        COALESCE(e.total_turmas_eja_medio, 0) AS total_turmas_eja_medio
 FROM analfabetos_por_mun a
-LEFT JOIN eja_por_mun e ON a.municipio = e.municipio
-ORDER BY a.total_jovens_15_19_analfabetos DESC;
+LEFT JOIN eja_por_mun e ON a.municipio = e.municipio;

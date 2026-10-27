@@ -9,5 +9,4 @@ WHERE hospitais_internacao_sus > 5
 RETURN m.nm_mun AS municipio, 
        d.nm_dist AS distrito, 
        domicilios_permanentes_ocupados, 
-       hospitais_internacao_sus
-ORDER BY domicilios_permanentes_ocupados DESC;
+       hospitais_internacao_sus;

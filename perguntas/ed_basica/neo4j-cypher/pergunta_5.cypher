@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        e.id_aparelho AS id_escola, 
        e.nm_aparelho AS nome_escola,
        e.qt_tur_inf_cre AS qtd_turmas_creche,
-       e.qt_tur_med AS qtd_turmas_medio
-ORDER BY municipio, distrito, nome_escola;
+       e.qt_tur_med AS qtd_turmas_medio;

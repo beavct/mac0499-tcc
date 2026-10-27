@@ -1,1 +1,1 @@
-Qual é a proporção de escolas públicas em relação às privadas em cada município?
+Quantas escolas de cada dependência administrativa (federal, estadual, municipal e privada) há em cada município, e qual o percentual de cada uma no total de escolas do município?

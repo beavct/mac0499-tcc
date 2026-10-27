@@ -47,5 +47,4 @@ LEFT JOIN urgencia_por_distrito u
 WHERE en.dom_sem_pavimentacao > 1000
   AND en.dom_sem_calcada > 1000
   AND es.escolas_fund_publicas > 5
-  AND COALESCE(u.unidades_urgencia_sus, 0) < 3
-ORDER BY en.dom_sem_pavimentacao DESC;
+  AND COALESCE(u.unidades_urgencia_sus, 0) < 3;

@@ -18,5 +18,4 @@ WHERE m.tp_dependencia IN ('1', '2', '3')
       JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
         ON a.co_unidade = vig.co_unidade AND a.at_06_conv_01 = '1'
       WHERE ST_DWithin(esc._geog, vig._geog, 4000)
-  )
-ORDER BY domicilios_lixo_irregular_no_setor DESC;
+  );

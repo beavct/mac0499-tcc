@@ -9,5 +9,4 @@ WHERE (e.qt_tur_eja_fund > 0 OR e.qt_tur_eja_med > 0)
 RETURN DISTINCT m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       coalesce(ent.v05013, 0) AS domicilios_sem_iluminacao
-ORDER BY domicilios_sem_iluminacao DESC;
+       coalesce(ent.v05013, 0) AS domicilios_sem_iluminacao;

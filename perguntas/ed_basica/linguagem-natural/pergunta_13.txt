@@ -1,1 +1,1 @@
-Quantos domicílios com 5 moradores estão próximos de escolas que ofertam ensino EAD ou semipresencial?
+Para cada escola que oferta turmas semipresenciais ou EAD, quantos domicílios com 5 moradores há no setor censitário onde ela está?

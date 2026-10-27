@@ -8,5 +8,4 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
 WHERE m.in_quadra_esportes = '1'
-GROUP BY s.nm_mun
-ORDER BY s.nm_mun, escolas_com_quadra DESC;
+GROUP BY s.nm_mun;

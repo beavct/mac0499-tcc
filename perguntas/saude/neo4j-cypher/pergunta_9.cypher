@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor, 
        saude.id_aparelho AS id_unidade, 
        saude.nm_aparelho AS nome_unidade, 
-       (coalesce(p.v01019, 0) + coalesce(p.v01030, 0)) AS populacao_idosa_70_mais
-ORDER BY populacao_idosa_70_mais DESC;
+       (coalesce(p.v01019, 0) + coalesce(p.v01030, 0)) AS populacao_idosa_70_mais;

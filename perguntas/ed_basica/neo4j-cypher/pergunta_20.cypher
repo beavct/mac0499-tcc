@@ -10,5 +10,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito, 
        total_domicilios, 
        total_escolas, 
-       escolas_com_inclusiva
-ORDER BY total_domicilios DESC;
+       escolas_com_inclusiva;

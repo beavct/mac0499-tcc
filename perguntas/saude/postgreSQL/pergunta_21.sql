@@ -24,5 +24,4 @@ SELECT
     COALESCE(v.unidades_vigilancia_publica, 0) AS unidades_vigilancia_publica
 FROM analfabetos_por_municipio m
 LEFT JOIN vigilancia_por_municipio v
-  ON m.municipio = v.municipio
-ORDER BY m.analfabetos_15_mais DESC;
+  ON m.municipio = v.municipio;

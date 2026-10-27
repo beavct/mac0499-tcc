@@ -11,5 +11,4 @@ WHERE esc.qt_tur_inf > 0
 RETURN esc.id_aparelho AS id_escola,
        esc.nm_aparelho AS nome_escola,
        m.nm_mun AS municipio,
-       coalesce(demo.v01031, 0) AS criancas_0_4_no_setor
-ORDER BY criancas_0_4_no_setor DESC;
+       coalesce(demo.v01031, 0) AS criancas_0_4_no_setor;

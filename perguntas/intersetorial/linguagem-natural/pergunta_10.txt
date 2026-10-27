@@ -1,1 +1,1 @@
-Em cada distrito do estado, qual a presença de domicílios do tipo casa com responsável indígena, de escolas públicas de Ensino Fundamental e de unidades de Vigilância em Saúde pelo SUS?
+Em cada distrito do estado, quantos domicílios do tipo casa com responsável indígena, quantas escolas públicas (federais, estaduais ou municipais) com turmas de Ensino Fundamental (anos iniciais ou finais) e quantas unidades de Vigilância em Saúde pelo SUS existem?

@@ -4,5 +4,4 @@ WHERE s.v0001 > 1000
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       s.v0001 AS total_moradores
-ORDER BY total_moradores DESC;
+       s.v0001 AS total_moradores;

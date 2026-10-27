@@ -17,5 +17,4 @@ WHERE COALESCE(demo.v01041, 0) > 100
     JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a ON saude.co_unidade = a.co_unidade
     WHERE ST_Contains(s._geom, saude._geom)
       AND a.at_04_conv_01 = '1'
-  )
-ORDER BY pop_idosa_70_mais DESC;
+  );

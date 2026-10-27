@@ -16,5 +16,4 @@ WHERE m.tp_dependencia IN ('1', '2', '3')
     WHERE ST_Contains(s._geom, saude._geom)
       AND a.at_02_conv_01 = '1'
   )
-GROUP BY s.nm_mun, s.nm_dist, s.cd_setor
-ORDER BY escolas_publicas DESC;
+GROUP BY s.nm_mun, s.nm_dist, s.cd_setor;

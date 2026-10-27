@@ -22,5 +22,4 @@ JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
 JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade AND a.at_01_conv_01 = '1' -- Internação - SUS
 LEFT JOIN ambulatorios_por_distrito amb
-  ON s.nm_mun = amb.municipio AND s.nm_dist = amb.distrito
-ORDER BY ambulatorios_sus_no_distrito DESC, municipio, distrito;
+  ON s.nm_mun = amb.municipio AND s.nm_dist = amb.distrito;

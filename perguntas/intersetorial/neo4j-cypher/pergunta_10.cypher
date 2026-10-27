@@ -15,5 +15,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        responsaveis_indigenas,
        escolas_fund_publicas,
-       unidades_vigilancia_sus
-ORDER BY responsaveis_indigenas DESC;
+       unidades_vigilancia_sus;

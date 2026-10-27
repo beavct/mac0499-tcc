@@ -28,5 +28,4 @@ SELECT
 FROM domicilios_por_distrito d
 JOIN internacao_por_distrito i
   ON d.municipio = i.municipio AND d.distrito = i.distrito
-WHERE i.hospitais_internacao_sus > 5
-ORDER BY d.domicilios_permanentes_ocupados DESC;
+WHERE i.hospitais_internacao_sus > 5;

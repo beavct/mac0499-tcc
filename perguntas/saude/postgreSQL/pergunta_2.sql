@@ -13,5 +13,4 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_alfabetizacao alf 
   ON s.cd_setor = alf.cd_setor
 WHERE a.at_02_conv_01 = '1'
-  AND (COALESCE(alf.v00644, 0) - (COALESCE(alf.v00748, 0)))  > 0
-ORDER BY jovens_15_19_analfabetos DESC;
+  AND (COALESCE(alf.v00644, 0) - (COALESCE(alf.v00748, 0)))  > 0;

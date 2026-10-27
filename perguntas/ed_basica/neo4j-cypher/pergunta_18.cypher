@@ -6,5 +6,4 @@ WITH m, total_jovens_15_19_analfabetos, sum(coalesce(e.qt_tur_eja_med, 0)) AS to
 
 RETURN m.nm_mun AS municipio,
        total_jovens_15_19_analfabetos,
-       total_turmas_eja_medio
-ORDER BY total_jovens_15_19_analfabetos DESC;
+       total_turmas_eja_medio;

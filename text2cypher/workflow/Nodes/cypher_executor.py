@@ -1,7 +1,8 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# No original a execução estava desativada; aqui ela roda, com timeout e registro do erro.
+# No original a execução estava desativada; aqui ela roda, com timeout, registro do erro e só em
+# modo de leitura (a consulta vem do modelo e não pode alterar o grafo).
 from langchain_core.runnables.config import RunnableConfig
-from neo4j import Query
+from neo4j import Query, RoutingControl
 
 from Nodes.States.states import  OverallState
 
@@ -21,11 +22,12 @@ def cypher_executor(state: OverallState, config: RunnableConfig) -> OverallState
     execution_error = None
     try:
         records, _, _ = driver.execute_query(
-            Query(cypher_statement, timeout=timeout), database_=database_name
+            Query(cypher_statement, timeout=timeout), database_=database_name,
+            routing_=RoutingControl.READ,
         )
         database_records = [record.data() for record in records]
     except Exception as e:
-        # pode falhar mesmo aprovada pelo CyVer (ex.: divisão por zero, timeout)
+        # pode falhar mesmo aprovada pelo CyVer (ex.: divisão por zero, timeout, escrita)
         execution_error = f"{type(e).__name__}: {e}"
 
     return {

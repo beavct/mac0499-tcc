@@ -26,5 +26,4 @@ SELECT
     ROUND((1000.0 * COALESCE(f.domicilios_fossa_rudimentar, 0) / NULLIF(p.populacao_total, 0))::numeric, 2) AS fossa_por_mil_habitantes
 FROM populacao_por_distrito p
 LEFT JOIN fossa_por_distrito f
-  ON p.municipio = f.municipio AND p.distrito = f.distrito
-ORDER BY fossa_por_mil_habitantes DESC NULLS LAST, domicilios_fossa_rudimentar DESC;
+  ON p.municipio = f.municipio AND p.distrito = f.distrito;

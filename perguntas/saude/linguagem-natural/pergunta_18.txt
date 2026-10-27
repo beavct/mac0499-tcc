@@ -1,1 +1,1 @@
-Quais distritos têm domicílios sem banheiro nem sanitário e qual a presença de postos de Vigilância em Saúde pelo SUS nesses locais?
+Em cada distrito, quantos postos de Vigilância em Saúde pelo SUS estão em setores com domicílios sem banheiro nem sanitário?

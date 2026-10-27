@@ -9,5 +9,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor, 
        e.id_aparelho AS id_escola, 
        e.nm_aparelho AS nome_escola, 
-       jovens_analfabetos
-ORDER BY jovens_analfabetos DESC;
+       jovens_analfabetos;

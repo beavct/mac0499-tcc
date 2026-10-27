@@ -12,5 +12,4 @@ RETURN m.nm_mun AS municipio,
          WHEN 3 THEN 'Municipal'
          WHEN 4 THEN 'Privada'
          ELSE 'Outra'
-       END AS rede_ensino
-ORDER BY municipio, distrito, nome_escola;
+       END AS rede_ensino;

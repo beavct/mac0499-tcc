@@ -32,5 +32,4 @@ SELECT
     COALESCE(e.escolas_com_inclusiva, 0) AS escolas_com_inclusiva
 FROM domicilios_por_distrito d
 LEFT JOIN escolas_por_distrito e
-  ON d.municipio = e.municipio AND d.distrito = e.distrito
-ORDER BY total_domicilios DESC;
+  ON d.municipio = e.municipio AND d.distrito = e.distrito;

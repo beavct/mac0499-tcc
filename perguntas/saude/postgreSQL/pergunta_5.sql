@@ -13,5 +13,4 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
   ON saude.co_unidade = a.co_unidade
 WHERE a.at_06_conv_01 = '1'
   AND COALESCE(carac.v00591, 0) > 0
-GROUP BY s.nm_mun, s.nm_dist, s.cd_setor, carac.v00591
-ORDER BY crianças_rudimentar DESC;
+GROUP BY s.nm_mun, s.nm_dist, s.cd_setor, carac.v00591;

@@ -1,1 +1,1 @@
-Quais setores possuem pelo menos uma escola pública mas nenhum estabelecimento de saúde com atendimento ambulatorial pelo SUS?
+Quais setores possuem pelo menos uma escola pública (federal, estadual ou municipal) mas nenhum estabelecimento de saúde com atendimento ambulatorial pelo SUS?

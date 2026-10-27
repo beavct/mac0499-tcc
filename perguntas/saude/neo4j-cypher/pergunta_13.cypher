@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor, 
        saude.id_aparelho AS id_unidade, 
        saude.nm_aparelho AS nome_unidade, 
-       p.v00498 AS moradores_apartamento
-ORDER BY moradores_apartamento DESC;
+       p.v00498 AS moradores_apartamento;

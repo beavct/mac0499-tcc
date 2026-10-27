@@ -18,5 +18,4 @@ JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte2 d
 WHERE m.tp_dependencia IN ('1', '2', '3') -- Escolas Públicas
   AND m.qt_tur_med > 0                    -- Possui Ensino Médio
   AND m.qt_tur_bas_d > 0                  -- Possui Turno Diurno
-  AND COALESCE(dom2.v00094, 0) > 0       -- Presença de responsáveis indígenas
-ORDER BY responsaveis_indigenas_casa DESC;
+  AND COALESCE(dom2.v00094, 0) > 0;      -- Presença de responsáveis indígenas

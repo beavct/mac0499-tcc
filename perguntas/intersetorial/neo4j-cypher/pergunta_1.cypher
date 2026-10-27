@@ -5,5 +5,4 @@ WHERE e.tp_dependencia IN [1, 2, 3]
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       count(DISTINCT e) AS escolas_publicas
-ORDER BY escolas_publicas DESC;
+       count(DISTINCT e) AS escolas_publicas;

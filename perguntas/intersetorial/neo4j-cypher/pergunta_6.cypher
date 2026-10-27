@@ -10,5 +10,4 @@ WHERE NOT (s)<-[:LOCALIZADA_EM]-(:EquipamentoSaude {at_04_conv_01: true})
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       pop_idosa_70_mais
-ORDER BY pop_idosa_70_mais DESC;
+       pop_idosa_70_mais;

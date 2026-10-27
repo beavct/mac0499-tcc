@@ -1,1 +1,1 @@
-Como se comporta a oferta de turmas de Ensino Básico diurno nos distritos, ordenados pelo tamanho da população parda?
+Quantas turmas da Educação Básica no turno diurno há em cada distrito, ordenados pela população parda, da maior para a menor?

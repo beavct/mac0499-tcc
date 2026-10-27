@@ -10,5 +10,4 @@ WHERE NOT EXISTS {
 // Agrupa por nome do bairro: bairros homônimos em subdistritos diferentes são
 // nós distintos no grafo, mas representam o mesmo bairro na visão do usuário.
 RETURN DISTINCT m.nm_mun AS municipio,
-       b.nm_bairro AS bairro
-ORDER BY municipio, bairro;
+       b.nm_bairro AS bairro;

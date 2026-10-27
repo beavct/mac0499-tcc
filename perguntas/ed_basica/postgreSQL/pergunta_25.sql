@@ -24,5 +24,4 @@ SELECT
     e.nome_escola
 FROM escolas_em e
 JOIN distritos_uma_em u
-  ON e.municipio = u.municipio AND e.distrito = u.distrito
-ORDER BY e.municipio, e.distrito;
+  ON e.municipio = u.municipio AND e.distrito = u.distrito;

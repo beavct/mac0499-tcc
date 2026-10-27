@@ -9,5 +9,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        internacao.id_aparelho AS id_unidade_internacao,
        internacao.nm_aparelho AS nome_unidade_internacao,
-       ambulatorios_sus_no_distrito
-ORDER BY ambulatorios_sus_no_distrito DESC, municipio, distrito;
+       ambulatorios_sus_no_distrito;

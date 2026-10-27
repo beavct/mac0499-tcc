@@ -25,5 +25,4 @@ JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
 JOIN escolas_com_lab_por_distrito lab
   ON s.nm_mun = lab.municipio AND s.nm_dist = lab.distrito
-WHERE m.in_laboratorio_ciencias = '0'
-ORDER BY lab.escolas_com_laboratorio DESC, municipio, distrito;
+WHERE m.in_laboratorio_ciencias = '0';

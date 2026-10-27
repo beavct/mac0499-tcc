@@ -8,5 +8,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor, 
        saude.id_aparelho AS id_unidade, 
        saude.nm_aparelho AS nome_unidade, 
-       jovens_analfabetos
-ORDER BY jovens_analfabetos DESC;
+       jovens_analfabetos;

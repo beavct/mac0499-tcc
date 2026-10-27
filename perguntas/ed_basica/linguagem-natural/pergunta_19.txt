@@ -1,1 +1,1 @@
-Quais subdistritos apresentam a maior disparidade na oferta de turmas de Educação Infantil entre seus setores?
+Quais subdistritos apresentam a maior disparidade na oferta de turmas de Educação Infantil entre as suas escolas (a diferença entre a escola com mais e a com menos turmas), ordenados da maior para a menor disparidade?

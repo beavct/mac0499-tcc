@@ -189,7 +189,10 @@ def comparar_linha_a_linha(sql_rows, cypher_rows):
         ch, fl = partes(normalizar_linha(r))
         candidatos = sql_idx.get(ch)
         achou = None
-        if candidatos:
+        # primeiro a linha exatamente igual; só depois a mais próxima pela tolerância
+        if candidatos and fl in candidatos:
+            achou = candidatos.index(fl)
+        elif candidatos:
             for i, fl_sql in enumerate(candidatos):
                 if len(fl_sql) == len(fl) and all(floats_proximos(a, b) for a, b in zip(fl_sql, fl)):
                     achou = i

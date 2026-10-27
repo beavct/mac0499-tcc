@@ -9,5 +9,4 @@ JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_basico b
 LEFT JOIN culturaeduca.datasets.eq_saude_2025 saude 
   ON ST_Contains(s._geom, saude._geom)
 WHERE COALESCE(b.v0001, 0) > 1000
-  AND saude.co_unidade IS NULL
-ORDER BY total_moradores DESC;
+  AND saude.co_unidade IS NULL;

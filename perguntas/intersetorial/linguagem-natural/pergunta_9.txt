@@ -1,1 +1,1 @@
-Qual o total de equipamentos públicos por setor nos territórios com mais de 1.000 habitantes, identificando os mais desassistidos?
+Qual o total de equipamentos (escolas e estabelecimentos de saúde, de qualquer rede) por setor nos setores com mais de 1.000 habitantes, identificando os 30 setores mais desassistidos (com menos equipamentos e, em caso de empate, mais habitantes)?

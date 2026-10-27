@@ -7,5 +7,4 @@ WHERE (coalesce(demo.v01040, 0) + coalesce(demo.v01041, 0)) > 50
 RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        s.cd_setor AS codigo_setor,
-       (coalesce(demo.v01040, 0) + coalesce(demo.v01041, 0)) AS idosos_60_mais
-ORDER BY idosos_60_mais DESC;
+       (coalesce(demo.v01040, 0) + coalesce(demo.v01041, 0)) AS idosos_60_mais;

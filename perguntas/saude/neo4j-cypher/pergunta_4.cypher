@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        s.cd_setor AS codigo_setor,
        saude.id_aparelho AS id_unidade,
        saude.nm_aparelho AS nome_unidade, 
-       p.v01020 AS pop_infantil_feminina
-ORDER BY pop_infantil_feminina DESC;
+       p.v01020 AS pop_infantil_feminina;

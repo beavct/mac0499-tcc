@@ -5,5 +5,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito, 
        s.cd_setor AS codigo_setor, 
        coalesce(c.v00085, 0) AS moradores_casa_vila_condominio,
-       count(DISTINCT e) AS qtd_escolas_medio
-ORDER BY moradores_casa_vila_condominio DESC;
+       count(DISTINCT e) AS qtd_escolas_medio;

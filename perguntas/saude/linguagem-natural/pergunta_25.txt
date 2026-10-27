@@ -1,1 +1,1 @@
-Quantas pessoas em setores rurais contam com suporte de atendimento ambulatorial pelo SUS?
+Em cada município, quantas pessoas vivem em setores rurais que têm pelo menos uma unidade com atendimento ambulatorial pelo SUS?

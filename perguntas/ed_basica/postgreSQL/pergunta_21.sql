@@ -15,5 +15,4 @@ JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1 a
   ON s.cd_setor = ascdp.cd_setor
 WHERE m.tp_dependencia = '2'
   AND m.qt_tur_eja_fund > 0
-  AND COALESCE(ascdp.v00050, 0) > 0
-ORDER BY moradores_cortico DESC;
+  AND COALESCE(ascdp.v00050, 0) > 0;

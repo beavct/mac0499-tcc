@@ -44,5 +44,4 @@ FROM indigenas_por_distrito i
 LEFT JOIN escolas_por_distrito e
   ON i.municipio = e.municipio AND i.distrito = e.distrito
 LEFT JOIN saude_por_distrito sd
-  ON i.municipio = sd.municipio AND i.distrito = sd.distrito
-ORDER BY i.responsaveis_indigenas DESC;
+  ON i.municipio = sd.municipio AND i.distrito = sd.distrito;

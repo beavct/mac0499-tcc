@@ -14,5 +14,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        total_dom_criancas,
        creches,
-       unidades_internacao_sus
-ORDER BY total_dom_criancas DESC;
+       unidades_internacao_sus;

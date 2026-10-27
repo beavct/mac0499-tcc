@@ -1,1 +1,1 @@
-Quantas escolas da rede pública estão em setores onde os domicílios não possuem nenhum banheiro de uso exclusivo?
+Em quais setores com pelo menos um domicílio sem banheiro de uso exclusivo há escolas da rede pública (federal, estadual ou municipal), e quantas são em cada setor?

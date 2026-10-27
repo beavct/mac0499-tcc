@@ -13,5 +13,4 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
 WHERE m.qt_tur_inf_cre > 0
-  AND m.qt_tur_med > 0
-ORDER BY s.nm_mun, s.nm_dist, m.no_entidade;
+  AND m.qt_tur_med > 0;

@@ -15,5 +15,4 @@ JOIN (
     GROUP BY s2.nm_mun, s2.nm_dist
 ) dist_pop ON s.nm_mun = dist_pop.nm_mun AND s.nm_dist = dist_pop.nm_dist
 GROUP BY s.nm_mun, s.nm_dist, dist_pop.total_habitantes
-HAVING dist_pop.total_habitantes > 50000 AND COUNT(DISTINCT saude.co_unidade) < 3
-ORDER BY dist_pop.total_habitantes DESC;
+HAVING dist_pop.total_habitantes > 50000 AND COUNT(DISTINCT saude.co_unidade) < 3;

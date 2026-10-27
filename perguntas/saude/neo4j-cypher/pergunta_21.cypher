@@ -6,5 +6,4 @@ WHERE saude.at_06_conv_05 = true
 
 RETURN m.nm_mun AS municipio,
        analfabetos_15_mais,
-       count(DISTINCT saude) AS unidades_vigilancia_publica
-ORDER BY analfabetos_15_mais DESC;
+       count(DISTINCT saude) AS unidades_vigilancia_publica;

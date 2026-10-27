@@ -22,5 +22,4 @@ FROM bairros_com_creche c
 WHERE NOT EXISTS (
     SELECT 1 FROM bairros_com_saude sd
     WHERE sd.nm_mun = c.nm_mun AND sd.nm_bairro = c.nm_bairro
-)
-ORDER BY municipio, bairro;
+);

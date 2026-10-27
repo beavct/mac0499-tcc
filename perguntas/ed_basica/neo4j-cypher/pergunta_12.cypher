@@ -10,5 +10,4 @@ RETURN m.nm_mun AS municipio,
        criancas_0_4,
        turmas_creche,
        CASE WHEN criancas_0_4 = 0 THEN null
-            ELSE round(100.0 * turmas_creche / criancas_0_4, 2) END AS turmas_por_100_criancas
-ORDER BY turmas_por_100_criancas ASC, criancas_0_4 DESC;
+            ELSE round(100.0 * turmas_creche / criancas_0_4, 2) END AS turmas_por_100_criancas;

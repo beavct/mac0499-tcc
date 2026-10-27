@@ -15,5 +15,4 @@ RETURN m.nm_mun AS municipio,
        unidades_ambulatorial_sus,
        populacao_60_mais,
        CASE WHEN unidades_ambulatorial_sus = 0 THEN null
-            ELSE round(toFloat(escolas_publicas) / unidades_ambulatorial_sus, 2) END AS razao_escola_saude
-ORDER BY razao_escola_saude DESC;
+            ELSE round(toFloat(escolas_publicas) / unidades_ambulatorial_sus, 2) END AS razao_escola_saude;

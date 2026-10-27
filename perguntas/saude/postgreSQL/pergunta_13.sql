@@ -13,5 +13,4 @@ JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte3 dom3 
   ON s.cd_setor = dom3.cd_setor
 WHERE a.at_01_conv_06 = '1'
-  AND COALESCE(dom3.v00498, 0) > 100
-ORDER BY moradores_apartamento DESC;
+  AND COALESCE(dom3.v00498, 0) > 100;

@@ -9,5 +9,4 @@ RETURN m.nm_mun AS municipio,
        e.id_aparelho AS id_escola, 
        e.nm_aparelho AS nome_escola, 
        e.qt_tur_eja_fund AS turmas_eja_fundamental,
-       c.v00050 AS moradores_cortico
-ORDER BY moradores_cortico DESC;
+       c.v00050 AS moradores_cortico;

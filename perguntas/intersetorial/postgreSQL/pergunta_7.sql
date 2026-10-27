@@ -18,5 +18,4 @@ WHERE (m.qt_tur_eja_fund > 0 OR m.qt_tur_eja_med > 0)
       JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
         ON saude.co_unidade = a.co_unidade AND a.at_04_conv_01 = '1'
       WHERE ST_Contains(s._geom, saude._geom)
-  )
-ORDER BY domicilios_sem_iluminacao DESC;
+  );

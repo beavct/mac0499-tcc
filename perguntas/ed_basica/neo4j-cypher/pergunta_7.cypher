@@ -12,5 +12,4 @@ RETURN m.nm_mun AS municipio,
        e.nm_aparelho AS nome_escola,
        e.qt_tur_med AS turmas_ensino_medio,
        e.qt_tur_bas_d AS turmas_diurno,
-       p.v00094 AS responsaveis_indigenas_casa
-ORDER BY responsaveis_indigenas_casa DESC;
+       p.v00094 AS responsaveis_indigenas_casa;

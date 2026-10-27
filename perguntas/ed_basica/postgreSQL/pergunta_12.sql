@@ -28,5 +28,4 @@ SELECT
     ROUND((100.0 * COALESCE(t.turmas_creche, 0) / NULLIF(c.criancas_0_4, 0))::numeric, 2) AS turmas_por_100_criancas
 FROM criancas_por_distrito c
 LEFT JOIN turmas_creche_por_distrito t
-  ON c.municipio = t.municipio AND c.distrito = t.distrito
-ORDER BY turmas_por_100_criancas ASC NULLS LAST, c.criancas_0_4 DESC;
+  ON c.municipio = t.municipio AND c.distrito = t.distrito;

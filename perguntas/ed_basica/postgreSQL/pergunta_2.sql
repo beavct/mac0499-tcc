@@ -17,5 +17,4 @@ JOIN culturaeduca.datasets.eq_educacao_basica_2024 eq
  AND m.nu_ano_censo = eq.nu_ano_censo
 JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s 
   ON ST_Contains(s._geom, eq._geom)
-GROUP BY s.nm_mun, m.tp_dependencia
-ORDER BY s.nm_mun, m.tp_dependencia;
+GROUP BY s.nm_mun, m.tp_dependencia;

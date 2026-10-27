@@ -1,1 +1,1 @@
-Quantas escolas de Educação Infantil oferecem turmas em tempo integral em cada distrito, ordenados pelo número de famílias com estrutura estendida?
+Quantas escolas de Educação Infantil oferecem turmas em tempo integral em cada distrito, ordenados pelo número de famílias com estrutura estendida, do maior para o menor?

@@ -18,5 +18,4 @@ WHERE COALESCE(par.v01068, 0) > 80
         ON ao.co_unidade = outra.co_unidade AND ao.at_04_conv_01 = '1'
       WHERE outra.co_unidade <> urg.co_unidade
         AND ST_DWithin(urg._geog, outra._geog, 10000)
-  )
-ORDER BY responsaveis_60_mais_no_setor DESC;
+  );

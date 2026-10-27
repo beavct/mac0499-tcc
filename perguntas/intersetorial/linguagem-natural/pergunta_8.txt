@@ -1,1 +1,1 @@
-Nos distritos com crianças em domicílios improvisados, qual a cobertura de creches e de internação pelo SUS?
+Nos distritos com crianças de 0 a 9 anos em domicílios improvisados, quantas escolas com turmas de creche e quantas unidades de internação pelo SUS existem?

@@ -15,5 +15,4 @@ RETURN municipio,
          ELSE 'Não Informado'
        END AS dependencia_adm,
        r.qtd AS qtd_escolas,
-       round((r.qtd * 100.0) / total_municipio, 2) AS percentual_no_municipio
-ORDER BY municipio, dependencia_adm;
+       round((r.qtd * 100.0) / total_municipio, 2) AS percentual_no_municipio;

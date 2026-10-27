@@ -42,5 +42,4 @@ LEFT JOIN creches_por_distrito cr
   ON c.municipio = cr.municipio AND c.distrito = cr.distrito
 LEFT JOIN internacao_por_distrito i
   ON c.municipio = i.municipio AND c.distrito = i.distrito
-WHERE c.total_dom_criancas > 0
-ORDER BY c.total_dom_criancas DESC;
+WHERE c.total_dom_criancas > 0;

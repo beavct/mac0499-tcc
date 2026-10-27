@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        populacao_total,
        domicilios_fossa_rudimentar,
-       round(1000.0 * domicilios_fossa_rudimentar / populacao_total, 2) AS fossa_por_mil_habitantes
-ORDER BY fossa_por_mil_habitantes DESC, domicilios_fossa_rudimentar DESC;
+       round(1000.0 * domicilios_fossa_rudimentar / populacao_total, 2) AS fossa_por_mil_habitantes;

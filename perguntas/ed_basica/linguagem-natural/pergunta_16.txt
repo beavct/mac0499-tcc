@@ -1,1 +1,1 @@
-Quais distritos têm os maiores vazios de Educação Especial Inclusiva frente ao volume de jovens de 15 a 19 anos?
+Quais distritos têm os maiores vazios de Educação Especial Inclusiva frente ao volume de jovens de 15 a 19 anos, ordenados do menor para o maior número de escolas com Educação Especial Inclusiva e, em caso de empate, do maior para o menor número de jovens?

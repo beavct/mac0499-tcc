@@ -10,5 +10,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito,
        escolas_com_laboratorio,
        sem.id_aparelho AS id_escola_sem_lab,
-       sem.nm_aparelho AS nome_escola_sem_lab
-ORDER BY escolas_com_laboratorio DESC, municipio, distrito;
+       sem.nm_aparelho AS nome_escola_sem_lab;

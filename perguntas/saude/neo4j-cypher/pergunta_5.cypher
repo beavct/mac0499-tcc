@@ -6,5 +6,4 @@ RETURN m.nm_mun AS municipio,
        d.nm_dist AS distrito, 
        s.cd_setor AS codigo_setor, 
        c.v00591 AS crianças_rudimentar, 
-       count(DISTINCT saude) AS qtd_saude_sus
-ORDER BY crianças_rudimentar DESC;
+       count(DISTINCT saude) AS qtd_saude_sus;

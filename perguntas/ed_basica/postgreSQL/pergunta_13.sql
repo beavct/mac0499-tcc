@@ -13,5 +13,4 @@ JOIN culturaeduca.datasets.dtb_setores_censitarios_2022 s
   ON ST_Contains(s._geom, eq._geom)
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_domicilios_parte1 ascdp
   ON s.cd_setor = ascdp.cd_setor
-WHERE m.qt_tur_bas_ead > 0
-ORDER BY domicilios_mais_5_moradores DESC;
+WHERE m.qt_tur_bas_ead > 0;

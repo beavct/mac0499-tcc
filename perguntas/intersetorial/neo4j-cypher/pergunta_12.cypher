@@ -10,5 +10,4 @@ WHERE esc.tp_dependencia IN [1, 2, 3]
 RETURN esc.id_aparelho AS id_escola,
        esc.nm_aparelho AS nome_escola,
        m.nm_mun AS municipio,
-       coalesce(dom2.v00401, 0) AS domicilios_lixo_irregular_no_setor
-ORDER BY domicilios_lixo_irregular_no_setor DESC;
+       coalesce(dom2.v00401, 0) AS domicilios_lixo_irregular_no_setor;

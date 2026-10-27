@@ -1,1 +1,1 @@
-Quais escolas públicas de Ensino Médio diurno estão localizadas em setores onde há domicílios do tipo casa com responsável indígena?
+Quais escolas públicas (federais, estaduais ou municipais) que ofertam Ensino Médio e têm turmas no turno diurno estão localizadas em setores com pelo menos um domicílio do tipo casa com responsável indígena?

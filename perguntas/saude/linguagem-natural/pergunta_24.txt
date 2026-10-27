@@ -1,1 +1,1 @@
-Quantas unidades de Vigilância em Saúde do SUS estão em setores com esgotamento sanitário inexistente?
+Em quais setores com pelo menos um domicílio sem esgotamento sanitário (por não ter banheiro nem sanitário) há unidades de Vigilância em Saúde do SUS, e quantas são em cada setor?

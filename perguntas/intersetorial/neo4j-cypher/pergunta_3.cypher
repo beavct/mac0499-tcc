@@ -20,5 +20,4 @@ RETURN m.nm_mun AS municipio,
        dom_sem_pavimentacao,
        dom_sem_calcada,
        escolas_fund_publicas,
-       unidades_urgencia_sus
-ORDER BY dom_sem_pavimentacao DESC;
+       unidades_urgencia_sus;

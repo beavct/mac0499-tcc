@@ -7,5 +7,4 @@ RETURN m.nm_mun AS municipio,
        e.id_aparelho AS id_escola, 
        e.nm_aparelho AS nome_escola,
        e.qt_tur_bas_ead AS turmas_ead,
-       coalesce(c.v00078, 0) AS domicilios_mais_5_moradores
-ORDER BY domicilios_mais_5_moradores DESC;
+       coalesce(c.v00078, 0) AS domicilios_mais_5_moradores;

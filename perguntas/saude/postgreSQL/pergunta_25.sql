@@ -13,5 +13,4 @@ SELECT
 FROM setores_rurais_atendidos sra
 JOIN culturaeduca.datasets.agregado_setores_censitarios_2022_basico b
   ON sra.cd_setor = b.cd_setor
-GROUP BY sra.nm_mun
-ORDER BY populacao_rural_atendida DESC;
+GROUP BY sra.nm_mun;

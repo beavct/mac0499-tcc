@@ -1,1 +1,1 @@
-Quantas unidades de Urgência por plano de saúde privado estão em bairros com maior presença de domicílios do tipo casa com responsável de raça amarela?
+Quantas unidades de Urgência por plano de saúde privado há em cada bairro, ordenados pelo número de domicílios do tipo casa com responsável de raça amarela, do maior para o menor?

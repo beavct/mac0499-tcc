@@ -1,1 +1,1 @@
-Quantos centros de Diagnose e Terapia pelo SUS existem em distritos com alta população autodeclarada preta?
+Quantos centros de Diagnose e Terapia pelo SUS existem em cada distrito, ordenados pela população autodeclarada preta, da maior para a menor?

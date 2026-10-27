@@ -13,5 +13,4 @@ WHERE (COALESCE(demo.v01040, 0) + COALESCE(demo.v01041, 0)) > 50
       JOIN culturaeduca.datasets.microdados_saude_2025_atendimentos a
         ON saude.co_unidade = a.co_unidade AND a.at_04_conv_01 = '1'
       WHERE ST_Contains(s._geom, saude._geom)
-  )
-ORDER BY idosos_60_mais DESC;
+  );
