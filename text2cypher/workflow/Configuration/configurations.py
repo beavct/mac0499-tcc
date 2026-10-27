@@ -1,5 +1,6 @@
 # Vendorizado do CyVerACT (Androna et al., IPM 2026), sob CC BY-SA 4.0.
-# Campos acrescentados: timeout_execucao, usar_rag, bloquear_repeticao e max_tentativas_memoria.
+# Campos acrescentados: timeout_execucao, usar_rag, bloquear_repeticao, max_tentativas_memoria,
+# usar_exemplos e n_exemplos.
 # Hoje serve só de referência dos campos do config.
 # A config schema is useful for indicating which fields are available in the configurable dict
 # inside the config
@@ -15,3 +16,5 @@ class ConfigSchema(TypedDict):
     usar_rag: bool  # RAG das propriedades (Camada A); desligado, o esquema leva todas as propriedades
     bloquear_repeticao: bool  # pula para a próxima etapa se o corretor repetir uma consulta
     max_tentativas_memoria: int  # quantas tentativas anteriores distintas vão para o corretor
+    usar_exemplos: bool  # exemplos resolvidos (os mais parecidos com a pergunta) no gerador
+    n_exemplos: int  # quantos exemplos vão no prompt do gerador

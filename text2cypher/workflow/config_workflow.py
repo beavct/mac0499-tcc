@@ -28,6 +28,9 @@ USAR_VALUE_GROUNDING = os.getenv("USAR_VALUE_GROUNDING", "false").lower() in ("t
 BLOQUEAR_REPETICAO = os.getenv("BLOQUEAR_REPETICAO", "true").lower() in ("true", "1", "sim")
 # tentativas anteriores no prompt do corretor; 0 desliga (no teste, piorou o qwen2.5-coder:7b)
 MAX_TENTATIVAS_MEMORIA = int(os.getenv("MAX_TENTATIVAS_MEMORIA", "0"))
+# exemplos resolvidos no prompt do gerador, os de pergunta mais parecida com a da vez
+USAR_EXEMPLOS = os.getenv("USAR_EXEMPLOS", "false").lower() in ("true", "1", "sim")
+N_EXEMPLOS = int(os.getenv("N_EXEMPLOS", "6"))
 
 
 def montar_configuracao():
@@ -41,4 +44,6 @@ def montar_configuracao():
         "usar_rag": USAR_RAG,
         "bloquear_repeticao": BLOQUEAR_REPETICAO,
         "max_tentativas_memoria": MAX_TENTATIVAS_MEMORIA,
+        "usar_exemplos": USAR_EXEMPLOS,
+        "n_exemplos": N_EXEMPLOS,
     }}

@@ -11,9 +11,10 @@ Workflow que transforma a pergunta em Cypher, valida a consulta com o CyVer, cor
 5. [Claude](#claude)
 6. [Camada B: valores dos filtros](#camada_b)
 7. [Bloqueio de repetição](#repeticao)
-8. [Como rodar](#rodar)
-9. [Atribuição e licença](#licenca)
-10. [Referências](#refs)
+8. [Exemplos resolvidos](#exemplos)
+9. [Como rodar](#rodar)
+10. [Atribuição e licença](#licenca)
+11. [Referências](#refs)
 
 ---
 
@@ -53,7 +54,7 @@ A lógica do CyVerACT continua a mesma: o gerador, a validação pelo CyVer, o l
 - **hierarquia territorial no esquema**: o esquema ganha o caminho do setor até cada nível, com o intervalo de saltos (`HIERARQUIA_TERRITORIAL`, em `../config.py`);
 - **`cyver_evaluator`**: o bloqueio de repetição (ver [Bloqueio de repetição](#repeticao));
 - **`cypher_generator` / `cypher_corrector`**: a resposta passa por uma limpeza que tira o bloco de código em Markdown (```` ```cypher ... ``` ````), que o qwen às vezes põe mesmo com o prompt pedindo que não. Sem isso, o CyVer reprova a consulta por sintaxe e o laço gasta as correções com a formatação. Cada chamada registra em `cleaned_responses` se a limpeza foi usada, para medir com que frequência isso acontece;
-- **`cypher_executor`**: a execução, que vinha desligada no original, agora roda, com timeout e registro do erro;
+- **`cypher_executor`**: a execução, que vinha desligada no original, agora roda, com timeout, registro do erro e só em modo de leitura, para que uma consulta gerada pelo modelo não altere o grafo;
 - **`value_grounding`** (novo, opcional): a Camada B, que não existe no CyVerACT;
 - **`Configuration/`**: os modelos abertos, pela API compatível com a da OpenAI, e o Claude, pela API da Anthropic, todos sem ajuste fino;
 - ajustes pontuais para as versões atuais do `langchain-core` e do `langgraph`.
@@ -71,6 +72,7 @@ workflow/
 ├── graph.py                   ← montagem do grafo de estados (LangGraph)
 ├── executar.py                ← ponto de entrada (pergunta → Cypher → execução)
 ├── config_workflow.py         ← modelo, k, n e flags de ablação
+├── exemplos/exemplos.json     ← NOVO: exemplos resolvidos (pergunta + Cypher)
 ├── testes/                    ← testes com LLM falso (sem Ollama)
 │   ├── teste_correcao.py      ← laço de correção (gera → CyVer reprova → corrige → executa)
 │   ├── teste_value_grounding.py   ← Camada B
@@ -86,12 +88,13 @@ workflow/
     ├── schema_rag.py          ← NOVO: esquema por RAG (Camada A) ou completo (schema_completo)
     ├── value_grounding.py     ← NOVO: valores dos filtros (Camada B, opcional)
     ├── tentativas.py          ← NOVO: memória das tentativas (bloqueio de repetição)
+    ├── exemplos.py            ← NOVO: exemplos resolvidos para o gerador (opcional)
     ├── resposta.py            ← NOVO: limpeza do bloco de código na resposta do modelo
     ├── schema_retriever.py    ← fallback (RAG com k maior)
     ├── cypher_generator.py    ← LLM gera o Cypher
     ├── cyver_evaluator.py     ← validação CyVer e decisão do laço
     ├── cypher_corrector.py    ← LLM corrige o Cypher a partir dos erros
-    ├── cypher_executor.py     ← executa no Neo4j (com timeout)
+    ├── cypher_executor.py     ← executa no Neo4j (com timeout, só leitura)
     ├── output_generator.py    ← saída com consulta válida
     └── unavailable_output.py  ← saída de desistência
 ```
@@ -113,6 +116,8 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
 | Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
 | Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
+| Exemplos resolvidos | `USAR_EXEMPLOS` | `false` | põe no prompt do gerador, entre o esquema e a pergunta, os pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) de pergunta mais parecida com a da vez (pelo e5); desligado, o prompt é o original |
+| Nº de exemplos | `N_EXEMPLOS` | `6` | quantos exemplos vão no bloco |
 
 Os modelos abertos vão por uma API compatível com a da OpenAI, com os parâmetros de geração do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens). O Claude vai pela API da Anthropic, com algumas diferenças (ver [Claude](#claude)):
 
@@ -247,6 +252,15 @@ cd text2cypher/workflow
 python testes/teste_repeticao.py
 ```
 
+<a name="exemplos"></a>
+## Exemplos resolvidos
+
+Com `USAR_EXEMPLOS`, o prompt do gerador recebe, entre o esquema e a pergunta, os `N_EXEMPLOS` pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) mais parecidos com a pergunta, pelo mesmo e5 da Camada A. O corretor não recebe os exemplos.
+
+Os 35 exemplos foram escritos a partir do esquema do grafo e do dicionário das propriedades, sem consultar as perguntas de avaliação, e cada Cypher foi validado no Neo4j. Eles seguem a convenção de saída das consultas de [`perguntas/`](../../perguntas): o município junto de qualquer nível abaixo dele.
+
+---
+
 <a name="rodar"></a>
 ## Como rodar
 
@@ -320,6 +334,7 @@ Esta pasta é uma obra derivada do **CyVerACT** (Androna et al., *Information Pr
 - Ferragina e Scaiella, *TAGME*, CIKM 2010; versão estendida em [arXiv:1006.3498](https://arxiv.org/abs/1006.3498) (filtros da Camada B)
 - Shinn et al., *Reflexion: Language Agents with Verbal Reinforcement Learning*, NeurIPS 2023, [arXiv:2303.11366](https://arxiv.org/abs/2303.11366) (memória do bloqueio de repetição)
 - Piao, Lee e Park, *LitE-SQL*, EACL 2026 (Findings) (parada sem progresso)
+- Chang e Fosler-Lussier, *How to Prompt LLMs for Text-to-SQL: A Study in Zero-shot, Single-domain, and Cross-domain Settings*, [arXiv:2305.11853](https://arxiv.org/abs/2305.11853), 2023 (exemplos resolvidos)
 - [LangGraph — documentação](https://docs.langchain.com/oss/python/langgraph/overview)
 - [Ollama — download](https://ollama.com/download)
 - [Ollama — compatibilidade com a API da OpenAI](https://docs.ollama.com/api/openai-compatibility)

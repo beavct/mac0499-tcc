@@ -1,0 +1,215 @@
+{
+  "_descricao": "Exemplos resolvidos para o prompt do gerador (Nodes/exemplos.py). Ver o README do workflow, seção Exemplos resolvidos.",
+  "exemplos": [
+    {
+      "id": "e01",
+      "padrao": "agregação (contagem) por município",
+      "pergunta": "Quantas escolas existem no município de Sorocaba? Informe apenas o número de escolas.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Sorocaba'})\nRETURN count(DISTINCT e) AS total_escolas"
+    },
+    {
+      "id": "e02",
+      "padrao": "agregação (soma de v0001) por distrito",
+      "pergunta": "Qual é a população de cada distrito do município de Campinas? Informe o município, o nome do distrito e a população.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'Campinas'})\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, sum(s.v0001) AS populacao"
+    },
+    {
+      "id": "e03",
+      "padrao": "agregação (soma) no estado com filtro de situação do setor",
+      "pergunta": "Quantos domicílios particulares ocupados há nos setores censitários rurais do estado de São Paulo? Informe apenas o total de domicílios.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*4..5]->(u:UF {nm_uf: 'São Paulo'})\nWHERE s.situacao = 'Rural'\nRETURN sum(s.v0007) AS total_domicilios_ocupados"
+    },
+    {
+      "id": "e04",
+      "padrao": "valor de perfil por setor dentro de um distrito",
+      "pergunta": "Para cada setor censitário do distrito de Capão Redondo, no município de São Paulo, quantas pessoas de cor ou raça preta há? Informe o município, o código do setor e o número de pessoas de cor ou raça preta.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito {nm_dist: 'Capão Redondo'})-[:PARTE_DE]->(m:Municipio {nm_mun: 'São Paulo'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilRacaCor)\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, p.v01318 AS pessoas_cor_preta"
+    },
+    {
+      "id": "e05",
+      "padrao": "filtro numérico com limiar sobre propriedade de perfil",
+      "pergunta": "Quais setores censitários do município de Ribeirão Preto têm mais de 5 domicílios particulares permanentes ocupados com lixo queimado na propriedade? Informe o município, o código do setor e o número desses domicílios.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Ribeirão Preto'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilDomiciliosParte2)\nWHERE p.v00399 > 5\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, p.v00399 AS domicilios_lixo_queimado"
+    },
+    {
+      "id": "e06",
+      "padrao": "filtro booleano em escola com contagem por município",
+      "pergunta": "Quantas escolas do município de Piracicaba têm laboratório de ciências? Informe apenas o número de escolas.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'Piracicaba'})\nWHERE e.in_laboratorio_ciencias = true\nRETURN count(DISTINCT e) AS total_escolas"
+    },
+    {
+      "id": "e07",
+      "padrao": "filtro por código de categoria (tp_dependencia) com contagem por distrito",
+      "pergunta": "Quantas escolas municipais há em cada distrito do município de São Paulo? Informe o município, o nome do distrito e o número de escolas municipais.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'São Paulo'})\nWHERE e.tp_dependencia = 3\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, count(DISTINCT e) AS escolas_municipais"
+    },
+    {
+      "id": "e08",
+      "padrao": "filtro booleano em equipamento de saúde (listagem)",
+      "pergunta": "Quais equipamentos de saúde do município de Presidente Prudente oferecem atendimento de urgência pelo SUS? Informe o município, o código e o nome do equipamento.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Presidente Prudente'})\nWHERE u.at_04_conv_01 = true\nRETURN m.nm_mun AS municipio, u.id_aparelho AS codigo, u.nm_aparelho AS equipamento"
+    },
+    {
+      "id": "e09",
+      "padrao": "filtro por código de categoria em texto (tp_gestao) com contagem",
+      "pergunta": "Quantos equipamentos de saúde de gestão estadual existem no município de São José dos Campos? Informe apenas o número de equipamentos.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'São José dos Campos'})\nWHERE u.tp_gestao = '2'\nRETURN count(DISTINCT u) AS total_equipamentos"
+    },
+    {
+      "id": "e10",
+      "padrao": "perfil do setor combinado com equipamento no mesmo setor",
+      "pergunta": "Quais escolas do município de Guarulhos ficam em setores censitários com mais de 150 moradores de 0 a 4 anos de idade? Informe o município, o código e o nome da escola e o número de moradores de 0 a 4 anos do setor.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Guarulhos'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilDemografia)\nWHERE p.v01031 > 150\nRETURN m.nm_mun AS municipio, e.id_aparelho AS codigo, e.nm_aparelho AS escola, p.v01031 AS moradores_0_a_4_anos"
+    },
+    {
+      "id": "e11",
+      "padrao": "consulta espacial: a mais de X km de qualquer equipamento",
+      "pergunta": "Quais escolas do município de Ubatuba ficam a mais de 3 km de qualquer equipamento de saúde? Informe o município, o código e o nome da escola.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Ubatuba'})\nWHERE NOT EXISTS {\n  MATCH (u:EquipamentoSaude)\n  WHERE point.distance(e.location, u.location) <= 3000\n}\nRETURN m.nm_mun AS municipio, e.id_aparelho AS codigo, e.nm_aparelho AS escola"
+    },
+    {
+      "id": "e12",
+      "padrao": "consulta espacial: num raio de X km de um equipamento citado pelo nome (contagem)",
+      "pergunta": "Quantos equipamentos de saúde existem num raio de 1 km da escola STELA MACHADO, em Bauru? Informe apenas o número de equipamentos.",
+      "cypher": "MATCH (e:Escola {nm_aparelho: 'STELA MACHADO'})-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'Bauru'})\nMATCH (u:EquipamentoSaude)\nWHERE point.distance(e.location, u.location) <= 1000\nRETURN count(DISTINCT u) AS total_equipamentos"
+    },
+    {
+      "id": "e13",
+      "padrao": "ausência: setores sem nenhum equipamento de um tipo (contagem)",
+      "pergunta": "Quantos setores censitários urbanos do município de Marília não têm nenhuma escola? Informe apenas o número de setores.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'Marília'})\nWHERE s.situacao = 'Urbana'\n  AND NOT EXISTS { MATCH (:Escola)-[:LOCALIZADA_EM]->(s) }\nRETURN count(DISTINCT s) AS setores_sem_escola"
+    },
+    {
+      "id": "e14",
+      "padrao": "ausência: territórios (municípios) sem equipamento com uma característica",
+      "pergunta": "Quais municípios do estado de São Paulo não têm nenhum equipamento de saúde que ofereça internação pelo SUS? Informe o nome do município.",
+      "cypher": "MATCH (m:Municipio)-[:PARTE_DE]->(:UF {nm_uf: 'São Paulo'})\nWHERE NOT EXISTS {\n  MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m)\n  WHERE u.at_01_conv_01 = true\n}\nRETURN m.nm_mun AS municipio"
+    },
+    {
+      "id": "e15",
+      "padrao": "ranking com ORDER BY e LIMIT pedido na pergunta (soma por município)",
+      "pergunta": "Quais são os 10 municípios com o maior número de docentes da educação básica? Informe o nome do município e o total de docentes da educação básica.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio)\nRETURN m.nm_mun AS municipio, sum(e.qt_doc_bas) AS docentes_educacao_basica\nORDER BY docentes_educacao_basica DESC\nLIMIT 10"
+    },
+    {
+      "id": "e16",
+      "padrao": "agregação (média) por bairro",
+      "pergunta": "Qual é a média de matrículas da educação básica por escola em cada bairro do município de Santos? Informe o município, o nome do bairro e a média de matrículas.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE]->(b:Bairro)-[:PARTE_DE*3]->(m:Municipio {nm_mun: 'Santos'})\nRETURN m.nm_mun AS municipio, b.nm_bairro AS bairro, avg(e.qt_mat_bas) AS media_matriculas"
+    },
+    {
+      "id": "e17",
+      "padrao": "agregação (soma) por setor censitário a partir das escolas",
+      "pergunta": "Quantas matrículas da educação infantil há em cada setor censitário do município de Taubaté que tem escola? Informe o município, o código do setor e o total de matrículas da educação infantil.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Taubaté'})\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, sum(e.qt_mat_inf) AS matriculas_educacao_infantil"
+    },
+    {
+      "id": "e18",
+      "padrao": "agregação (soma de v0001) por município",
+      "pergunta": "Qual é a população do município de São Carlos? Informe apenas a população.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'São Carlos'})\nRETURN sum(s.v0001) AS populacao"
+    },
+    {
+      "id": "e19",
+      "padrao": "filtro booleano em equipamento de saúde com contagem no estado",
+      "pergunta": "Quantos equipamentos de saúde do estado de São Paulo oferecem atendimento ambulatorial pelo SUS? Informe apenas o número de equipamentos.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*4..5]->(:UF {nm_uf: 'São Paulo'})\nWHERE u.at_02_conv_01 = true\nRETURN count(DISTINCT u) AS total_equipamentos"
+    },
+    {
+      "id": "e20",
+      "padrao": "limiar sobre a soma de uma propriedade de perfil por distrito",
+      "pergunta": "Quais distritos do município de São Paulo têm mais de 17.000 moradores de 70 anos ou mais? Informe o município, o nome do distrito e o número de moradores de 70 anos ou mais.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'São Paulo'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilDemografia)\nWITH m, d, sum(p.v01041) AS moradores_70_mais\nWHERE moradores_70_mais > 17000\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, moradores_70_mais"
+    },
+    {
+      "id": "e21",
+      "padrao": "filtro booleano em escola (listagem)",
+      "pergunta": "Quais escolas do município de Santo André têm piscina? Informe o município, o código e o nome da escola.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Santo André'})\nWHERE e.in_piscina = true\nRETURN m.nm_mun AS municipio, e.id_aparelho AS codigo, e.nm_aparelho AS escola"
+    },
+    {
+      "id": "e22",
+      "padrao": "filtro por código de categoria em escola (listagem)",
+      "pergunta": "Quais escolas privadas filantrópicas existem no município de Jundiaí? Informe o município, o código e o nome da escola.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Jundiaí'})\nWHERE e.tp_dependencia = 4 AND e.tp_categoria_escola_privada = 4\nRETURN m.nm_mun AS municipio, e.id_aparelho AS codigo, e.nm_aparelho AS escola"
+    },
+    {
+      "id": "e23",
+      "padrao": "filtro booleano em equipamento de saúde com contagem por distrito",
+      "pergunta": "Quantos equipamentos de saúde que oferecem SADT (serviço de apoio diagnóstico e terapêutico) pelo SUS há em cada distrito do município de Campinas? Informe o município, o nome do distrito e o número de equipamentos.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'Campinas'})\nWHERE u.at_03_conv_01 = true\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, count(DISTINCT u) AS total_equipamentos"
+    },
+    {
+      "id": "e24",
+      "padrao": "OPTIONAL MATCH: contagem por distrito mantendo os distritos sem nenhum equipamento",
+      "pergunta": "Quantas escolas estaduais há em cada distrito do município de Itapetininga, incluindo os distritos que não têm nenhuma? Informe o município, o nome do distrito e o número de escolas estaduais.",
+      "cypher": "MATCH (d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'Itapetininga'})\nOPTIONAL MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*2..3]->(d)\n  WHERE e.tp_dependencia = 2\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, count(DISTINCT e) AS escolas_estaduais"
+    },
+    {
+      "id": "e25",
+      "padrao": "OPTIONAL MATCH: contagem por setor mantendo os setores sem nenhum equipamento",
+      "pergunta": "Quantos equipamentos de saúde há em cada setor censitário rural do município de Registro, contando também os setores sem nenhum equipamento? Informe o município, o código do setor e o número de equipamentos de saúde.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Registro'})\nWHERE s.situacao = 'Rural'\nOPTIONAL MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(s)\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, count(DISTINCT u) AS equipamentos_saude"
+    },
+    {
+      "id": "e26",
+      "padrao": "perfil do setor combinado com equipamento de saúde no mesmo setor",
+      "pergunta": "Quais equipamentos de saúde do município de Osasco ficam em setores censitários com mais de 400 pessoas de cor ou raça parda? Informe o município, o código e o nome do equipamento e o número de pessoas pardas do setor.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Osasco'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilRacaCor)\nWHERE p.v01320 > 400\nRETURN m.nm_mun AS municipio, u.id_aparelho AS codigo, u.nm_aparelho AS equipamento, p.v01320 AS pessoas_pardas"
+    },
+    {
+      "id": "e27",
+      "padrao": "consulta espacial: equipamento de saúde a mais de X km de qualquer escola",
+      "pergunta": "Quais equipamentos de saúde do município de Teodoro Sampaio ficam a mais de 2 km de qualquer escola? Informe o município, o código e o nome do equipamento.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Teodoro Sampaio'})\nWHERE NOT EXISTS {\n  MATCH (e:Escola)\n  WHERE point.distance(u.location, e.location) <= 2000\n}\nRETURN m.nm_mun AS municipio, u.id_aparelho AS codigo, u.nm_aparelho AS equipamento"
+    },
+    {
+      "id": "e28",
+      "padrao": "consulta espacial: listagem num raio de X km de um equipamento citado pelo nome",
+      "pergunta": "Quais escolas ficam num raio de 1 km da SANTA CASA DE SAO CARLOS, no município de São Carlos? Informe o município, o código e o nome da escola.",
+      "cypher": "MATCH (u:EquipamentoSaude {nm_aparelho: 'SANTA CASA DE SAO CARLOS'})-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'São Carlos'})\nMATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio)\nWHERE point.distance(u.location, e.location) <= 1000\nRETURN m.nm_mun AS municipio, e.id_aparelho AS codigo, e.nm_aparelho AS escola"
+    },
+    {
+      "id": "e29",
+      "padrao": "ausência: setores sem equipamento de saúde, contados por distrito",
+      "pergunta": "Quantos setores censitários de cada distrito do município de Piracicaba não têm nenhum equipamento de saúde? Informe o município, o nome do distrito e o número de setores sem equipamento de saúde.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'Piracicaba'})\nWHERE NOT EXISTS { MATCH (:EquipamentoSaude)-[:LOCALIZADA_EM]->(s) }\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, count(DISTINCT s) AS setores_sem_equipamento"
+    },
+    {
+      "id": "e30",
+      "padrao": "ausência: contagem de municípios sem escola com uma característica",
+      "pergunta": "Quantos municípios do estado de São Paulo não têm nenhuma escola privada? Informe apenas o número de municípios.",
+      "cypher": "MATCH (m:Municipio)-[:PARTE_DE]->(:UF {nm_uf: 'São Paulo'})\nWHERE NOT EXISTS {\n  MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(m)\n  WHERE e.tp_dependencia = 4\n}\nRETURN count(DISTINCT m) AS municipios_sem_escola_privada"
+    },
+    {
+      "id": "e31",
+      "padrao": "razão entre duas agregações (população por equipamento de saúde) por distrito",
+      "pergunta": "Qual é o número de habitantes por equipamento de saúde em cada distrito do município de Marília? Informe o município, o nome do distrito, a população, o número de equipamentos de saúde e a razão entre eles.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'Marília'})\nWITH m, d, sum(s.v0001) AS populacao\nOPTIONAL MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*2..3]->(d)\nWITH m, d, populacao, count(DISTINCT u) AS equipamentos\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, populacao, equipamentos,\n       CASE WHEN equipamentos = 0 THEN null ELSE toFloat(populacao) / equipamentos END AS habitantes_por_equipamento"
+    },
+    {
+      "id": "e32",
+      "padrao": "proporção entre duas contagens de escolas no município",
+      "pergunta": "Qual é a proporção de escolas municipais do município de Bauru que têm biblioteca? Informe o número de escolas municipais, o número delas com biblioteca e a proporção.",
+      "cypher": "MATCH (e:Escola)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*3..4]->(:Municipio {nm_mun: 'Bauru'})\nWHERE e.tp_dependencia = 3\nWITH count(DISTINCT e) AS total, count(DISTINCT CASE WHEN e.in_biblioteca = true THEN e END) AS com_biblioteca\nRETURN total AS escolas_municipais, com_biblioteca, toFloat(com_biblioteca) / total AS proporcao"
+    },
+    {
+      "id": "e33",
+      "padrao": "ranking com ORDER BY e LIMIT pedido na pergunta (contagem de equipamentos por distrito)",
+      "pergunta": "Quais são os 5 distritos do município de São Paulo com mais equipamentos de saúde que oferecem urgência pelo SUS? Informe o município, o nome do distrito e o número de equipamentos.",
+      "cypher": "MATCH (u:EquipamentoSaude)-[:LOCALIZADA_EM]->(:SetorCensitario)-[:PARTE_DE*2..3]->(d:Distrito)-[:PARTE_DE]->(m:Municipio {nm_mun: 'São Paulo'})\nWHERE u.at_04_conv_01 = true\nRETURN m.nm_mun AS municipio, d.nm_dist AS distrito, count(DISTINCT u) AS total_equipamentos\nORDER BY total_equipamentos DESC\nLIMIT 5"
+    },
+    {
+      "id": "e34",
+      "padrao": "ranking com ORDER BY e LIMIT pedido na pergunta (setores mais populosos)",
+      "pergunta": "Quais são os 10 setores censitários mais populosos do município de Mogi das Cruzes? Informe o município, o código do setor e a população.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Mogi das Cruzes'})\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, s.v0001 AS populacao\nORDER BY populacao DESC\nLIMIT 10"
+    },
+    {
+      "id": "e35",
+      "padrao": "filtro numérico com limiar sobre perfil do entorno dos domicílios",
+      "pergunta": "Quais setores censitários do município de Limeira têm mais de 250 domicílios em face sem ponto de ônibus? Informe o município, o código do setor e o número desses domicílios.",
+      "cypher": "MATCH (s:SetorCensitario)-[:PARTE_DE*3..4]->(m:Municipio {nm_mun: 'Limeira'})\nMATCH (s)-[:TEM_PERFIL]->(p:PerfilEntornoDomicilios)\nWHERE p.v05016 > 250\nRETURN m.nm_mun AS municipio, s.cd_setor AS setor, p.v05016 AS domicilios_sem_ponto_onibus"
+    }
+  ]
+}
