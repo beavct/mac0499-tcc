@@ -1,0 +1,19 @@
+ProduceResults@neo4j (linhas=1042, dbHits=0) | municipio, distrito, populacao_amarela, leitos_gratuitos
+  Sort@neo4j (linhas=1042, dbHits=0) | populacao_amarela DESC
+    EagerAggregation@neo4j (linhas=1042, dbHits=4140) | cache[m.nm_mun] AS municipio, cache[d.nm_dist] AS distrito, populacao_amarela, count(DISTINCT saude) AS leitos_gratuitos
+      Apply@neo4j (linhas=1042, dbHits=0)
+        OrderedAggregation@neo4j (linhas=1042, dbHits=177615) | m, d, sum(coalesce(r.v01389, $autoint_0)) AS populacao_amarela
+          Filter@neo4j (linhas=100928, dbHits=1592660) | r:PerfilRacaCor
+            Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(r)
+              Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+        Optional@neo4j (linhas=1042, dbHits=0) | m, d, populacao_amarela
+          CacheProperties@neo4j (linhas=7, dbHits=28) | cache[d.nm_dist], cache[m.nm_mun]
+            Filter@neo4j (linhas=7, dbHits=105645) | saude:EquipamentoSaude AND saude.at_01_conv_07 = true
+              Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s2)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=103319, dbHits=213100) | s2:SetorCensitario
+                  VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[:PARTE_DE*..3]-(s2) 
+                    Argument@neo4j (linhas=1042, dbHits=0) | d, m, populacao_amarela

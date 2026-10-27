@@ -1,0 +1,73 @@
+Sort  (cost=111411.20..111425.60 rows=5757 width=37) (actual time=283.857..285.558 rows=2114.00 loops=1)
+  Sort Key: (sum(COALESCE(dom2.v00092, '0'::real))) DESC
+  Sort Method: quicksort  Memory: 215kB
+  Buffers: shared hit=249450 read=31489
+  ->  Merge Left Join  (cost=108423.25..111051.65 rows=5757 width=37) (actual time=261.107..285.100 rows=2114.00 loops=1)
+        Merge Cond: (((s.nm_mun)::text = (s_1.nm_mun)::text) AND ((s.nm_bairro)::text = (s_1.nm_bairro)::text))
+        Buffers: shared hit=249450 read=31489
+        ->  GroupAggregate  (cost=38818.40..39854.81 rows=5757 width=29) (actual time=120.229..143.312 rows=2114.00 loops=1)
+              Group Key: s.nm_mun, s.nm_bairro
+              Buffers: shared hit=170728 read=15746
+              ->  Gather Merge  (cost=38818.40..39738.02 rows=7896 width=29) (actual time=120.196..136.428 rows=28329.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=164950 read=15746
+                    ->  Sort  (cost=37818.38..37826.61 rows=3290 width=29) (actual time=96.769..97.344 rows=9443.00 loops=3)
+                          Sort Key: s.nm_mun, s.nm_bairro
+                          Sort Method: quicksort  Memory: 962kB
+                          Buffers: shared hit=152590 read=15746
+                          Worker 0:  Sort Method: quicksort  Memory: 932kB
+                          Worker 1:  Sort Method: quicksort  Memory: 433kB
+                          ->  Nested Loop  (cost=0.42..37626.18 rows=3290 width=29) (actual time=14.343..82.765 rows=9443.00 loops=3)
+                                Buffers: shared hit=123064 read=15746
+                                ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23942.12 rows=3368 width=41) (actual time=14.294..31.061 rows=9675.00 loops=3)
+                                      Filter: ((nm_bairro IS NOT NULL) AND ((nm_bairro)::text <> '.'::text))
+                                      Rows Removed by Filter: 24765
+                                      Buffers: shared hit=7814 read=15590
+                                ->  Index Scan using agregado_setores_censitarios_2022_domicilios_parte2_cd_setor_in on agregado_setores_censitarios_2022_domicilios_parte2 dom2  (cost=0.42..4.05 rows=1 width=20) (actual time=0.005..0.005 rows=0.98 loops=29025)
+                                      Index Cond: ((cd_setor)::text = (s.cd_setor)::text)
+                                      Index Searches: 29025
+                                      Buffers: shared hit=115250 read=156
+        ->  GroupAggregate  (cost=69604.85..71073.40 rows=5757 width=33) (actual time=140.865..141.128 rows=96.00 loops=1)
+              Group Key: s_1.nm_mun, s_1.nm_bairro
+              Buffers: shared hit=78395 read=15743
+              ->  Gather Merge  (cost=69604.85..70930.47 rows=11382 width=39) (actual time=140.835..141.008 rows=148.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=78338 read=15743
+                    ->  Sort  (cost=68604.83..68616.68 rows=4742 width=39) (actual time=120.107..120.113 rows=49.33 loops=3)
+                          Sort Key: s_1.nm_mun, s_1.nm_bairro, saude.co_unidade
+                          Sort Method: quicksort  Memory: 29kB
+                          Buffers: shared hit=78248 read=15743
+                          Worker 0:  Sort Method: quicksort  Memory: 27kB
+                          Worker 1:  Sort Method: quicksort  Memory: 26kB
+                          ->  Hash Join  (cost=287.12..68315.30 rows=4742 width=39) (actual time=14.369..119.983 rows=49.33 loops=3)
+                                Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                                Buffers: shared hit=78070 read=15743
+                                ->  Nested Loop  (cost=0.15..67768.30 rows=99018 width=39) (actual time=10.858..118.297 rows=880.67 loops=3)
+                                      Buffers: shared hit=77560 read=15743
+                                      ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..23942.12 rows=3368 width=1309) (actual time=10.167..26.973 rows=9675.00 loops=3)
+                                            Filter: ((nm_bairro IS NOT NULL) AND ((nm_bairro)::text <> '.'::text))
+                                            Rows Removed by Filter: 24765
+                                            Buffers: shared hit=7824 read=15580
+                                      ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..13.00 rows=1 width=46) (actual time=0.009..0.009 rows=0.09 loops=29025)
+                                            Index Cond: (_geom @ s_1._geom)
+                                            Filter: st_contains(s_1._geom, _geom)
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 29025
+                                            Buffers: shared hit=69351 read=25
+                                ->  Hash  (cost=280.36..280.36 rows=529 width=14) (actual time=1.475..1.475 rows=529.00 loops=3)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 32kB
+                                      Buffers: shared hit=510
+                                      ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=529 width=14) (actual time=0.024..1.401 rows=529.00 loops=3)
+                                            Filter: at_04_conv_06
+                                            Rows Removed by Filter: 10507
+                                            Buffers: shared hit=510
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.630 ms
+JIT:
+  Functions: 92
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 7.421 ms (Deform 5.066 ms), Inlining 0.000 ms, Optimization 4.101 ms, Emission 67.793 ms, Total 79.315 ms
+Execution Time: 288.345 ms

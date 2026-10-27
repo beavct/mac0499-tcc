@@ -1,0 +1,40 @@
+Gather  (cost=4909.35..215324.92 rows=33553 width=42) (actual time=58.322..354.063 rows=63943.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=201874 read=15180
+  ->  Nested Loop Anti Join  (cost=3909.35..210969.62 rows=13980 width=42) (actual time=36.939..324.837 rows=21314.33 loops=3)
+        Buffers: shared hit=201874 read=15180
+        ->  Parallel Hash Join  (cost=3908.92..27987.31 rows=14018 width=1330) (actual time=36.834..68.954 rows=21629.67 loops=3)
+              Hash Cond: ((s.cd_setor)::text = (demo.cd_setor)::text)
+              Buffers: shared hit=10995 read=15180
+              ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1322) (actual time=0.939..12.283 rows=34439.67 loops=3)
+                    Buffers: shared hit=8224 read=15180
+              ->  Parallel Hash  (cost=3661.54..3661.54 rows=19790 width=24) (actual time=35.657..35.658 rows=21629.67 loops=3)
+                    Buckets: 65536  Batches: 1  Memory Usage: 4128kB
+                    Buffers: shared hit=2771
+                    ->  Parallel Seq Scan on agregado_setores_censitarios_2022_demografia demo  (cost=0.00..3661.54 rows=19790 width=24) (actual time=17.549..24.876 rows=21629.67 loops=3)
+                          Filter: ((COALESCE(v01040, '0'::real) + COALESCE(v01041, '0'::real)) > '50'::double precision)
+                          Rows Removed by Filter: 12013
+                          Buffers: shared hit=2771
+        ->  Nested Loop  (cost=0.44..13.07 rows=1 width=32) (actual time=0.012..0.012 rows=0.01 loops=64889)
+              Buffers: shared hit=190879
+              ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.011..0.011 rows=0.13 loops=64889)
+                    Index Cond: (_geom @ s._geom)
+                    Filter: st_contains(s._geom, _geom)
+                    Rows Removed by Filter: 0
+                    Index Searches: 64889
+                    Buffers: shared hit=161913
+              ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.004..0.004 rows=0.12 loops=8185)
+                    Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                    Filter: at_04_conv_01
+                    Rows Removed by Filter: 1
+                    Index Searches: 8185
+                    Buffers: shared hit=24549
+Planning:
+  Buffers: shared hit=28
+Planning Time: 2.314 ms
+JIT:
+  Functions: 78
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 6.653 ms (Deform 4.942 ms), Inlining 0.000 ms, Optimization 3.684 ms, Emission 48.977 ms, Total 59.314 ms
+Execution Time: 359.036 ms

@@ -1,0 +1,21 @@
+ProduceResults@neo4j (linhas=645, dbHits=0) | municipio, domicilios_improvisados, hospitais_internacao_sus
+  Sort@neo4j (linhas=645, dbHits=0) | domicilios_improvisados DESC
+    EagerAggregation@neo4j (linhas=645, dbHits=574) | cache[m.nm_mun] AS municipio, domicilios_improvisados, count(DISTINCT saude) AS hospitais_internacao_sus
+      Apply@neo4j (linhas=1194, dbHits=0)
+        OrderedAggregation@neo4j (linhas=645, dbHits=195998) | m, sum(coalesce(c.v00002, $autoint_0)) AS domicilios_improvisados
+          Filter@neo4j (linhas=100928, dbHits=1592660) | c:PerfilDomiciliosParte1
+            Expand(All)@neo4j (linhas=796330, dbHits=899649) | (s)-[:TEM_PERFIL]->(c)
+              Filter@neo4j (linhas=103319, dbHits=213296) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=2280) | d:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_0:PARTE_DE]-(d)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+        Optional@neo4j (linhas=1194, dbHits=0) | m, domicilios_improvisados
+          CacheProperties@neo4j (linhas=907, dbHits=1814) | cache[m.nm_mun]
+            Filter@neo4j (linhas=907, dbHits=105645) | saude:EquipamentoSaude AND saude.at_01_conv_01 = true
+              Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s2)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=103319, dbHits=213100) | NOT anon_3 IN anon_4 AND s2:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (d2)<-[anon_4:PARTE_DE*..3]-(s2)
+                    Filter@neo4j (linhas=1042, dbHits=2084) | d2:Distrito
+                      Expand(All)@neo4j (linhas=1042, dbHits=1687) | (m)<-[anon_3:PARTE_DE]-(d2)
+                        Argument@neo4j (linhas=645, dbHits=0) | m, domicilios_improvisados

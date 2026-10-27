@@ -1,0 +1,55 @@
+GroupAggregate  (cost=1008.04..1016325.23 rows=103319 width=46) (actual time=1090.574..1094.120 rows=156.00 loops=1)
+  Group Key: s.cd_setor
+  Buffers: shared hit=28915 read=49547
+  ->  Gather Merge  (cost=1008.04..1002162.04 rows=2626001 width=47) (actual time=1090.546..1094.022 rows=203.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=28915 read=49547
+        ->  Incremental Sort  (cost=8.02..698056.34 rows=1094167 width=47) (actual time=877.740..949.664 rows=67.67 loops=3)
+              Sort Key: s.cd_setor, m.co_entidade
+              Presorted Key: s.cd_setor
+              Full-sort Groups: 2  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+              Buffers: shared hit=28915 read=49547
+              Worker 0:  Full-sort Groups: 6  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+              Worker 1:  Full-sort Groups: 1  Sort Method: quicksort  Average Memory: 25kB  Peak Memory: 25kB
+              ->  Nested Loop  (cost=1.41..663686.56 rows=1094167 width=47) (actual time=843.022..949.549 rows=67.67 loops=3)
+                    Buffers: shared hit=28859 read=49543
+                    ->  Nested Loop  (cost=1.11..585331.28 rows=1807407 width=52) (actual time=842.910..948.365 rows=106.33 loops=3)
+                          Buffers: shared hit=28325 read=49119
+                          ->  Merge Join  (cost=0.83..53866.29 rows=14018 width=1322) (actual time=842.214..941.379 rows=341.33 loops=3)
+                                Merge Cond: ((dom2.cd_setor)::text = (s.cd_setor)::text)
+                                Buffers: shared hit=25422 read=48205
+                                ->  Parallel Index Scan using agregado_setores_censitarios_2022_domicilios_parte2_cd_setor_in on agregado_setores_censitarios_2022_domicilios_parte2 dom2  (cost=0.42..26633.87 rows=14018 width=16) (actual time=841.504..897.990 rows=341.33 loops=3)
+                                      Filter: (COALESCE(v00495, '0'::real) > '0'::double precision)
+                                      Rows Removed by Filter: 33301
+                                      Index Searches: 1
+                                      Buffers: shared hit=1772 read=24413
+                                ->  Index Scan using dtb_setores_censitarios_2022_cd_setor_index on dtb_setores_censitarios_2022 s  (cost=0.42..26798.90 rows=103319 width=1322) (actual time=0.023..33.343 rows=39977.67 loops=3)
+                                      Index Searches: 3
+                                      Buffers: shared hit=23650 read=23792
+                          ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=46) (actual time=0.018..0.019 rows=0.31 loops=1024)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 1
+                                Index Searches: 1024
+                                Buffers: shared hit=2778 read=683
+                    ->  Memoize  (cost=0.30..1.09 rows=1 width=14) (actual time=0.011..0.011 rows=0.64 loops=319)
+                          Cache Key: eq.co_entidade, eq.nu_ano_censo
+                          Cache Mode: logical
+                          Hits: 0  Misses: 33  Evictions: 0  Overflows: 0  Memory Usage: 4kB
+                          Buffers: shared hit=534 read=424
+                          Worker 0:  Hits: 0  Misses: 286  Evictions: 0  Overflows: 0  Memory Usage: 30kB
+                          ->  Index Scan using microdados_ed_basica_2024_co_entidade_index on microdados_ed_basica_2024 m  (cost=0.29..1.08 rows=1 width=14) (actual time=0.009..0.009 rows=0.64 loops=319)
+                                Index Cond: ((co_entidade)::text = (eq.co_entidade)::text)
+                                Filter: (((eq.nu_ano_censo)::text = (nu_ano_censo)::text) AND ((tp_dependencia)::text = ANY ('{1,2,3}'::text[])))
+                                Rows Removed by Filter: 0
+                                Index Searches: 319
+                                Buffers: shared hit=534 read=424
+Planning:
+  Buffers: shared hit=14 read=14
+Planning Time: 2.286 ms
+JIT:
+  Functions: 87
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 15.318 ms (Deform 13.407 ms), Inlining 117.112 ms, Optimization 1245.376 ms, Emission 1160.906 ms, Total 2538.711 ms
+Execution Time: 1099.407 ms

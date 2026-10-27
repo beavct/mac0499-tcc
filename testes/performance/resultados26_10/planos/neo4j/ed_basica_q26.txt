@@ -1,0 +1,15 @@
+ProduceResults@neo4j (linhas=15289, dbHits=30516) | municipio, id_escola, nome_escola
+  Projection@neo4j (linhas=15289, dbHits=30578) | m.nm_mun AS municipio, cache[sem.id_aparelho] AS id_escola, cache[sem.nm_aparelho] AS nome_escola
+    CacheProperties@neo4j (linhas=15289, dbHits=45867) | cache[sem.id_aparelho], cache[sem.nm_aparelho]
+      Apply@neo4j (linhas=15289, dbHits=0)
+        CacheProperties@neo4j (linhas=16185, dbHits=32370) | cache[sem.id_aparelho]
+          Filter@neo4j (linhas=16185, dbHits=126983) | sem.qt_tur_inf_cre = $autoint_0 AND sem:Escola
+            Expand(All)@neo4j (linhas=41786, dbHits=145105) | (anon_1)<-[:LOCALIZADA_EM]-(sem)
+              Filter@neo4j (linhas=103319, dbHits=213112) | NOT anon_4 IN anon_2 AND anon_1:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=106550, dbHits=185117) | (anon_3)<-[anon_2:PARTE_DE*..3]-(anon_1)
+                  Filter@neo4j (linhas=1042, dbHits=2114) | anon_3:Distrito
+                    Expand(All)@neo4j (linhas=1042, dbHits=1042) | (m)<-[anon_4:PARTE_DE]-(anon_3)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+        Limit@neo4j (linhas=15289, dbHits=0) | 1
+          Filter@neo4j (linhas=15289, dbHits=136822) | (com.qt_tur_inf_cre > $autoint_1 AND point.distance(cache[sem.location], cache[com.location]) <= $autoint_2) AND NOT com.id_aparelho = cache[sem.id_aparelho]
+            NodeIndexSeekByRange@neo4j (linhas=52226, dbHits=68473) | POINT INDEX com:Escola(location) WHERE point.distance(location, cache[sem.location]) <= $autoint_2, cache[com.location]

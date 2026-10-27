@@ -1,0 +1,12 @@
+ProduceResults@neo4j (linhas=998, dbHits=0) | municipio, subdistrito, disparidade_oferta_infantil
+  Projection@neo4j (linhas=998, dbHits=3992) | m.nm_mun AS municipio, sd.cd_subdist AS subdistrito
+    Sort@neo4j (linhas=998, dbHits=0) | disparidade_oferta_infantil DESC
+      Projection@neo4j (linhas=998, dbHits=0) | max_turmas - min_turmas AS disparidade_oferta_infantil
+        OrderedAggregation@neo4j (linhas=998, dbHits=61490) | m, sd, max(coalesce(cache[e.qt_tur_inf], $autoint_0)) AS max_turmas, min(coalesce(cache[e.qt_tur_inf], $autoint_1)) AS min_turmas
+          Filter@neo4j (linhas=30745, dbHits=83572) | e:Escola
+            Expand(All)@neo4j (linhas=41786, dbHits=145105) | (s)<-[:LOCALIZADA_EM]-(e)
+              Filter@neo4j (linhas=103319, dbHits=211040) | none(anon_3 IN anon_1 WHERE anon_3 IN anon_0) AND s:SetorCensitario
+                VarLengthExpand(All)@neo4j (linhas=105508, dbHits=212058) | (sd)<-[anon_1:PARTE_DE*..3]-(s)
+                  Filter@neo4j (linhas=1042, dbHits=157194) | sd:Subdistrito
+                    VarLengthExpand(All)@neo4j (linhas=78567, dbHits=81296) | (m)<-[anon_0:PARTE_DE*..3]-(sd)
+                      NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio

@@ -1,0 +1,64 @@
+GroupAggregate  (cost=1025.37..3486062.67 rows=103319 width=46) (actual time=488.068..1611.973 rows=11754.00 loops=1)
+  Group Key: s.cd_setor
+  Buffers: shared hit=677637 read=39154
+  ->  Gather Merge  (cost=1025.37..3444813.96 rows=8043103 width=47) (actual time=488.024..1607.615 rows=15203.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=677637 read=39154
+        ->  Incremental Sort  (cost=25.35..2515440.29 rows=3351293 width=47) (actual time=347.668..1228.672 rows=5067.67 loops=3)
+              Sort Key: s.cd_setor, m.co_entidade
+              Presorted Key: s.cd_setor
+              Full-sort Groups: 39  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+              Buffers: shared hit=677637 read=39154
+              Worker 0:  Full-sort Groups: 243  Sort Method: quicksort  Average Memory: 26kB  Peak Memory: 26kB
+              Worker 1:  Full-sort Groups: 190  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+              ->  Nested Loop  (cost=1.43..2387372.99 rows=3351293 width=47) (actual time=343.207..1223.686 rows=5067.67 loops=3)
+                    Buffers: shared hit=677536 read=39147
+                    ->  Nested Loop  (cost=1.13..2215808.40 rows=5535845 width=52) (actual time=342.772..1180.070 rows=8468.33 loops=3)
+                          Buffers: shared hit=607057 read=33409
+                          ->  Nested Loop Anti Join  (cost=0.85..588012.04 rows=42935 width=1322) (actual time=342.725..731.541 rows=32170.67 loops=3)
+                                Buffers: shared hit=301135 read=33271
+                                ->  Parallel Index Scan using dtb_setores_censitarios_2022_cd_setor_index on dtb_setores_censitarios_2022 s  (cost=0.42..26196.21 rows=43050 width=1322) (actual time=0.042..38.547 rows=34439.67 loops=3)
+                                      Index Searches: 1
+                                      Buffers: shared hit=16703 read=23820
+                                ->  Nested Loop  (cost=0.44..13.07 rows=1 width=32) (actual time=0.020..0.020 rows=0.07 loops=103319)
+                                      Buffers: shared hit=284432 read=9451
+                                      ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.009..0.009 rows=0.07 loops=103319)
+                                            Index Cond: (_geom @ s._geom)
+                                            Filter: st_contains(s._geom, _geom)
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 103319
+                                            Buffers: shared hit=255817 read=606
+                                      ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.003..0.003 rows=0.89 loops=7626)
+                                            Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                                            Filter: at_02_conv_01
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 7626
+                                            Buffers: shared hit=22667 read=210
+                          ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=46) (actual time=0.013..0.014 rows=0.26 loops=96512)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 1
+                                Index Searches: 96512
+                                Buffers: shared hit=292229 read=138
+                    ->  Memoize  (cost=0.30..1.09 rows=1 width=14) (actual time=0.005..0.005 rows=0.60 loops=25405)
+                          Cache Key: eq.co_entidade, eq.nu_ano_censo
+                          Cache Mode: logical
+                          Hits: 0  Misses: 2012  Evictions: 0  Overflows: 0  Memory Usage: 210kB
+                          Buffers: shared hit=70479 read=5738
+                          Worker 0:  Hits: 0  Misses: 12739  Evictions: 0  Overflows: 0  Memory Usage: 1323kB
+                          Worker 1:  Hits: 0  Misses: 10654  Evictions: 0  Overflows: 0  Memory Usage: 1087kB
+                          ->  Index Scan using microdados_ed_basica_2024_co_entidade_index on microdados_ed_basica_2024 m  (cost=0.29..1.08 rows=1 width=14) (actual time=0.004..0.004 rows=0.60 loops=25405)
+                                Index Cond: ((co_entidade)::text = (eq.co_entidade)::text)
+                                Filter: (((eq.nu_ano_censo)::text = (nu_ano_censo)::text) AND ((tp_dependencia)::text = ANY ('{1,2,3}'::text[])))
+                                Rows Removed by Filter: 0
+                                Index Searches: 25405
+                                Buffers: shared hit=70479 read=5738
+Planning:
+  Buffers: shared hit=14 read=10
+Planning Time: 3.030 ms
+JIT:
+  Functions: 105
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 6.416 ms (Deform 4.091 ms), Inlining 115.703 ms, Optimization 576.691 ms, Emission 335.301 ms, Total 1034.111 ms
+Execution Time: 1614.674 ms

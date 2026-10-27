@@ -1,0 +1,54 @@
+Hash Join  (cost=11014.33..201179.04 rows=113285 width=61) (actual time=36.009..97.685 rows=71.00 loops=1)
+  Hash Cond: ((s.cd_setor)::text = (par.cd_setor)::text)
+  Buffers: shared hit=47056 read=7061
+  ->  Nested Loop  (cost=297.19..188024.42 rows=347902 width=73) (actual time=16.342..77.951 rows=209.00 loops=1)
+        Buffers: shared hit=45082
+        ->  Nested Loop Anti Join  (cost=296.91..18228.44 rows=1265 width=78) (actual time=16.300..64.027 rows=209.00 loops=1)
+              Buffers: shared hit=42245
+              ->  Hash Join  (cost=296.22..1055.68 rows=1269 width=110) (actual time=16.005..18.120 rows=1269.00 loops=1)
+                    Hash Cond: ((urg.co_unidade)::text = (aurg.co_unidade)::text)
+                    Buffers: shared hit=790
+                    ->  Seq Scan on eq_saude_2025 urg  (cost=0.00..730.45 rows=11045 width=110) (actual time=0.010..0.594 rows=11045.00 loops=1)
+                          Buffers: shared hit=620
+                    ->  Hash  (cost=280.36..280.36 rows=1269 width=14) (actual time=15.985..15.986 rows=1269.00 loops=1)
+                          Buckets: 2048  Batches: 1  Memory Usage: 74kB
+                          Buffers: shared hit=170
+                          ->  Seq Scan on microdados_saude_2025_atendimentos aurg  (cost=0.00..280.36 rows=1269 width=14) (actual time=15.206..15.887 rows=1269.00 loops=1)
+                                Filter: at_04_conv_01
+                                Rows Removed by Filter: 9767
+                                Buffers: shared hit=170
+              ->  Nested Loop  (cost=0.69..13.56 rows=1 width=46) (actual time=0.036..0.036 rows=0.84 loops=1269)
+                    Buffers: shared hit=41455
+                    ->  Index Scan using eq_saude_2025__geog_index on eq_saude_2025 outra  (cost=0.40..13.18 rows=1 width=46) (actual time=0.011..0.019 rows=8.26 loops=1269)
+                          Index Cond: (_geog && _st_expand(urg._geog, '10000'::double precision))
+                          Filter: (((co_unidade)::text <> (urg.co_unidade)::text) AND st_dwithin(urg._geog, _geog, '10000'::double precision, true))
+                          Rows Removed by Filter: 8
+                          Index Searches: 1269
+                          Buffers: shared hit=10003
+                    ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos ao  (cost=0.29..0.38 rows=1 width=14) (actual time=0.002..0.002 rows=0.10 loops=10488)
+                          Index Cond: ((co_unidade)::text = (outra.co_unidade)::text)
+                          Filter: at_04_conv_01
+                          Rows Removed by Filter: 1
+                          Index Searches: 10488
+                          Buffers: shared hit=31452
+        ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1311) (actual time=0.046..0.066 rows=1.00 loops=209)
+              Index Cond: (_geom ~ urg._geom)
+              Filter: st_contains(_geom, urg._geom)
+              Rows Removed by Filter: 3
+              Index Searches: 209
+              Buffers: shared hit=2837
+  ->  Hash  (cost=10296.60..10296.60 rows=33643 width=20) (actual time=19.617..19.617 rows=12935.00 loops=1)
+        Buckets: 65536  Batches: 1  Memory Usage: 1169kB
+        Buffers: shared hit=1974 read=7061
+        ->  Seq Scan on agregado_setores_censitarios_2022_parentesco par  (cost=0.00..10296.60 rows=33643 width=20) (actual time=0.156..17.968 rows=12935.00 loops=1)
+              Filter: (COALESCE(v01068, '0'::real) > '80'::double precision)
+              Rows Removed by Filter: 87993
+              Buffers: shared hit=1974 read=7061
+Planning:
+  Buffers: shared hit=40
+Planning Time: 2.271 ms
+JIT:
+  Functions: 42
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.990 ms (Deform 1.443 ms), Inlining 0.000 ms, Optimization 1.226 ms, Emission 14.009 ms, Total 17.225 ms
+Execution Time: 143.356 ms

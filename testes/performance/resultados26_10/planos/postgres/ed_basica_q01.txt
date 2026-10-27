@@ -1,0 +1,29 @@
+GroupAggregate  (cost=2506445.24..4124565.65 rows=640 width=19) (actual time=756.359..773.423 rows=645.00 loops=1)
+  Group Key: s.nm_mun
+  Buffers: shared hit=343614 read=17621
+  ->  Gather Merge  (cost=2506445.24..4057951.82 rows=13321486 width=20) (actual time=756.316..770.567 rows=30745.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=343359 read=17621
+        ->  Sort  (cost=2505445.22..2519321.77 rows=5550619 width=20) (actual time=733.947..734.435 rows=10248.33 loops=3)
+              Sort Key: s.nm_mun, eq.co_entidade
+              Sort Method: quicksort  Memory: 875kB
+              Buffers: shared hit=342657 read=17621
+              Worker 0:  Sort Method: quicksort  Memory: 445kB
+              Worker 1:  Sort Method: quicksort  Memory: 859kB
+              ->  Nested Loop  (cost=0.28..1655990.85 rows=5550619 width=20) (actual time=147.742..718.348 rows=10248.33 loops=3)
+                    Buffers: shared hit=337760 read=17621
+                    ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1295) (actual time=0.251..10.242 rows=34439.67 loops=3)
+                          Buffers: shared hit=5783 read=17621
+                    ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=41) (actual time=0.015..0.016 rows=0.30 loops=103319)
+                          Index Cond: (_geom @ s._geom)
+                          Filter: st_contains(s._geom, _geom)
+                          Rows Removed by Filter: 1
+                          Index Searches: 103319
+                          Buffers: shared hit=317394
+Planning Time: 2.772 ms
+JIT:
+  Functions: 27
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 2.192 ms (Deform 1.397 ms), Inlining 108.674 ms, Optimization 200.496 ms, Emission 132.535 ms, Total 443.896 ms
+Execution Time: 774.812 ms

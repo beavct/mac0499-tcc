@@ -1,0 +1,34 @@
+Hash Join  (cost=10323.55..95769.85 rows=55702 width=88) (actual time=14.688..42.183 rows=223.00 loops=1)
+  Hash Cond: ((s.cd_setor)::text = (dom3.cd_setor)::text)
+  Buffers: shared hit=7829 read=6379
+  ->  Nested Loop  (cost=288.41..84536.21 rows=171063 width=84) (actual time=0.607..28.119 rows=622.00 loops=1)
+        Buffers: shared hit=5855
+        ->  Hash Join  (cost=288.13..1047.59 rows=622 width=78) (actual time=0.582..2.587 rows=622.00 loops=1)
+              Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+              Buffers: shared hit=790
+              ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=78) (actual time=0.004..0.607 rows=11045.00 loops=1)
+                    Buffers: shared hit=620
+              ->  Hash  (cost=280.36..280.36 rows=622 width=14) (actual time=0.573..0.573 rows=622.00 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 36kB
+                    Buffers: shared hit=170
+                    ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=622 width=14) (actual time=0.003..0.525 rows=622.00 loops=1)
+                          Filter: at_01_conv_06
+                          Rows Removed by Filter: 10414
+                          Buffers: shared hit=170
+        ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1322) (actual time=0.032..0.041 rows=1.00 loops=622)
+              Index Cond: (_geom ~ saude._geom)
+              Filter: st_contains(_geom, saude._geom)
+              Rows Removed by Filter: 2
+              Index Searches: 622
+              Buffers: shared hit=5065
+  ->  Hash  (cost=9614.60..9614.60 rows=33643 width=20) (actual time=13.850..13.851 rows=21580.00 loops=1)
+        Buckets: 65536  Batches: 1  Memory Usage: 1608kB
+        Buffers: shared hit=1974 read=6379
+        ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte3 dom3  (cost=0.00..9614.60 rows=33643 width=20) (actual time=0.132..11.443 rows=21580.00 loops=1)
+              Filter: (COALESCE(v00498, '0'::real) > '100'::double precision)
+              Rows Removed by Filter: 79348
+              Buffers: shared hit=1974 read=6379
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.050 ms
+Execution Time: 42.221 ms

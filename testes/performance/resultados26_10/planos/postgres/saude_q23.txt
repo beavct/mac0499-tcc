@@ -1,0 +1,55 @@
+Sort  (cost=36540.90..36566.73 rows=10332 width=34) (actual time=108.988..109.019 rows=1042.00 loops=1)
+  Sort Key: (sum(COALESCE(raca.v01389, '0'::real))) DESC
+  Sort Method: quicksort  Memory: 105kB
+  Buffers: shared hit=19824 read=12977
+  ->  Hash Left Join  (cost=35694.46..35852.02 rows=10332 width=34) (actual time=108.609..108.868 rows=1042.00 loops=1)
+        Hash Cond: (((s.nm_mun)::text = (l.municipio)::text) AND ((s.nm_dist)::text = (l.distrito)::text))
+        Buffers: shared hit=19824 read=12977
+        ->  HashAggregate  (cost=34224.76..34328.08 rows=10332 width=26) (actual time=107.759..107.873 rows=1042.00 loops=1)
+              Group Key: s.nm_mun, s.nm_dist
+              Batches: 1  Memory Usage: 345kB
+              Buffers: shared hit=19546 read=12977
+              ->  Hash Join  (cost=7633.88..33467.80 rows=100928 width=26) (actual time=37.623..92.102 rows=100928.00 loops=1)
+                    Hash Cond: ((s.cd_setor)::text = (raca.cd_setor)::text)
+                    Buffers: shared hit=15790 read=12977
+                    ->  Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.004..14.726 rows=103319.00 loops=1)
+                          Buffers: shared hit=13838 read=9566
+                    ->  Hash  (cost=6372.28..6372.28 rows=100928 width=20) (actual time=37.581..37.582 rows=100928.00 loops=1)
+                          Buckets: 131072  Batches: 1  Memory Usage: 6055kB
+                          Buffers: shared hit=1952 read=3411
+                          ->  Seq Scan on agregado_setores_censitarios_2022_raca_cor raca  (cost=0.00..6372.28 rows=100928 width=20) (actual time=0.131..28.600 rows=100928.00 loops=1)
+                                Buffers: shared hit=1952 read=3411
+        ->  Hash  (cost=1440.83..1440.83 rows=1925 width=30) (actual time=0.846..0.847 rows=7.00 loops=1)
+              Buckets: 2048  Batches: 1  Memory Usage: 17kB
+              Buffers: shared hit=239
+              ->  Subquery Scan on l  (cost=1383.08..1440.83 rows=1925 width=30) (actual time=0.838..0.843 rows=7.00 loops=1)
+                    Buffers: shared hit=239
+                    ->  GroupAggregate  (cost=1383.08..1421.58 rows=1925 width=30) (actual time=0.838..0.841 rows=7.00 loops=1)
+                          Group Key: s_1.nm_mun, s_1.nm_dist
+                          Buffers: shared hit=239
+                          ->  Sort  (cost=1383.08..1387.89 rows=1925 width=36) (actual time=0.833..0.835 rows=7.00 loops=1)
+                                Sort Key: s_1.nm_mun, s_1.nm_dist, saude.co_unidade
+                                Sort Method: quicksort  Memory: 25kB
+                                Buffers: shared hit=239
+                                ->  Nested Loop  (cost=0.57..1278.06 rows=1925 width=36) (actual time=0.144..0.823 rows=7.00 loops=1)
+                                      Buffers: shared hit=239
+                                      ->  Nested Loop  (cost=0.29..338.48 rows=7 width=46) (actual time=0.099..0.582 rows=7.00 loops=1)
+                                            Buffers: shared hit=191
+                                            ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=7 width=14) (actual time=0.090..0.552 rows=7.00 loops=1)
+                                                  Filter: at_01_conv_07
+                                                  Rows Removed by Filter: 11029
+                                                  Buffers: shared hit=170
+                                            ->  Index Scan using eq_saude_2025_co_unidade_index on eq_saude_2025 saude  (cost=0.29..8.30 rows=1 width=46) (actual time=0.003..0.003 rows=1.00 loops=7)
+                                                  Index Cond: ((co_unidade)::text = (a.co_unidade)::text)
+                                                  Index Searches: 7
+                                                  Buffers: shared hit=21
+                                      ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s_1  (cost=0.28..134.13 rows=10 width=1306) (actual time=0.029..0.034 rows=1.00 loops=7)
+                                            Index Cond: (_geom ~ saude._geom)
+                                            Filter: st_contains(_geom, saude._geom)
+                                            Rows Removed by Filter: 2
+                                            Index Searches: 7
+                                            Buffers: shared hit=48
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.102 ms
+Execution Time: 109.118 ms

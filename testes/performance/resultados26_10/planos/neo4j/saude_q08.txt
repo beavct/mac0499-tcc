@@ -1,0 +1,20 @@
+ProduceResults@neo4j (linhas=7, dbHits=0) | municipio, distrito, domicilios_chefia_feminina_sem_conjuge, estabelecimentos_gratuidade
+  Projection@neo4j (linhas=7, dbHits=28) | cache[m.nm_mun] AS municipio, d.nm_dist AS distrito
+    Sort@neo4j (linhas=7, dbHits=0) | domicilios_chefia_feminina_sem_conjuge DESC
+      OrderedAggregation@neo4j (linhas=7, dbHits=0) | m, d, domicilios_chefia_feminina_sem_conjuge, count(DISTINCT saude) AS estabelecimentos_gratuidade
+        Apply@neo4j (linhas=7, dbHits=0)
+          OrderedAggregation@neo4j (linhas=7, dbHits=5000) | m, d, sum(coalesce(p.v01188, $autoint_1)) AS domicilios_chefia_feminina_sem_conjuge
+            Filter@neo4j (linhas=2523, dbHits=40152) | p:PerfilParentesco
+              Expand(All)@neo4j (linhas=20076, dbHits=22668) | (s)-[:TEM_PERFIL]->(p)
+                Filter@neo4j (linhas=2592, dbHits=5236) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+                  VarLengthExpand(All)@neo4j (linhas=2599, dbHits=5205) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+                    Filter@neo4j (linhas=7, dbHits=52) | d:Distrito
+                      Expand(All)@neo4j (linhas=7, dbHits=7) | (m)<-[anon_0:PARTE_DE]-(d)
+                        Filter@neo4j (linhas=1, dbHits=664) | cache[m.nm_mun] = $autostring_0
+                          NodeByLabelScan@neo4j (linhas=645, dbHits=646) | m:Municipio
+          Optional@neo4j (linhas=7, dbHits=0) | m, d, domicilios_chefia_feminina_sem_conjuge
+            Filter@neo4j (linhas=1, dbHits=1992) | saude:EquipamentoSaude AND saude.at_01_conv_07 = true
+              Expand(All)@neo4j (linhas=832, dbHits=3424) | (s2)<-[:LOCALIZADA_EM]-(saude)
+                Filter@neo4j (linhas=2592, dbHits=5198) | s2:SetorCensitario
+                  VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=2599, dbHits=5205) | (d)<-[:PARTE_DE*..3]-(s2) 
+                    Argument@neo4j (linhas=7, dbHits=0) | d, m, domicilios_chefia_feminina_sem_conjuge

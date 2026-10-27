@@ -1,0 +1,17 @@
+ProduceResults@neo4j (linhas=1, dbHits=0) | municipio, distrito, populacao_total, unidades_urgencia_sus
+  Projection@neo4j (linhas=1, dbHits=4) | m.nm_mun AS municipio, cache[d.nm_dist] AS distrito
+    OrderedAggregation@neo4j (linhas=1, dbHits=0) | d, m, populacao_total, count(DISTINCT saude) AS unidades_urgencia_sus
+      Apply@neo4j (linhas=2, dbHits=0)
+        OrderedAggregation@neo4j (linhas=1, dbHits=636) | d, m, sum(coalesce(s.v0001, $autoint_1)) AS populacao_total
+          Filter@neo4j (linhas=318, dbHits=638) | NOT anon_0 IN anon_1 AND s:SetorCensitario
+            VarLengthExpand(All)@neo4j (linhas=319, dbHits=639) | (d)<-[anon_1:PARTE_DE*..3]-(s)
+              Filter@neo4j (linhas=1, dbHits=2) | m:Municipio
+                Expand(All)@neo4j (linhas=1, dbHits=1) | (d)-[anon_0:PARTE_DE]->(m)
+                  Filter@neo4j (linhas=1, dbHits=1042) | cache[d.nm_dist] = $autostring_0
+                    NodeByLabelScan@neo4j (linhas=1042, dbHits=1043) | d:Distrito
+        Optional@neo4j (linhas=2, dbHits=0) | m, d, populacao_total
+          Filter@neo4j (linhas=2, dbHits=174) | saude:EquipamentoSaude AND saude.at_04_conv_01 = true
+            Expand(All)@neo4j (linhas=84, dbHits=402) | (s2)<-[:LOCALIZADA_EM]-(saude)
+              Filter@neo4j (linhas=318, dbHits=638) | s2:SetorCensitario
+                VarLengthExpand(Pruning,BFS,All)@neo4j (linhas=319, dbHits=639) | (d)<-[:PARTE_DE*..3]-(s2) 
+                  Argument@neo4j (linhas=1, dbHits=0) | d, m, populacao_total

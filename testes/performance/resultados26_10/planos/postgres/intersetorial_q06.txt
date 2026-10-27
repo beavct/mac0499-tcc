@@ -1,0 +1,58 @@
+Gather  (cost=10735.11..784345.50 rows=270969 width=42) (actual time=1339.052..1370.210 rows=59.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=26940 read=17750
+  ->  Parallel Hash Join  (cost=9735.11..756248.60 rows=112904 width=42) (actual time=1315.674..1342.748 rows=19.67 loops=3)
+        Hash Cond: (((eq.co_entidade)::text = (m.co_entidade)::text) AND ((eq.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+        Buffers: shared hit=26940 read=17750
+        ->  Nested Loop  (cost=3761.21..740810.54 rows=1802572 width=56) (actual time=3.834..34.178 rows=428.00 loops=3)
+              Buffers: shared hit=24190 read=14751
+              ->  Nested Loop Anti Join  (cost=3760.93..210786.25 rows=13980 width=1326) (actual time=3.806..25.936 rows=584.33 loops=3)
+                    Buffers: shared hit=18077 read=14751
+                    ->  Parallel Hash Join  (cost=3760.49..27838.89 rows=14018 width=1326) (actual time=3.703..18.904 rows=607.67 loops=3)
+                          Hash Cond: ((s.cd_setor)::text = (demo.cd_setor)::text)
+                          Buffers: shared hit=11424 read=14751
+                          ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1322) (actual time=0.101..7.491 rows=34439.67 loops=3)
+                                Buffers: shared hit=8653 read=14751
+                          ->  Parallel Hash  (cost=3513.12..3513.12 rows=19790 width=20) (actual time=3.399..3.400 rows=607.67 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 672kB
+                                Buffers: shared hit=2771
+                                ->  Parallel Seq Scan on agregado_setores_censitarios_2022_demografia demo  (cost=0.00..3513.12 rows=19790 width=20) (actual time=0.028..3.118 rows=607.67 loops=3)
+                                      Filter: (COALESCE(v01041, '0'::real) > '100'::double precision)
+                                      Rows Removed by Filter: 33035
+                                      Buffers: shared hit=2771
+                    ->  Nested Loop  (cost=0.44..13.07 rows=1 width=32) (actual time=0.011..0.011 rows=0.04 loops=1823)
+                          Buffers: shared hit=6653
+                          ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.010..0.010 rows=0.29 loops=1823)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 0
+                                Index Searches: 1823
+                                Buffers: shared hit=5048
+                          ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.003..0.003 rows=0.13 loops=533)
+                                Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                                Filter: at_04_conv_01
+                                Rows Removed by Filter: 1
+                                Index Searches: 533
+                                Buffers: shared hit=1600
+              ->  Index Scan using eq_educacao_basica_2024__geom_index on eq_educacao_basica_2024 eq  (cost=0.28..37.88 rows=3 width=46) (actual time=0.013..0.014 rows=0.73 loops=1753)
+                    Index Cond: (_geom @ s._geom)
+                    Filter: st_contains(s._geom, _geom)
+                    Rows Removed by Filter: 1
+                    Index Searches: 1753
+                    Buffers: shared hit=6108
+        ->  Parallel Hash  (cost=5960.64..5960.64 rows=884 width=14) (actual time=1308.297..1308.298 rows=588.00 loops=3)
+              Buckets: 4096  Batches: 1  Memory Usage: 160kB
+              Buffers: shared hit=2750 read=2999
+              ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5960.64 rows=884 width=14) (actual time=1078.434..1090.793 rows=588.00 loops=3)
+                    Filter: ((qt_tur_eja_fund > 0) OR (qt_tur_eja_med > 0))
+                    Rows Removed by Filter: 10700
+                    Buffers: shared hit=2750 read=2999
+Planning:
+  Buffers: shared hit=40
+Planning Time: 4.818 ms
+JIT:
+  Functions: 126
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 19.571 ms (Deform 16.331 ms), Inlining 116.344 ms, Optimization 1644.184 ms, Emission 1474.356 ms, Total 3254.456 ms
+Execution Time: 1376.252 ms

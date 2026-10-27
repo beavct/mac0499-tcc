@@ -1,0 +1,38 @@
+Hash Right Join  (cost=85633.45..86049.32 rows=10332 width=66) (actual time=237.199..238.153 rows=1042.00 loops=1)
+  Hash Cond: (((s.nm_mun)::text = (s_1.nm_mun)::text) AND ((s.nm_dist)::text = (s_1.nm_dist)::text))
+  Buffers: shared hit=31788 read=50475
+  ->  HashAggregate  (cost=52887.76..52991.08 rows=10332 width=26) (actual time=144.782..144.916 rows=1042.00 loops=1)
+        Group Key: s.nm_mun, s.nm_dist
+        Batches: 1  Memory Usage: 345kB
+        Buffers: shared hit=16272 read=34914
+        ->  Hash Join  (cost=26296.88..52130.80 rows=100928 width=26) (actual time=78.166..128.558 rows=100928.00 loops=1)
+              Hash Cond: ((s.cd_setor)::text = (dom2.cd_setor)::text)
+              Buffers: shared hit=12516 read=34914
+              ->  Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.146..14.980 rows=103319.00 loops=1)
+                    Buffers: shared hit=7912 read=15492
+              ->  Hash  (cost=25035.28..25035.28 rows=100928 width=20) (actual time=77.957..77.958 rows=100928.00 loops=1)
+                    Buckets: 131072  Batches: 1  Memory Usage: 6114kB
+                    Buffers: shared hit=4604 read=19422
+                    ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte2 dom2  (cost=0.00..25035.28 rows=100928 width=20) (actual time=0.066..67.917 rows=100928.00 loops=1)
+                          Buffers: shared hit=4604 read=19422
+  ->  Hash  (cost=32590.72..32590.72 rows=10332 width=30) (actual time=92.395..92.397 rows=1042.00 loops=1)
+        Buckets: 16384  Batches: 1  Memory Usage: 197kB
+        Buffers: shared hit=15399 read=15561
+        ->  HashAggregate  (cost=32487.40..32590.72 rows=10332 width=30) (actual time=92.083..92.196 rows=1042.00 loops=1)
+              Group Key: s_1.nm_mun, s_1.nm_dist
+              Batches: 1  Memory Usage: 345kB
+              Buffers: shared hit=15360 read=15561
+              ->  Hash Join  (cost=5854.68..31712.50 rows=103319 width=26) (actual time=23.362..75.902 rows=103319.00 loops=1)
+                    Hash Cond: ((s_1.cd_setor)::text = (b.cd_setor)::text)
+                    Buffers: shared hit=11373 read=15561
+                    ->  Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.124..15.062 rows=103319.00 loops=1)
+                          Buffers: shared hit=7843 read=15561
+                    ->  Hash  (cost=4563.19..4563.19 rows=103319 width=20) (actual time=23.167..23.168 rows=103319.00 loops=1)
+                          Buckets: 131072  Batches: 1  Memory Usage: 6271kB
+                          Buffers: shared hit=3530
+                          ->  Seq Scan on agregado_setores_censitarios_2022_basico b  (cost=0.00..4563.19 rows=103319 width=20) (actual time=0.010..13.916 rows=103319.00 loops=1)
+                                Buffers: shared hit=3530
+Planning:
+  Buffers: shared hit=32
+Planning Time: 0.401 ms
+Execution Time: 238.293 ms

@@ -1,0 +1,57 @@
+Hash Join  (cost=186604.36..189280.47 rows=890 width=34) (actual time=142.290..142.445 rows=28.00 loops=1)
+  Hash Cond: (((s.nm_mun)::text = (s_1.nm_mun)::text) AND ((s.nm_dist)::text = (s_1.nm_dist)::text))
+  Buffers: shared hit=24558 read=16938
+  ->  GroupAggregate  (cost=151976.30..154599.89 rows=3444 width=30) (actual time=42.277..42.420 rows=28.00 loops=1)
+        Group Key: s.nm_mun, s.nm_dist
+        Filter: (count(DISTINCT saude.co_unidade) > 5)
+        Rows Removed by Filter: 410
+        Buffers: shared hit=8789
+        ->  Sort  (cost=151976.30..152599.91 rows=249444 width=36) (actual time=42.233..42.260 rows=907.00 loops=1)
+              Sort Key: s.nm_mun, s.nm_dist, saude.co_unidade
+              Sort Method: quicksort  Memory: 75kB
+              Buffers: shared hit=8789
+              ->  Nested Loop  (cost=291.98..122794.20 rows=249444 width=36) (actual time=0.591..41.230 rows=907.00 loops=1)
+                    Buffers: shared hit=8759
+                    ->  Hash Join  (cost=291.70..1051.15 rows=907 width=46) (actual time=0.515..2.536 rows=907.00 loops=1)
+                          Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                          Buffers: shared hit=790
+                          ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=46) (actual time=0.007..0.568 rows=11045.00 loops=1)
+                                Buffers: shared hit=620
+                          ->  Hash  (cost=280.36..280.36 rows=907 width=14) (actual time=0.497..0.497 rows=907.00 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 49kB
+                                Buffers: shared hit=170
+                                ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=907 width=14) (actual time=0.010..0.432 rows=907.00 loops=1)
+                                      Filter: at_01_conv_01
+                                      Rows Removed by Filter: 10129
+                                      Buffers: shared hit=170
+                    ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1306) (actual time=0.032..0.042 rows=1.00 loops=907)
+                          Index Cond: (_geom ~ saude._geom)
+                          Filter: st_contains(_geom, saude._geom)
+                          Rows Removed by Filter: 2
+                          Index Searches: 907
+                          Buffers: shared hit=7969
+  ->  Hash  (cost=34473.08..34473.08 rows=10332 width=26) (actual time=99.997..99.998 rows=1042.00 loops=1)
+        Buckets: 16384  Batches: 1  Memory Usage: 191kB
+        Buffers: shared hit=15769 read=16938
+        ->  HashAggregate  (cost=34369.76..34473.08 rows=10332 width=26) (actual time=99.692..99.799 rows=1042.00 loops=1)
+              Group Key: s_1.nm_mun, s_1.nm_dist
+              Batches: 1  Memory Usage: 345kB
+              Buffers: shared hit=15730 read=16938
+              ->  Hash Join  (cost=7778.88..33612.80 rows=100928 width=26) (actual time=33.819..85.222 rows=100928.00 loops=1)
+                    Hash Cond: ((s_1.cd_setor)::text = (carac.cd_setor)::text)
+                    Buffers: shared hit=11974 read=16938
+                    ->  Seq Scan on dtb_setores_censitarios_2022 s_1  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.138..15.002 rows=103319.00 loops=1)
+                          Buffers: shared hit=10000 read=13404
+                    ->  Hash  (cost=6517.28..6517.28 rows=100928 width=20) (actual time=33.582..33.582 rows=100928.00 loops=1)
+                          Buckets: 131072  Batches: 1  Memory Usage: 6143kB
+                          Buffers: shared hit=1974 read=3534
+                          ->  Seq Scan on agregado_setores_censitarios_2022_domicilios_parte1 carac  (cost=0.00..6517.28 rows=100928 width=20) (actual time=16.429..24.943 rows=100928.00 loops=1)
+                                Buffers: shared hit=1974 read=3534
+Planning:
+  Buffers: shared hit=28
+Planning Time: 1.121 ms
+JIT:
+  Functions: 49
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.912 ms (Deform 1.169 ms), Inlining 0.000 ms, Optimization 1.212 ms, Emission 15.248 ms, Total 18.372 ms
+Execution Time: 144.603 ms

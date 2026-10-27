@@ -1,0 +1,65 @@
+Unique  (cost=11251.11..452177.46 rows=49827 width=52) (actual time=187.088..1277.633 rows=15289.00 loops=1)
+  Buffers: shared hit=326434 read=29084
+  ->  Gather Merge  (cost=11251.11..451803.75 rows=49827 width=52) (actual time=187.087..1276.237 rows=15289.00 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=326434 read=29084
+        ->  Unique  (cost=10251.10..445198.21 rows=29310 width=52) (actual time=169.369..713.830 rows=7644.50 loops=2)
+              Buffers: shared hit=326434 read=29084
+              ->  Incremental Sort  (cost=10251.10..444978.38 rows=29310 width=52) (actual time=169.369..713.175 rows=7644.50 loops=2)
+                    Sort Key: sem.co_entidade, s.nm_mun, msem.no_entidade
+                    Presorted Key: sem.co_entidade
+                    Full-sort Groups: 477  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                    Buffers: shared hit=326434 read=29084
+                    Worker 0:  Full-sort Groups: 2  Sort Method: quicksort  Average Memory: 27kB  Peak Memory: 27kB
+                    ->  Nested Loop  (cost=10228.62..444009.43 rows=29310 width=52) (actual time=165.744..710.931 rows=7644.50 loops=2)
+                          Buffers: shared hit=326410 read=29078
+                          ->  Nested Loop Semi Join  (cost=10228.34..435259.88 rows=68 width=73) (actual time=165.573..372.546 rows=7644.50 loops=2)
+                                Buffers: shared hit=213454 read=6414
+                                ->  Merge Join  (cost=10227.65..10611.05 rows=10314 width=105) (actual time=161.857..172.354 rows=8092.50 loops=2)
+                                      Merge Cond: (((sem.co_entidade)::text = (msem.co_entidade)::text) AND ((sem.nu_ano_censo)::text = (msem.nu_ano_censo)::text))
+                                      Buffers: shared hit=10137 read=2581
+                                      ->  Sort  (cost=2680.77..2725.99 rows=18086 width=78) (actual time=67.689..69.859 rows=15373.00 loops=2)
+                                            Sort Key: sem.co_entidade, sem.nu_ano_censo
+                                            Sort Method: quicksort  Memory: 3404kB
+                                            Buffers: shared hit=1216 read=5
+                                            Worker 0:  Sort Method: quicksort  Memory: 31kB
+                                            ->  Parallel Seq Scan on eq_educacao_basica_2024 sem  (cost=0.00..1401.86 rows=18086 width=78) (actual time=46.237..47.721 rows=15373.00 loops=2)
+                                                  Buffers: shared hit=1216 read=5
+                                      ->  Sort  (cost=7546.88..7595.15 rows=19310 width=46) (actual time=94.078..95.459 rows=18434.50 loops=2)
+                                            Sort Key: msem.co_entidade, msem.nu_ano_censo
+                                            Sort Method: quicksort  Memory: 1990kB
+                                            Buffers: shared hit=8921 read=2576
+                                            Worker 0:  Sort Method: quicksort  Memory: 1990kB
+                                            ->  Seq Scan on microdados_ed_basica_2024 msem  (cost=0.00..6172.29 rows=19310 width=46) (actual time=0.037..69.535 rows=19302.00 loops=2)
+                                                  Filter: (qt_tur_inf_cre = 0)
+                                                  Rows Removed by Filter: 14561
+                                                  Buffers: shared hit=8921 read=2576
+                                ->  Nested Loop  (cost=0.69..41.43 rows=1 width=41) (actual time=0.025..0.025 rows=0.94 loops=16185)
+                                      Buffers: shared hit=203317 read=3833
+                                      ->  Index Scan using eq_educacao_basica_2024__geog_index on eq_educacao_basica_2024 com  (cost=0.40..38.16 rows=3 width=46) (actual time=0.014..0.015 rows=1.85 loops=16185)
+                                            Index Cond: (_geog && _st_expand(sem._geog, '2000'::double precision))
+                                            Filter: (((co_entidade)::text <> (sem.co_entidade)::text) AND st_dwithin(sem._geog, _geog, '2000'::double precision, true))
+                                            Rows Removed by Filter: 3
+                                            Index Searches: 16185
+                                            Buffers: shared hit=117205 read=79
+                                      ->  Index Scan using microdados_ed_basica_2024_co_entidade_index on microdados_ed_basica_2024 mcom  (cost=0.29..1.08 rows=1 width=14) (actual time=0.005..0.005 rows=0.51 loops=29955)
+                                            Index Cond: ((co_entidade)::text = (com.co_entidade)::text)
+                                            Filter: ((qt_tur_inf_cre > 0) AND ((nu_ano_censo)::text = (com.nu_ano_censo)::text))
+                                            Rows Removed by Filter: 0
+                                            Index Searches: 29955
+                                            Buffers: shared hit=86112 read=3754
+                          ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1295) (actual time=0.034..0.044 rows=1.00 loops=15289)
+                                Index Cond: (_geom ~ sem._geom)
+                                Filter: st_contains(_geom, sem._geom)
+                                Rows Removed by Filter: 2
+                                Index Searches: 15289
+                                Buffers: shared hit=112956 read=22664
+Planning:
+  Buffers: shared hit=20 read=4
+Planning Time: 2.500 ms
+JIT:
+  Functions: 77
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 10.373 ms (Deform 9.141 ms), Inlining 0.000 ms, Optimization 8.491 ms, Emission 83.866 ms, Total 102.730 ms
+Execution Time: 1282.922 ms

@@ -1,0 +1,65 @@
+GroupAggregate  (cost=61618.27..63714.58 rows=5028 width=38) (actual time=495.148..498.781 rows=1.00 loops=1)
+  Group Key: s.nm_mun, s.nm_dist, dist_pop.total_habitantes
+  Filter: (count(DISTINCT saude.co_unidade) < 3)
+  Rows Removed by Filter: 235
+  Buffers: shared hit=258490 read=57760
+  ->  Gather Merge  (cost=61618.27..63375.16 rows=15085 width=44) (actual time=492.614..498.008 rows=5887.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=258466 read=57760
+        ->  Sort  (cost=60618.24..60633.96 rows=6285 width=44) (actual time=471.768..471.859 rows=1962.33 loops=3)
+              Sort Key: s.nm_mun, s.nm_dist, dist_pop.total_habitantes, saude.co_unidade
+              Sort Method: quicksort  Memory: 254kB
+              Buffers: shared hit=258397 read=57760
+              Worker 0:  Sort Method: quicksort  Memory: 240kB
+              Worker 1:  Sort Method: quicksort  Memory: 127kB
+              ->  Hash Join  (cost=33106.74..60221.73 rows=6285 width=44) (actual time=162.852..468.488 rows=1962.33 loops=3)
+                    Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+                    Buffers: shared hit=258246 read=57759
+                    ->  Nested Loop  (cost=32702.80..59799.34 rows=7022 width=44) (actual time=159.532..464.708 rows=2275.00 loops=3)
+                          Buffers: shared hit=257736 read=57759
+                          ->  Hash Join  (cost=32702.65..56763.15 rows=239 width=1314) (actual time=159.098..183.714 rows=26845.00 loops=3)
+                                Hash Cond: (((s.nm_mun)::text = (dist_pop.nm_mun)::text) AND ((s.nm_dist)::text = (dist_pop.nm_dist)::text))
+                                Buffers: shared hit=61596 read=56427
+                                ->  Parallel Seq Scan on dtb_setores_censitarios_2022 s  (cost=0.00..23834.50 rows=43050 width=1306) (actual time=0.085..9.615 rows=34439.67 loops=3)
+                                      Buffers: shared hit=9143 read=14261
+                                ->  Hash  (cost=32650.99..32650.99 rows=3444 width=30) (actual time=158.964..158.967 rows=236.00 loops=3)
+                                      Buckets: 4096  Batches: 1  Memory Usage: 47kB
+                                      Buffers: shared hit=50683 read=42166
+                                      ->  Subquery Scan on dist_pop  (cost=32487.40..32650.99 rows=3444 width=30) (actual time=158.700..158.891 rows=236.00 loops=3)
+                                            Buffers: shared hit=50683 read=42166
+                                            ->  HashAggregate  (cost=32487.40..32616.55 rows=3444 width=30) (actual time=158.698..158.864 rows=236.00 loops=3)
+                                                  Group Key: s2.nm_mun, s2.nm_dist
+                                                  Filter: (sum(COALESCE(b.v0001, 0)) > 50000)
+                                                  Batches: 1  Memory Usage: 345kB
+                                                  Rows Removed by Filter: 806
+                                                  Buffers: shared hit=50683 read=42166
+                                                  Worker 0:  Batches: 1  Memory Usage: 345kB
+                                                  Worker 1:  Batches: 1  Memory Usage: 345kB
+                                                  ->  Hash Join  (cost=5854.68..31712.50 rows=103319 width=26) (actual time=38.826..131.483 rows=103319.00 loops=3)
+                                                        Hash Cond: ((s2.cd_setor)::text = (b.cd_setor)::text)
+                                                        Buffers: shared hit=38640 read=42162
+                                                        ->  Seq Scan on dtb_setores_censitarios_2022 s2  (cost=0.00..24437.19 rows=103319 width=38) (actual time=0.011..29.191 rows=103319.00 loops=3)
+                                                              Buffers: shared hit=28050 read=42162
+                                                        ->  Hash  (cost=4563.19..4563.19 rows=103319 width=20) (actual time=38.479..38.480 rows=103319.00 loops=3)
+                                                              Buckets: 131072  Batches: 1  Memory Usage: 6271kB
+                                                              Buffers: shared hit=10590
+                                                              ->  Seq Scan on agregado_setores_censitarios_2022_basico b  (cost=0.00..4563.19 rows=103319 width=20) (actual time=0.014..22.449 rows=103319.00 loops=3)
+                                                                    Buffers: shared hit=10590
+                          ->  Index Scan using eq_saude_2025__geom_index on eq_saude_2025 saude  (cost=0.15..12.69 rows=1 width=46) (actual time=0.010..0.010 rows=0.08 loops=80535)
+                                Index Cond: (_geom @ s._geom)
+                                Filter: st_contains(s._geom, _geom)
+                                Rows Removed by Filter: 0
+                                Index Searches: 80535
+                                Buffers: shared hit=193476 read=17
+                    ->  Hash  (cost=280.36..280.36 rows=9887 width=14) (actual time=2.776..2.776 rows=9887.00 loops=3)
+                          Buckets: 16384  Batches: 1  Memory Usage: 573kB
+                          Buffers: shared hit=510
+                          ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=9887 width=14) (actual time=0.013..1.542 rows=9887.00 loops=3)
+                                Filter: at_02_conv_01
+                                Rows Removed by Filter: 1149
+                                Buffers: shared hit=510
+Planning:
+  Buffers: shared hit=8 read=20
+Planning Time: 2.571 ms
+Execution Time: 498.904 ms

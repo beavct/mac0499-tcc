@@ -1,0 +1,38 @@
+Hash Join  (cost=5001.96..178823.32 rows=113643 width=88) (actual time=38.725..96.784 rows=1227.00 loops=1)
+  Hash Cond: ((s.cd_setor)::text = (demo.cd_setor)::text)
+  Buffers: shared hit=15436
+  ->  Nested Loop  (cost=296.50..171388.56 rows=349002 width=84) (actual time=13.327..70.897 rows=1269.00 loops=1)
+        Buffers: shared hit=12665
+        ->  Hash Join  (cost=296.22..1055.68 rows=1269 width=78) (actual time=13.247..15.659 rows=1269.00 loops=1)
+              Hash Cond: ((saude.co_unidade)::text = (a.co_unidade)::text)
+              Buffers: shared hit=790
+              ->  Seq Scan on eq_saude_2025 saude  (cost=0.00..730.45 rows=11045 width=78) (actual time=0.005..0.582 rows=11045.00 loops=1)
+                    Buffers: shared hit=620
+              ->  Hash  (cost=280.36..280.36 rows=1269 width=14) (actual time=13.232..13.233 rows=1269.00 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 74kB
+                    Buffers: shared hit=170
+                    ->  Seq Scan on microdados_saude_2025_atendimentos a  (cost=0.00..280.36 rows=1269 width=14) (actual time=12.434..13.138 rows=1269.00 loops=1)
+                          Filter: at_04_conv_01
+                          Rows Removed by Filter: 9767
+                          Buffers: shared hit=170
+        ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..134.13 rows=10 width=1322) (actual time=0.033..0.043 rows=1.00 loops=1269)
+              Index Cond: (_geom ~ saude._geom)
+              Filter: st_contains(_geom, saude._geom)
+              Rows Removed by Filter: 2
+              Index Searches: 1269
+              Buffers: shared hit=11875
+  ->  Hash  (cost=4284.92..4284.92 rows=33643 width=24) (actual time=25.339..25.339 rows=98055.00 loops=1)
+        Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 6376kB
+        Buffers: shared hit=2771
+        ->  Seq Scan on agregado_setores_censitarios_2022_demografia demo  (cost=0.00..4284.92 rows=33643 width=24) (actual time=0.014..16.026 rows=98055.00 loops=1)
+              Filter: ((COALESCE(v01040, '0'::real) + COALESCE(v01041, '0'::real)) > '0'::double precision)
+              Rows Removed by Filter: 2873
+              Buffers: shared hit=2771
+Planning:
+  Buffers: shared hit=28
+Planning Time: 0.992 ms
+JIT:
+  Functions: 29
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.765 ms (Deform 1.338 ms), Inlining 0.000 ms, Optimization 1.123 ms, Emission 11.331 ms, Total 14.219 ms
+Execution Time: 98.711 ms

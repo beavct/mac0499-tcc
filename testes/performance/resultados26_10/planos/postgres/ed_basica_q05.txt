@@ -1,0 +1,32 @@
+Gather  (cost=6978.68..315581.30 rows=1117851 width=87) (actual time=105.462..145.472 rows=1372.00 loops=1)
+  Workers Planned: 1
+  Workers Launched: 1
+  Buffers: shared hit=15516 read=2173
+  ->  Nested Loop  (cost=5978.68..202796.20 rows=657559 width=87) (actual time=87.590..123.585 rows=686.00 loops=2)
+        Buffers: shared hit=15516 read=2173
+        ->  Parallel Hash Join  (cost=5978.40..7475.23 rows=1518 width=81) (actual time=87.460..90.570 rows=686.00 loops=2)
+              Hash Cond: (((eq.co_entidade)::text = (m.co_entidade)::text) AND ((eq.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+              Buffers: shared hit=4797 read=2173
+              ->  Parallel Seq Scan on eq_educacao_basica_2024 eq  (cost=0.00..1401.86 rows=18086 width=46) (actual time=0.004..1.224 rows=15373.00 loops=2)
+                    Buffers: shared hit=1221
+              ->  Parallel Hash  (cost=5960.64..5960.64 rows=1184 width=54) (actual time=87.319..87.320 rows=686.00 loops=2)
+                    Buckets: 4096  Batches: 1  Memory Usage: 160kB
+                    Buffers: shared hit=3576 read=2173
+                    ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5960.64 rows=1184 width=54) (actual time=48.729..87.051 rows=686.00 loops=2)
+                          Filter: ((qt_tur_inf_cre > 0) AND (qt_tur_med > 0))
+                          Rows Removed by Filter: 16246
+                          Buffers: shared hit=3576 read=2173
+        ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1322) (actual time=0.038..0.048 rows=1.00 loops=1372)
+              Index Cond: (_geom ~ eq._geom)
+              Filter: st_contains(_geom, eq._geom)
+              Rows Removed by Filter: 2
+              Index Searches: 1372
+              Buffers: shared hit=10719
+Planning:
+  Buffers: shared hit=12
+Planning Time: 1.181 ms
+JIT:
+  Functions: 40
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 10.711 ms (Deform 9.997 ms), Inlining 0.000 ms, Optimization 9.384 ms, Emission 87.917 ms, Total 108.012 ms
+Execution Time: 149.906 ms

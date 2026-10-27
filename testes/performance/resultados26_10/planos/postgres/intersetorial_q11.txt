@@ -1,0 +1,46 @@
+Gather  (cost=7102.71..3894803.50 rows=13268626 width=52) (actual time=320.969..1869.188 rows=10493.00 loops=1)
+  Workers Planned: 1
+  Workers Launched: 1
+  Buffers: shared hit=2452098 read=5156
+  ->  Nested Loop  (cost=6102.71..2566940.90 rows=7805074 width=52) (actual time=310.703..1849.485 rows=5246.50 loops=2)
+        Buffers: shared hit=2452098 read=5156
+        ->  Parallel Hash Join  (cost=6102.43..249080.57 rows=18014 width=73) (actual time=310.581..1584.638 rows=5247.00 loops=2)
+              Hash Cond: (((esc.co_entidade)::text = (m.co_entidade)::text) AND ((esc.nu_ano_censo)::text = (m.nu_ano_censo)::text))
+              Buffers: shared hit=2349841 read=5156
+              ->  Nested Loop Anti Join  (cost=0.69..242884.24 rows=18014 width=46) (actual time=4.018..1275.595 rows=5247.00 loops=2)
+                    Buffers: shared hit=2349248
+                    ->  Parallel Seq Scan on eq_educacao_basica_2024 esc  (cost=0.00..1401.86 rows=18086 width=78) (actual time=0.010..1.770 rows=15373.00 loops=2)
+                          Buffers: shared hit=1221
+                    ->  Nested Loop  (cost=0.69..13.39 rows=1 width=32) (actual time=0.083..0.083 rows=0.66 loops=30746)
+                          Buffers: shared hit=2348027
+                          ->  Index Scan using eq_saude_2025__geog_index on eq_saude_2025 saude  (cost=0.40..13.01 rows=1 width=46) (actual time=0.011..0.031 rows=21.33 loops=30746)
+                                Index Cond: (_geog && _st_expand(esc._geog, '5000'::double precision))
+                                Filter: st_dwithin(esc._geog, _geog, '5000'::double precision, true)
+                                Rows Removed by Filter: 10
+                                Index Searches: 30746
+                                Buffers: shared hit=381118
+                          ->  Index Scan using microdados_saude_2025_atendimentos_co_unidade_index on microdados_saude_2025_atendimentos a  (cost=0.29..0.38 rows=1 width=14) (actual time=0.002..0.002 rows=0.03 loops=655661)
+                                Index Cond: ((co_unidade)::text = (saude.co_unidade)::text)
+                                Filter: at_06_conv_01
+                                Rows Removed by Filter: 1
+                                Index Searches: 655661
+                                Buffers: shared hit=1966909
+              ->  Parallel Hash  (cost=5890.10..5890.10 rows=14110 width=46) (actual time=306.256..306.257 rows=16931.50 loops=2)
+                    Buckets: 65536  Batches: 1  Memory Usage: 3264kB
+                    Buffers: shared hit=593 read=5156
+                    ->  Parallel Seq Scan on microdados_ed_basica_2024 m  (cost=0.00..5890.10 rows=14110 width=46) (actual time=283.188..288.894 rows=16931.50 loops=2)
+                          Buffers: shared hit=593 read=5156
+        ->  Index Scan using dtb_setores_censitarios_2022__geom_index on dtb_setores_censitarios_2022 s  (cost=0.28..128.57 rows=10 width=1295) (actual time=0.038..0.050 rows=1.00 loops=10494)
+              Index Cond: (_geom ~ esc._geom)
+              Filter: st_contains(_geom, esc._geom)
+              Rows Removed by Filter: 2
+              Index Searches: 10494
+              Buffers: shared hit=102257
+Planning:
+  Buffers: shared hit=24
+Planning Time: 2.856 ms
+JIT:
+  Functions: 58
+  Options: Inlining true, Optimization true, Expressions true, Deforming true
+  Timing: Generation 3.386 ms (Deform 2.268 ms), Inlining 59.825 ms, Optimization 305.372 ms, Emission 200.824 ms, Total 569.406 ms
+Execution Time: 1871.647 ms
