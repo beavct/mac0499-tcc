@@ -1,5 +1,5 @@
 """
-Executa as etapas do dicionário (01 e 02) em ordem.
+Executa as etapas do dicionário (01 a 03) em ordem.
 Uso: python run_all.py
 """
 import subprocess
@@ -8,6 +8,7 @@ import sys
 ETAPAS = [
     "01_extrair_dicionario.py",
     "02_indexar_chroma.py",
+    "03_indexar_exemplos.py",
 ]
 
 

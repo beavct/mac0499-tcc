@@ -38,7 +38,8 @@ text2cypher/
 ├── dicionario/                    ← dicionário das propriedades (Camada A) e valores (Camada B)
 │   ├── 01_extrair_dicionario.py   ← descrições, tipos e valores (PG + Neo4j) → corpus/variaveis.json
 │   ├── 02_indexar_chroma.py       ← gera os embeddings do corpus e indexa no Chroma
-│   ├── run_all.py                 ← roda as etapas 01 e 02 em ordem
+│   ├── 03_indexar_exemplos.py     ← indexa os exemplos resolvidos do gerador no Chroma
+│   ├── run_all.py                 ← roda as etapas 01 a 03 em ordem
 │   ├── retriever.py               ← busca híbrida (Chroma + BM25) e montagem do trecho do esquema
 │   ├── stopwords_pt.py            ← stopwords em português do Snowball, para o BM25 (BSD)
 │   ├── inspecionar.py             ← inspeciona a coleção do Chroma pelo terminal
@@ -60,6 +61,7 @@ As duas etapas podem ser rodadas juntas, com `python run_all.py`, ou na ordem:
 cd text2cypher/dicionario
 python 01_extrair_dicionario.py   # PG (COMMENTs) → corpus/variaveis.json
 python 02_indexar_chroma.py       # corpus → índice do Chroma em ../vectorstore/
+python 03_indexar_exemplos.py     # exemplos do gerador → coleção própria no Chroma
 ```
 
 ### `01_extrair_dicionario.py`
@@ -91,6 +93,10 @@ Transforma o texto de cada propriedade em vetor (*embedding*) com o modelo multi
 O E5 foi treinado com o prefixo `passage: ` nos textos e `query: ` nas perguntas; sem eles, o recall cai. Por isso o indexador e o `retriever.py` usam os prefixos definidos no `config.py`. Se o modelo for trocado, confira os prefixos na página dele no Hugging Face e rode esta etapa de novo.
 
 Variável, nó, tema, tabela, descrição, tipo e valores ficam como metadados: voltam junto com cada resultado, mas não entram na busca. A etapa pode ser rodada de novo sem problema, porque recria a coleção do zero.
+
+### `03_indexar_exemplos.py`
+
+Indexa as perguntas dos exemplos resolvidos do gerador ([`workflow/exemplos/exemplos.json`](workflow/exemplos/exemplos.json)) numa coleção própria do Chroma, `exemplos`, com o mesmo modelo e os mesmos prefixos da etapa 02. O Cypher de cada exemplo vai nos metadados. Precisa ser rodada de novo quando o `exemplos.json` mudar.
 
 ### `retriever.py`
 

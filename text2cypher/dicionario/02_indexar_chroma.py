@@ -28,7 +28,7 @@ def indexar(docs, batch_size=256):
     model = SentenceTransformer(EMBEDDING_MODEL)
 
     client = chromadb.PersistentClient(path=VECTORSTORE_DIR)
-    # recria do zero para a indexação ser idempotente
+    # apaga a coleção antiga, para rodar de novo sem duplicar os itens
     if CHROMA_COLLECTION in [c.name for c in client.list_collections()]:
         client.delete_collection(CHROMA_COLLECTION)
     col = client.create_collection(CHROMA_COLLECTION, metadata={"hnsw:space": "cosine"})

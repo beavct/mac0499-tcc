@@ -27,6 +27,9 @@ CORPUS_DIR = os.path.join(BASE_DIR, "dicionario", "corpus")
 CORPUS_JSON = os.path.join(CORPUS_DIR, "variaveis.json")
 VECTORSTORE_DIR = os.path.join(BASE_DIR, "vectorstore")
 CHROMA_COLLECTION = "variaveis_v"
+# exemplos resolvidos do gerador (workflow/exemplos/), numa coleção à parte
+EXEMPLOS_JSON = os.path.join(BASE_DIR, "workflow", "exemplos", "exemplos.json")
+CHROMA_COLECAO_EXEMPLOS = "exemplos"
 
 # --- Modelo de embedding --------------------------------------------------
 # Multilíngue (as descrições estão em PT-BR).

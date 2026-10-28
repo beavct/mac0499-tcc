@@ -116,7 +116,7 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
 | Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
 | Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
-| Exemplos resolvidos | `USAR_EXEMPLOS` | `false` | põe no prompt do gerador, entre o esquema e a pergunta, os pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) de pergunta mais parecida com a da vez (pelo e5); desligado, o prompt é o original |
+| Exemplos resolvidos | `USAR_EXEMPLOS` | `false` | põe no prompt do gerador, entre o esquema e a pergunta, os pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) de pergunta mais parecida com a da vez (busca no Chroma); desligado, o prompt é o original |
 | Nº de exemplos | `N_EXEMPLOS` | `6` | quantos exemplos vão no bloco |
 
 Os modelos abertos vão por uma API compatível com a da OpenAI, com os parâmetros de geração do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens). O Claude vai pela API da Anthropic, com algumas diferenças (ver [Claude](#claude)):
@@ -255,7 +255,7 @@ python testes/teste_repeticao.py
 <a name="exemplos"></a>
 ## Exemplos resolvidos
 
-Com `USAR_EXEMPLOS`, o prompt do gerador recebe, entre o esquema e a pergunta, os `N_EXEMPLOS` pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) mais parecidos com a pergunta, pelo mesmo e5 da Camada A. O corretor não recebe os exemplos.
+Com `USAR_EXEMPLOS`, o prompt do gerador recebe, entre o esquema e a pergunta, os `N_EXEMPLOS` pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) mais parecidos com a pergunta. A busca é vetorial, no Chroma, numa coleção própria indexada pela etapa 03 do dicionário (`../dicionario/03_indexar_exemplos.py`), com o mesmo e5 da Camada A. O corretor não recebe os exemplos.
 
 Os 35 exemplos foram escritos a partir do esquema do grafo e do dicionário das propriedades, sem consultar as perguntas de avaliação, e cada Cypher foi validado no Neo4j. Eles seguem a convenção de saída das consultas de [`perguntas/`](../../perguntas): o município junto de qualquer nível abaixo dele.
 
