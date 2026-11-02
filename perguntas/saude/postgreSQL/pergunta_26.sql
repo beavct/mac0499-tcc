@@ -4,8 +4,8 @@
 -- Nota de comparação com o Neo4j: 4 unidades SADT do estado têm coordenadas do CNES que não
 -- caem em nenhum setor censitário e não são carregadas no grafo; o JOIN com os setores
 -- (ST_Contains, como no ETL) as exclui também aqui. A unidade de Urgência mais próxima ainda
--- difere em cerca de 130 casos, porque aqui a distância é geodésica e o point.distance do
--- Neo4j usa a fórmula de haversine (nenhuma unidade de Urgência SUS fica fora dos setores).
+-- difere em cerca de 130 casos, porque os dois bancos calculam a distância de formas
+-- um pouco diferentes (nenhuma unidade de Urgência SUS fica fora dos setores).
 SELECT
     s.nm_mun AS municipio,
     diag.co_unidade AS id_diagnose,

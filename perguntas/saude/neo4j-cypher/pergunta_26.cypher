@@ -4,8 +4,8 @@
 // Nota de comparação com o PostgreSQL: 4 unidades SADT do estado têm coordenadas do CNES que
 // não caem em nenhum setor censitário e não são carregadas no grafo; a versão SQL também as
 // exclui, pelo mesmo ST_Contains do ETL. A unidade de Urgência mais próxima ainda difere em
-// cerca de 130 casos, porque o point.distance do Neo4j usa a fórmula de haversine e o SQL, a
-// distância geodésica (nenhuma unidade de Urgência SUS fica fora dos setores).
+// cerca de 130 casos, porque os dois bancos calculam a distância de formas um pouco
+// diferentes (nenhuma unidade de Urgência SUS fica fora dos setores).
 MATCH (diag:EquipamentoSaude)
 WHERE diag.at_03_conv_01 = true
 CALL (diag) {
