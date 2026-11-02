@@ -44,18 +44,18 @@ A rodada usada na monografia está em `resultados/`. Recall@20 por grupo de prop
 
 | Modelo | vetorial: todas | categórica | completas | híbrida: todas | categórica | completas |
 |--------|------:|------:|------:|------:|------:|------:|
-| paraphrase-multilingual-MiniLM-L12-v2 | 0,37 | 0,36 | 12 | 0,68 | 0,36 | 31 |
-| paraphrase-multilingual-mpnet-base-v2 | 0,42 | 0,09 | 16 | 0,65 | 0,18 | 29 |
-| multilingual-e5-small | 0,59 | 0,09 | 25 | 0,69 | 0,09 | 34 |
-| **multilingual-e5-base** | 0,67 | **0,64** | 31 | **0,78** | **0,55** | **41** |
-| multilingual-e5-large | 0,67 | 0,27 | 30 | 0,76 | 0,45 | **41** |
-| bge-m3 | 0,52 | 0,18 | 22 | 0,70 | 0,27 | 35 |
-| Qwen3-Embedding-0.6B | **0,69** | 0,55 | **33** | **0,78** | 0,45 | **41** |
-| all-MiniLM-L6-v2 | 0,33 | 0,00 | 13 | 0,58 | 0,09 | 23 |
-| serafim-100m-portuguese-pt-sentence-encoder-ir | 0,51 | 0,09 | 18 | 0,74 | 0,27 | 36 |
-| embeddinggemma-300m | 0,55 | 0,27 | 24 | 0,74 | 0,36 | 36 |
+| paraphrase-multilingual-MiniLM-L12-v2 | 0,39 | 0,45 | 12 | 0,66 | 0,36 | 25 |
+| paraphrase-multilingual-mpnet-base-v2 | 0,40 | 0,27 | 13 | 0,61 | 0,36 | 27 |
+| multilingual-e5-small | 0,60 | 0,18 | 26 | 0,74 | 0,18 | 36 |
+| **multilingual-e5-base** | **0,74** | 0,82 | **35** | 0,78 | **0,64** | 40 |
+| multilingual-e5-large | 0,69 | 0,64 | 31 | **0,79** | 0,45 | **43** |
+| bge-m3 | 0,51 | 0,36 | 23 | 0,74 | 0,55 | 37 |
+| Qwen3-Embedding-0.6B | 0,70 | **0,91** | 33 | 0,77 | **0,64** | 39 |
+| all-MiniLM-L6-v2 | 0,34 | 0,09 | 13 | 0,56 | 0,27 | 21 |
+| serafim-100m-portuguese-pt-sentence-encoder-ir | 0,55 | 0,09 | 20 | 0,73 | 0,27 | 33 |
+| embeddinggemma-300m | 0,54 | 0,36 | 23 | 0,73 | 0,55 | 34 |
 
-Com a busca da Camada A, o `multilingual-e5-base`, o Qwen3 e o e5-large empatam em 41 perguntas completas, e o e5-base tem o maior recall nas categóricas. Por isso o workflow continua com ele: empata com os melhores, é menor que o Qwen3 e não depende de uma instrução escrita por nós. O `all-MiniLM-L6-v2`, do CyVerACT, fica por último nas duas formas de busca.
+Na busca vetorial, o `multilingual-e5-base` tem o maior recall e o maior número de perguntas completas (35, contra 33 do Qwen3 e 31 do e5-large). Com a busca da Camada A, o e5-large passa à frente, com 43 perguntas completas contra 40 do e5-base e 39 do Qwen3. O workflow continua com o e5-base: ele fica a três perguntas completas do e5-large na híbrida, com metade dos parâmetros, é o melhor na vetorial, e os outros testes da Camada A foram feitos com ele. O `all-MiniLM-L6-v2`, do CyVerACT, fica por último nas duas formas de busca.
 
 ## Estrutura
 
