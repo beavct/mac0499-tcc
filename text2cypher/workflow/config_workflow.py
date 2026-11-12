@@ -29,7 +29,7 @@ BLOQUEAR_REPETICAO = os.getenv("BLOQUEAR_REPETICAO", "true").lower() in ("true",
 # tentativas anteriores no prompt do corretor; 0 desliga (no teste, piorou o qwen2.5-coder:7b)
 MAX_TENTATIVAS_MEMORIA = int(os.getenv("MAX_TENTATIVAS_MEMORIA", "0"))
 # exemplos resolvidos no prompt do gerador, os de pergunta mais parecida com a da vez
-USAR_EXEMPLOS = os.getenv("USAR_EXEMPLOS", "false").lower() in ("true", "1", "sim")
+USAR_EXEMPLOS = os.getenv("USAR_EXEMPLOS", "true").lower() in ("true", "1", "sim")
 N_EXEMPLOS = int(os.getenv("N_EXEMPLOS", "6"))
 
 

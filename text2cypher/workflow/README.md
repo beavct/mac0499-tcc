@@ -116,7 +116,7 @@ Definidas em `config_workflow.py` (ajustáveis por variável de ambiente):
 | Value grounding | `USAR_VALUE_GROUNDING` | `false` | liga a Camada B (`true`, `1` ou `sim`); desligada, o workflow é o de antes |
 | Bloqueio de repetição | `BLOQUEAR_REPETICAO` | `true` | se o corretor repete uma consulta que já falhou, o laço pula para a próxima etapa (ver [Bloqueio de repetição](#repeticao)); desligado, o laço é o do CyVerACT |
 | Memória do corretor | `MAX_TENTATIVAS_MEMORIA` | `0` | quantas tentativas anteriores distintas (com os erros) vão no prompt do corretor; `0` desliga a memória |
-| Exemplos resolvidos | `USAR_EXEMPLOS` | `false` | põe no prompt do gerador, entre o esquema e a pergunta, os pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) de pergunta mais parecida com a da vez (busca no Chroma); desligado, o prompt é o original |
+| Exemplos resolvidos | `USAR_EXEMPLOS` | `true` | põe no prompt do gerador, entre o esquema e a pergunta, os pares pergunta/Cypher de [`exemplos/exemplos.json`](exemplos/exemplos.json) de pergunta mais parecida com a da vez (busca no Chroma); desligado (`false`), o prompt é o original |
 | Nº de exemplos | `N_EXEMPLOS` | `6` | quantos exemplos vão no bloco |
 
 Os modelos abertos vão por uma API compatível com a da OpenAI, com os parâmetros de geração do CyVerACT (`temperature=0.01`, `top_p=0.9`, até 512 tokens). O Claude vai pela API da Anthropic, com algumas diferenças (ver [Claude](#claude)):

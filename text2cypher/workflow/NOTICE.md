@@ -40,7 +40,7 @@ bloco de código em Markdown na resposta do modelo), `Nodes/exemplos.py` e `exem
   - mensagem de início antes da chamada ao LLM;
   - a consulta devolvida vai para `cypher_history`;
   - no corretor, com `MAX_TENTATIVAS_MEMORIA` acima de 0, o prompt ganha um bloco com as últimas tentativas que falharam e os erros de cada uma. O texto original do prompt não muda;
-  - no gerador, com `USAR_EXEMPLOS`, o prompt ganha um bloco com os exemplos resolvidos (pares pergunta/Cypher) mais parecidos com a pergunta, entre o esquema e a pergunta. Para isso o pedido foi dividido em duas partes; com a opção desligada (padrão), o texto do prompt é o mesmo do original;
+  - no gerador, com `USAR_EXEMPLOS`, o prompt ganha um bloco com os exemplos resolvidos (pares pergunta/Cypher) mais parecidos com a pergunta, entre o esquema e a pergunta. Para isso o pedido foi dividido em duas partes; vem ligada por padrão; desligada, o texto do prompt é o mesmo do original;
   - a resposta passa pelo `limpar_resposta` (`Nodes/resposta.py`), que tira o bloco de código em Markdown (```` ```cypher ... ``` ````) quando o modelo o põe, mesmo com o prompt pedindo que não; cada chamada registra em `cleaned_responses` se a limpeza foi usada.
 - `Nodes/States/states.py`, `Nodes/output_generator.py` — campo `execution_error`; no `states.py`, também o `grounded_values` (Camada B) o `cypher_history` (consultas tentadas) e o `cleaned_responses` (se cada resposta veio com bloco de código).
 - `Configuration/configurations.py` — campos `timeout_execucao`, `usar_rag`, `bloquear_repeticao`, `max_tentativas_memoria`, `usar_exemplos` e `n_exemplos`.
